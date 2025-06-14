@@ -12,8 +12,8 @@ public class DBAccess {
     private String mainUserPassword;
     private static final String SQL_EXCEPTION = "SQL Exception: ";
     private static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String PREFIX_CONNECTION_URL = "jdbc:mysql://localhost:3306/";
-    private static final String CONNECTION_SETTINGS = "?useSSL=false" +
+    private static final String PREFIX_CONNECTION_URL = "jdbc:mysql://oege.ie.hva.nl:3306/";
+    private static final String CONNECTION_SETTINGS = "?useSSL=true" +
             "&allowPublicKeyRetrieval=true" +
             "&useJDBCCompliantTimezoneShift=true" +
             "&useLegacyDatetimeCode=false" +
