@@ -41,4 +41,7 @@
             <Font size="16.0"/>
         </font>
     </Button>
+    <Label fx:id="messageLabel"
+           layoutX="286.0" layoutY="260.0" prefHeight="25.0" prefWidth="335.0"  text=""
+           style="-fx-text-fill: red;" />
 </AnchorPane>

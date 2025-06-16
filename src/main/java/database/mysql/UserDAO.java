@@ -5,38 +5,40 @@
  * Inlezen gebruikers uit csv en verbinding gebruikers met database
  * Let op: deze versie gebruikt enkel AbstractDAO als superklasse,
  * GEEN GenericDAO interface.
+ * FIX password met komma mogelijk gemaakt
  */
 package database.mysql;
 
 import model.User;
 import model.UserRole;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
-import java.sql.PreparedStatement;
+import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-public class UserDAO extends AbstractDAO {
 
-    // Constants voor foutmeldingen en CSV structuur
+
+//DAO (Data Access Object) User: de Gebruiker
+
+public class UserDAO extends AbstractDAO implements GenericDAO<User> {
+
+    public static final String READ_ERROR_MSG = "Fout bij lezen van CSV-bestand: ";
+    public static final String LOAD_ERROR_MSG = "Fout bij ophalen van gebruikers: ";
+    // declaratie foutmeldingen en CSV structuur
     private static final int EXPECTED_COLUMN_COUNT = 6;
     private static final String FILE_NOT_FOUND_MSG = "Bestand 'Gebruikers.csv' niet gevonden in resources-map.";
     private static final String INVALID_LINE_MSG = "Ongeldige regel in CSV: ";
     private static final String UNKNOWN_ROLE_MSG = "Onbekende rol: ";
-    public static final String READ_ERROR_MSG = "Fout bij lezen van CSV-bestand: ";
-    public static final String LOAD_ERROR_MSG = "Fout bij ophalen van gebruikers: ";
 
     public UserDAO(DBAccess dbAccess) {
         super(dbAccess);
     }
 
-    /**
-     * Leest gebruikers in vanuit een CSV-bestand in src/main/resources.
-     * @return lijst met User-objecten
-     */
+    //inlezen vanuit csv
+    // Houdt rekening met komma's binnen aanhalingstekens.
     public List<User> loadUsersFromCsv() {
         List<User> users = new ArrayList<>();
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("Gebruikers.csv");
@@ -46,23 +48,21 @@ public class UserDAO extends AbstractDAO {
             return users;
         }
 
-        try (Scanner scanner = new Scanner(inputStream)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                if (line.trim().isEmpty()) continue;
-
-                String[] parts = line.split(",");
-                if (parts.length != EXPECTED_COLUMN_COUNT) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                List<String> parts = parseCsvLine(line);
+                if (parts.size() != EXPECTED_COLUMN_COUNT) {
                     System.err.println(INVALID_LINE_MSG + line);
                     continue;
                 }
 
-                String userName = parts[0].trim();
-                String password = parts[1].trim();
-                String firstName = parts[2].trim();
-                String prefix = parts[3].trim();
-                String lastName = parts[4].trim();
-                String roleString = parts[5].trim();
+                String userName = parts.get(0).trim();
+                String password = parts.get(1).trim();
+                String firstName = parts.get(2).trim();
+                String prefix = parts.get(3).trim();
+                String lastName = parts.get(4).trim();
+                String roleString = parts.get(5).trim();
 
                 try {
                     UserRole userRole = UserRole.valueOf(roleString.toUpperCase());
@@ -76,11 +76,33 @@ public class UserDAO extends AbstractDAO {
             System.err.println(READ_ERROR_MSG + e.getMessage());
             e.printStackTrace();
         }
-
         return users;
     }
 
-    //Ophalen gebruikers database.
+    // CSV-regel parser die rekening houdt met aanhalingstekens rond velden.
+    // Er bestaat een CSV"Speciaal" maar dat in werking krijgen ben ik nog niet aan toe
+    private List<String> parseCsvLine(String line) {
+        List<String> fields = new ArrayList<>();
+        StringBuilder current = new StringBuilder();
+        boolean insideQuotes = false;
+
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                insideQuotes = !insideQuotes;
+            } else if (c == ',' && !insideQuotes) {
+                fields.add(current.toString());
+                current.setLength(0);
+            } else {
+                current.append(c);
+            }
+        }
+        fields.add(current.toString());
+        return fields;
+    }
+
+    //Fetch users
+    // rs = ResultSet
     public List<User> getAll() {
         List<User> userList = new ArrayList<>();
         try {
@@ -88,14 +110,7 @@ public class UserDAO extends AbstractDAO {
             setupPreparedStatement(sql);
             ResultSet rs = executeSelectStatement();
             while (rs.next()) {
-                User user = new User(
-                        rs.getString("userName"),
-                        rs.getString("password"),
-                        rs.getString("firstName"),
-                        rs.getString("prefix"),
-                        rs.getString("lastName"),
-                        UserRole.valueOf(rs.getString("userRol").toUpperCase())
-                );
+                User user = new User(rs.getString("userName"), rs.getString("password"), rs.getString("firstName"), rs.getString("prefix"), rs.getString("lastName"), UserRole.valueOf(rs.getString("userRol").toUpperCase()));
                 userList.add(user);
             }
         } catch (SQLException e) {
@@ -104,9 +119,7 @@ public class UserDAO extends AbstractDAO {
         return userList;
     }
 
-    /**
-     * Slaat een gebruiker op in de database.
-     */
+    // save User in database
     public void storeOne(User user) {
         try {
             String sql = "INSERT INTO user (userName, password, firstName, prefix, lastName, userRol) VALUES (?, ?, ?, ?, ?, ?)";
@@ -123,12 +136,17 @@ public class UserDAO extends AbstractDAO {
         }
     }
 
-    // Placeholder methods voor toekomstig gebruik tip van Ing
+    @Override
+    public User getOneById(int id) {
+        System.out.println("Werkt niet in deze versie van UserDAO.getOneById() ");
+        return null;
+    }
+
     public void updateUser(User user) {
-        // Toekomstige implementatie: update bestaande gebruiker
+        // Toekomstige implementatie
     }
 
     public void deleteUser(int id) {
-        // Toekomstige implementatie: verwijder gebruiker op basis van ID
+        // Toekomstige implementatie
     }
 }
