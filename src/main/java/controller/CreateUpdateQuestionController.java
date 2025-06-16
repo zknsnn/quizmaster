@@ -8,5 +8,7 @@ public class CreateUpdateQuestionController {
 
     public void doMenu() {}
 
-    public void doCreateUpdateQuestion() {}
-}
+    public void doCreateUpdateQuestion() {
+
+    }
+} // CreateUpdateQuestionController
