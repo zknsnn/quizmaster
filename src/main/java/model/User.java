@@ -53,7 +53,7 @@ public class User {
         }
         if(userRol == null) {
             throw new IllegalArgumentException("Invoer verplicht. Voer uw rol in");
-        }
+        }// gaat niet werken
         this.userName = UserNameGenerator.from(firstName, lastName);
         this.password = password;
         this.firstName = capitalize(firstName);

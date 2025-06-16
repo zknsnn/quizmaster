@@ -105,6 +105,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     // rs = ResultSet
     public List<User> getAll() {
         List<User> userList = new ArrayList<>();
+
         try {
             String sql = "SELECT * FROM user";
             setupPreparedStatement(sql);
@@ -135,11 +136,29 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             System.err.println("Fout bij opslaan van gebruiker: " + e.getMessage());
         }
     }
-
     @Override
-    public User getOneById(int id) {
-        System.out.println("Werkt niet in deze versie van UserDAO.getOneById() ");
-        return null;
+    public User getOneByName(String name) {
+        String sql = "SELECT * FROM User WHERE userName = ?";
+        User user = null;
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = executeSelectStatement();
+            if (resultSet.next()) {
+                String userName = resultSet.getString("userName");
+                String password = resultSet.getString("password");
+                String firstName = resultSet.getString("firstName");
+                String prefix = resultSet.getString("prefix");
+                String lastName = resultSet.getString("lastName");
+                String userRol = resultSet.getString("userRol");
+                UserRole role = UserRole.valueOf(userRol.toUpperCase()); //aanmaken role
+                user = new User(userName,password,firstName,prefix,lastName,role);
+            }
+        }
+        catch (SQLException sqlFout){
+            System.out.println("SQL fout " + sqlFout.getMessage());
+        }
+        return user;
     }
 
     public void updateUser(User user) {
