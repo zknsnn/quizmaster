@@ -21,8 +21,8 @@ public class Question {
         this.quizName = quizName;
     } // all-args Question
 
-    public Question(String questionText, String correctAnswer, String wrongAnswer1, String wrongAnswer2, String wrongAnswer3, Quiz quiz){
-        this(0,questionText,correctAnswer,wrongAnswer1,wrongAnswer2,wrongAnswer3,quiz);
+    public Question(String questionText, String correctAnswer, String wrongAnswer1, String wrongAnswer2, String wrongAnswer3, Quiz quiz) {
+        this(0, questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz);
     }
 
     public String getQuestionText() {
