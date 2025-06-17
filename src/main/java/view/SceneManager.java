@@ -36,10 +36,10 @@ public class SceneManager {
         getScene("/view/fxml/login.fxml");
     }
 
-    public void showWelcomeScene() {
+    public void showWelcomeScene(User user) {
         FXMLLoader loader = getScene("/view/fxml/welcomeScene.fxml");
         WelcomeController controller = loader.getController();
-        controller.setup();
+        controller.setup(user);
     }
 
     public void showManageUserScene() {
@@ -54,10 +54,10 @@ public class SceneManager {
         controller.setup(user);
     }
 
-    public void showManageCoursesScene() {
+    public void showManageCoursesScene(User user) {
         FXMLLoader loader = getScene("/view/fxml/manageCourses.fxml");
         ManageCoursesController controller = loader.getController();
-        controller.setup();
+        controller.setup(user);
     }
 
     public void showCreateUpdateCourseScene(Course course) {

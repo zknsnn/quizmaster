@@ -1,10 +1,19 @@
 package controller;
 
+import model.User;
+import view.Main;
+
 public class ManageCoursesController {
 
-    public void setup() {}
+    private User user;
 
-    public void doMenu(){}
+    public void setup(User user) {
+        this.user = user;
+    }
+
+    public void doMenu(){
+        Main.getSceneManager().showWelcomeScene(user);
+    }
 
     public void doCreateCourse(){}
 

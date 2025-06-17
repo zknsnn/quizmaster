@@ -150,7 +150,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
 
    // READ (By Name)
     public User getOneByName(String name) {
-        String sql = "SELECT * FROM user WHERE userName = ?";
+        String sql = "SELECT * FROM User WHERE userName = ?";
         User user = null;
 
         try {
