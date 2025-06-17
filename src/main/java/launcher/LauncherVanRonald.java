@@ -42,9 +42,7 @@ public class LauncherVanRonald {
                 String quizName = lineSplit[5];
                 Quiz quiz = quizDAO.getQuizPerID(quizName); // QuizDAO - quizByName
                 // add line by line into questionList
-//                questionList.add(new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz));
                 questionDAO.storeOne(new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz));
-
             }
         } catch (FileNotFoundException exception) {
             System.out.println("File Not Found");
@@ -54,8 +52,6 @@ public class LauncherVanRonald {
 //        for (Question q : questionList) {
 //            System.out.println(q);
 //        }
-
-
 
         dbAccess.closeConnection();
 
