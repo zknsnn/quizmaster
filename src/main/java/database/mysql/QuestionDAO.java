@@ -1,7 +1,6 @@
 package database.mysql;
 
 import model.Question;
-import model.Quiz;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class QuestionDAO extends AbstractDAO implements GenericDAO<Question>{
+public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
 
     public QuestionDAO(DBAccess dbAccess) {
         super(dbAccess);
@@ -44,7 +43,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question>{
     @Override
     public Question getOneById(int id) {
         Question question = null;
-         QuizDAO quizDAO = new QuizDAO (dbAccess);
+        QuizDAO quizDAO = new QuizDAO(dbAccess);
         try {
             String sql = "SELECT * FROM Question";
             setupPreparedStatement(sql);
@@ -62,11 +61,11 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question>{
         } catch (SQLException sqlError) {
             System.out.println("SQL error " + sqlError.getMessage());
         }
-            return question;
-    }
+        return question;
+    } // getOneById
 
-    public void saveQuestion(Question question) {
-        QuizDAO quizDAO = new QuizDAO (dbAccess);
+    @Override
+    public void storeOne(Question question) {
         String sql = "INSERT INTO Question (questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quizName) VALUES(?, ?, ?, ?, ?, ?);";
         try {
             setupPreparedStatementWithKey(sql);
@@ -80,10 +79,5 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question>{
         } catch (SQLException sqlError) {
             System.out.println("SQL error " + sqlError.getMessage());
         }
-    } // einde saveQuestion
-
-    @Override
-    public void storeOne(Question type) {
-
-    }
+    } // storeOne
 }
