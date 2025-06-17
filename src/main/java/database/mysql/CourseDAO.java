@@ -79,5 +79,31 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     public Course getOneById(int id) {
         return null;
     }
+
+    public void updateCourse(Course course) {
+        String sql = "UPDATE Course SET courseLevel = ?, userName = ? WHERE courseName = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, course.getCourseLevel());
+            preparedStatement.setString(2, course.getCoordinator().getUserName());
+            preparedStatement.setString(3, course.getCourseName());
+            executeManipulateStatement();
+        } catch (SQLException e) {
+            System.err.println("Fout bij updaten van cursus: " + e.getMessage());
+        }
+    }
+
+    public void deleteCourse(String courseName) {
+        String sql = "DELETE FROM Course WHERE courseName = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, courseName);
+            executeManipulateStatement();
+        } catch (SQLException e) {
+            System.err.println("Fout bij verwijderen van cursus: " + e.getMessage());
+        }
+    }
+
+
 }
 
