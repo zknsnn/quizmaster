@@ -16,7 +16,7 @@ public class Quiz {
     // constructor
     public Quiz(String quizName, String quizLevel, double succesDefinition, Course course) {
         this.quizName = quizName;
-        this.quizLevel = quizLevel; // Moet gelijk zijn of een niveau onder course level. Zie setter quiz-level.
+        setQuizLevel(quizLevel, course);
         this.succesDefinition = succesDefinition;
         this.course = course;
         List<Question> arrayListQuestions = new ArrayList<>();
@@ -26,14 +26,30 @@ public class Quiz {
     public String getQuizLevel() {
         return quizLevel;
     }
-    public void setQuizLevel(String quizLevel) {
-        this.quizLevel = quizLevel;
 
-        // get course level.
-
-        // check if course level is equal to or one level lower than quiz level.
-
-        // Als dat niet het geval is, zet hem dan op de laag mogelijkste mogelijkheid.
+    // Het niveau van een quiz mag een niveau lager zijn dan het niveau van de cursus, maar
+    // meestal zijn de niveaus van quiz en cursus gelijk
+    public void setQuizLevel(String quizLevel, Course course) {
+        String courseLevel = course.getCourseLevel();
+        // Als het courseLevel "Beginner" is, is dit ook het niveau van de quiz.
+        if (courseLevel.equalsIgnoreCase("Beginner")) {
+            this.quizLevel = "Beginner";
+        }
+        // Als het courseLevel "Medium" is, kan quizLevel nooit "Gevorderd" zijn.
+        else if (courseLevel.equalsIgnoreCase("Medium")) {
+            if (!(quizLevel.equalsIgnoreCase("Gevorderd"))) {
+                this.quizLevel = quizLevel;
+            } else {
+                this.quizLevel = "Medium";
+            }
+            // Als het courseLevel "Gevorderd" is is quizLevel "Beginner" niet toegestaan".
+        } else {
+            if (quizLevel.equalsIgnoreCase("Beginner")) {
+                this.quizLevel = "Medium";
+            } else {
+                this.quizLevel = quizLevel;
+            }
+        }
     }
 
     public String getQuizName() {
