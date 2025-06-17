@@ -1,4 +1,4 @@
-package controller;
+package launcher;
 
 import database.mysql.CourseDAO;
 import database.mysql.DBAccess;

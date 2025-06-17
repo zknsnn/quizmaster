@@ -1,4 +1,4 @@
-package controller;
+package launcher;
 
 import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
