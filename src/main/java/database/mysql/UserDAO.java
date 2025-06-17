@@ -1,11 +1,8 @@
-
 /*
  * Etienne
  * DAO (Data Access Object) voor de User.
- * Inlezen gebruikers uit csv en verbinding gebruikers met database
- * Let op: deze versie gebruikt enkel AbstractDAO als superklasse,
- * GEEN GenericDAO interface.
- * FIX password met komma mogelijk gemaakt
+ * Verantwoordelijk voor: inlezen gebruikers vanuit CSV, ophalen/opslaan gebruikers uit/in database.
+ * Implementatie van de GenericDAO interface vereist ook methoden zoals getOneById(), al worden die niet altijd gebruikt.
  */
 package database.mysql;
 
@@ -20,25 +17,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-//DAO (Data Access Object) User: de Gebruiker
-
 public class UserDAO extends AbstractDAO implements GenericDAO<User> {
 
+    // Foutmeldingen
     public static final String READ_ERROR_MSG = "Fout bij lezen van CSV-bestand: ";
     public static final String LOAD_ERROR_MSG = "Fout bij ophalen van gebruikers: ";
-    // declaratie foutmeldingen en CSV structuur
-    private static final int EXPECTED_COLUMN_COUNT = 6;
     private static final String FILE_NOT_FOUND_MSG = "Bestand 'Gebruikers.csv' niet gevonden in resources-map.";
     private static final String INVALID_LINE_MSG = "Ongeldige regel in CSV: ";
     private static final String UNKNOWN_ROLE_MSG = "Onbekende rol: ";
+
+    // Verwacht aantal kolommen in CSV-bestand
+    private static final int EXPECTED_COLUMN_COUNT = 6;
 
     public UserDAO(DBAccess dbAccess) {
         super(dbAccess);
     }
 
-    //inlezen vanuit csv
-    // Houdt rekening met komma's binnen aanhalingstekens.
+    /**
+     * Inlezen gebruikers uit CSV-bestand.
+     * Houdt rekening met aanhalingstekens rond velden (bijv. wachtwoorden met komma's).
+     * CSV moet aanwezig zijn in de resources-map.
+     */
     public List<User> loadUsersFromCsv() {
         List<User> users = new ArrayList<>();
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("Gebruikers.csv");
@@ -76,11 +75,13 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             System.err.println(READ_ERROR_MSG + e.getMessage());
             e.printStackTrace();
         }
+
         return users;
     }
 
-    // CSV-regel parser die rekening houdt met aanhalingstekens rond velden.
-    // Er bestaat een CSV"Speciaal" maar dat in werking krijgen ben ik nog niet aan toe
+    /**
+     * Parser voor één CSV-regel, houdt rekening met komma's binnen aanhalingstekens.
+     */
     private List<String> parseCsvLine(String line) {
         List<String> fields = new ArrayList<>();
         StringBuilder current = new StringBuilder();
@@ -101,26 +102,36 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return fields;
     }
 
-    //Fetch users
-    // rs = ResultSet
+    /**
+     * Haal alle gebruikers op uit de database.
+     */
+    @Override
     public List<User> getAll() {
         List<User> userList = new ArrayList<>();
-
         try {
             String sql = "SELECT * FROM user";
             setupPreparedStatement(sql);
             ResultSet rs = executeSelectStatement();
+
             while (rs.next()) {
-                User user = new User(rs.getString("userName"), rs.getString("password"), rs.getString("firstName"), rs.getString("prefix"), rs.getString("lastName"), UserRole.valueOf(rs.getString("userRol").toUpperCase()));
+                User user = new User(
+                        rs.getString("userName"),
+                        rs.getString("password"),
+                        rs.getString("firstName"),
+                        rs.getString("prefix"),
+                        rs.getString("lastName"),
+                        UserRole.valueOf(rs.getString("userRol").toUpperCase())
+                );
                 userList.add(user);
             }
         } catch (SQLException e) {
             System.err.println(LOAD_ERROR_MSG + e.getMessage());
         }
+
         return userList;
     }
-
-    // save User in database
+// CREATE
+    @Override
     public void storeOne(User user) {
         try {
             String sql = "INSERT INTO user (userName, password, firstName, prefix, lastName, userRol) VALUES (?, ?, ?, ?, ?, ?)";
@@ -136,36 +147,92 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             System.err.println("Fout bij opslaan van gebruiker: " + e.getMessage());
         }
     }
-    @Override
+
+   // READ (By Name)
     public User getOneByName(String name) {
-        String sql = "SELECT * FROM User WHERE userName = ?";
+        String sql = "SELECT * FROM user WHERE userName = ?";
         User user = null;
+
         try {
             setupPreparedStatement(sql);
             preparedStatement.setString(1, name);
             ResultSet resultSet = executeSelectStatement();
+
             if (resultSet.next()) {
-                String userName = resultSet.getString("userName");
-                String password = resultSet.getString("password");
-                String firstName = resultSet.getString("firstName");
-                String prefix = resultSet.getString("prefix");
-                String lastName = resultSet.getString("lastName");
-                String userRol = resultSet.getString("userRol");
-                UserRole role = UserRole.valueOf(userRol.toUpperCase()); //aanmaken role
-                user = new User(userName,password,firstName,prefix,lastName,role);
+                UserRole role = UserRole.valueOf(resultSet.getString("userRol").toUpperCase());
+                user = new User(
+                        resultSet.getString("userName"),
+                        resultSet.getString("password"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("prefix"),
+                        resultSet.getString("lastName"),
+                        role
+                );
             }
+        } catch (SQLException e) {
+            System.err.println("SQL-fout bij ophalen van gebruiker met naam: " + e.getMessage());
         }
-        catch (SQLException sqlFout){
-            System.out.println("SQL fout " + sqlFout.getMessage());
+
+        return user;
+    }
+
+  // READ (int id)
+    @Override
+    public User getOneById(int id) {
+        String sql = "SELECT * FROM user WHERE id = ?";
+        User user = null;
+
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = executeSelectStatement();
+
+            if (resultSet.next()) {
+                UserRole role = UserRole.valueOf(resultSet.getString("userRol").toUpperCase());
+                user = new User(
+                        resultSet.getString("userName"),
+                        resultSet.getString("password"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("prefix"),
+                        resultSet.getString("lastName"),
+                        role
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL-fout bij ophalen van gebruiker met ID: " + e.getMessage());
         }
         return user;
     }
 
+    //UPDATE
+    // Update de gegevens van een bestaande gebruiker op basis van userId
     public void updateUser(User user) {
-        // Toekomstige implementatie
+        String sql = "UPDATE user SET userName = ?, password = ?, firstName = ?, prefix = ?, lastName = ?, userRol = ? WHERE userId = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, user.getUserName());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getFirstName());
+            preparedStatement.setString(4, user.getPrefix());
+            preparedStatement.setString(5, user.getLastName());
+            preparedStatement.setString(6, user.getUserRol().name());
+            preparedStatement.setInt(7, user.getUserId());
+            executeManipulateStatement();
+        } catch (SQLException e) {
+            System.err.println("Fout bij updaten van gebruiker: " + e.getMessage());
+        }
+    }
+    // DELETE
+    // Verwijder een gebruiker uit de database op basis van userId
+    public void deleteUser(int id) {
+        String sql = "DELETE FROM user WHERE userId = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, id);
+            executeManipulateStatement();
+        } catch (SQLException e) {
+            System.err.println("Fout bij verwijderen van gebruiker: " + e.getMessage());
+        }
     }
 
-    public void deleteUser(int id) {
-        // Toekomstige implementatie
-    }
 }
