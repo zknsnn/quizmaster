@@ -25,14 +25,6 @@ public class Question {
         this(0,questionText,correctAnswer,wrongAnswer1,wrongAnswer2,wrongAnswer3,quiz);
     }
 
-    public int getQuestionId(int questionId) {
-        return questionId;
-    }
-
-    public void setQuestionId(int questionId) {
-        this.questionId = questionId;
-    }
-
     public String getQuestionText() {
         return questionText;
     }
@@ -73,9 +65,14 @@ public class Question {
         this.wrongAnswer3 = wrongAnswer3;
     }
 
-    public Quiz getOneById(String quizName) {
-        return null; // aangemaakt voor testen RG
+    public Quiz getQuizName() {
+        return quizName;
     }
+
+
+//    public Quiz getOneById(String quizName) {
+//        return null; // aangemaakt voor testen RG
+//    }
 }
 
 
