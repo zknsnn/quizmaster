@@ -124,4 +124,17 @@ public class User {
     private String capitalize(String s) {
         return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userRol=" + userRol +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", prefix='" + prefix + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }
