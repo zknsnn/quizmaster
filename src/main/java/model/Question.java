@@ -9,16 +9,16 @@ public class Question {
     private String wrongAnswer1;
     private String wrongAnswer2;
     private String wrongAnswer3;
-    private Quiz quizName;
+    private Quiz quiz;
 
-    public Question(int questionId, String questionText, String correctAnswer, String wrongAnswer1, String wrongAnswer2, String wrongAnswer3, Quiz quizName) {
+    public Question(int questionId, String questionText, String correctAnswer, String wrongAnswer1, String wrongAnswer2, String wrongAnswer3, Quiz quiz) {
         this.questionId = questionId;
         this.questionText = questionText;
         this.correctAnswer = correctAnswer;
         this.wrongAnswer1 = wrongAnswer1;
         this.wrongAnswer2 = wrongAnswer2;
         this.wrongAnswer3 = wrongAnswer3;
-        this.quizName = quizName;
+        this.quiz = quiz;
     } // all-args Question
 
     public Question(String questionText, String correctAnswer, String wrongAnswer1, String wrongAnswer2, String wrongAnswer3, Quiz quiz) {
@@ -65,12 +65,11 @@ public class Question {
         this.wrongAnswer3 = wrongAnswer3;
     }
 
-    public Quiz getQuizName() {
-        return quizName;
+    public Quiz getQuiz() {
+        return quiz;
     }
 
-
-//    public Quiz getOneById(String quizName) {
+    //    public Quiz getOneById(String quizName) {
 //        return null; // aangemaakt voor testen RG
 //    }
 }

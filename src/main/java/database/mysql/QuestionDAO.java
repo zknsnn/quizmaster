@@ -74,8 +74,8 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
             preparedStatement.setString(3, question.getWrongAnswer1());
             preparedStatement.setString(4, question.getWrongAnswer2());
             preparedStatement.setString(5, question.getWrongAnswer3());
-            preparedStatement.setString(6, String.valueOf(question.getQuizName()));
-            preparedStatement.executeUpdate();
+            preparedStatement.setString(6, question.getQuiz().getQuizName());
+            executeManipulateStatement();
         } catch (SQLException sqlError) {
             System.out.println("SQL error " + sqlError.getMessage());
         }
