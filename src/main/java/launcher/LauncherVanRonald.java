@@ -45,7 +45,7 @@ public class LauncherVanRonald {
                 Quiz quiz = quizDAO.getQuizPerID(quizName); // QuizDAO - quizByName
                 // add line by line into questionList
 //                questionList.add(new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz));
-                questionDAO.storeOne(new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz));
+                questionDAO.saveQuestion(new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz));
 
             }
         } catch (FileNotFoundException exception) {

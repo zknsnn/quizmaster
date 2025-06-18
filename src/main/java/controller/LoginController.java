@@ -1,9 +1,17 @@
 package controller;
 
+import database.mysql.CourseDAO;
+import database.mysql.DBAccess;
+import database.mysql.UserDAO;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import model.User;
+import view.Main;
 
 public class LoginController {
 
@@ -11,22 +19,32 @@ public class LoginController {
     private TextField nameTextField;
     @FXML
     private PasswordField passwordField;
-    @FXML
-    private Label messageLabel;
+
+    DBAccess dbAccess = Main.getDBAccess();
+    UserDAO userDAO = new UserDAO(dbAccess);
+    private CourseDAO courseDAO = new CourseDAO(dbAccess);
+
 
     public void doLogin() {
-        String name = nameTextField.getText();
+        String username = nameTextField.getText();
         String password = passwordField.getText();
 
-        //check leeg veld
-        if(name.isEmpty() || password.isEmpty()) {
-            messageLabel.setText("Invoer verplicht!");
-            return;
-        }
+        User user = userDAO.getOneByName(username);
 
-        messageLabel.setText("Inloggen: " + name + ", wachtwoord: " + "*".repeat(password.length()));
-        //todo moet nog echte logincontrole
+        if (user != null && user.getPassword().equals(password)) {
+            System.out.println("Je bent ingelogd als " + username);
+            Main.getSceneManager().showWelcomeScene(user);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Fout bij inloggen");
+            alert.setHeaderText("Inloggen mislukt");
+            alert.setContentText("De combinatie van gebruikersnaam en wachtwoord is onjuist.");
+            alert.showAndWait();  // Toon de foutmelding
+
+        }
     }
 
-    public void doQuit() {}
+    public void doQuit(ActionEvent event) {
+        Platform.exit();
+    }
 }

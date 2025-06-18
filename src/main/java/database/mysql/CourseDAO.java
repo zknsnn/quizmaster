@@ -81,7 +81,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     }
 
     public void updateCourse(Course course) {
-        String sql = "UPDATE Course SET courseLevel = ?, userName = ? WHERE courseName = ?";
+        String sql = "UPDATE Course SET courseLevel = ?, coordinator = ? WHERE courseName = ?";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setString(1, course.getCourseLevel());
