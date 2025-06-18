@@ -28,7 +28,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
             while (resultSet.next()) {
                 String courseName = resultSet.getString("courseName");
                 String courseLevel = resultSet.getString("courseLevel");
-                String coordinator = resultSet.getString("userName");
+                String coordinator = resultSet.getString("coordinator");
                 User user = userDAO.getOneByName(coordinator);
                 course = new Course(courseName, courseLevel, user);
                 courseList.add(course);
@@ -64,7 +64,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
             while (resultSet.next()) {
                 String courseName = resultSet.getString("courseName");
                 String courseLevel = resultSet.getString("courseLevel");
-                String coordinator = resultSet.getString("userName");
+                String coordinator = resultSet.getString("coordinator");
                 // ik wil usernaam gebruiken, dus heb ik andere class nodig.
                 User user = userDAO.getOneByName(coordinator);
                 course = new Course(courseName, courseLevel, user);
