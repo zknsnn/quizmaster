@@ -7,8 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class QuizDAO extends AbstractDAO {
+    private CourseDAO courseDAO;
+
     public QuizDAO(DBAccess dbAccess) {
         super(dbAccess);
+        courseDAO = new CourseDAO(dbAccess);
     }
 
     public void saveQuiz(Quiz quiz) {
@@ -28,7 +31,6 @@ public class QuizDAO extends AbstractDAO {
         String sql = "SELECT * FROM Quiz WHERE quizName = ?;";
         Quiz quiz = null;
         Course course;
-        // Ik heb hier courseDAO nodig.
         try {
             setupPreparedStatement(sql);
             preparedStatement.setString(1, quizName);
@@ -36,8 +38,9 @@ public class QuizDAO extends AbstractDAO {
             while (resultSet.next()) {
                 String quizLevel = resultSet.getString("quizLevel");
                 double succesDefinition = resultSet.getDouble("succesDefinition");
-//                course = courseDAO.getCoursePerID(courseName);
-//                quiz = new Quiz(quizName, quizLevel, succesDefinition, course);
+                String courseNaam = resultSet.getString("courseName");
+                course = courseDAO.getOneByName(courseNaam);
+                quiz = new Quiz(quizName, quizLevel, succesDefinition, course);
             }
         } catch (SQLException sqlError) {
             System.out.println("SQL error " + sqlError.getMessage());

@@ -8,10 +8,14 @@ import model.Quiz;
 import view.Main;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class LauncherVanRonald {
+
+    public static final String MSG_FOUT_LEEGMAKEN_TABEL = "Fout bij leegmaken tabel: ";
+    public static final String MSG_TABEL_USER_GELEEGD = "Tabel Question geleegd.";
+
     public static void main(String[] args) {
 
         DBAccess dbAccess = Main.getDBAccess();
@@ -24,6 +28,10 @@ public class LauncherVanRonald {
 //        for (Question q : allQuestionList) {
 //            System.out.println(q);
 //        }
+
+        // Eerst de database legen om te kunnen testen / demo
+//        deleteFromTable(dbAccess);
+
 
         // Functionaliteit om de meegeleverde csv-bestanden in te lezen en weg te schrijven in de database.
         File questionFile = new File("src/main/resources/CSV bestanden/Vragen.csv");
@@ -44,9 +52,13 @@ public class LauncherVanRonald {
                 // add line by line into questionList
                 questionDAO.storeOne(new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz));
             }
-        } catch (FileNotFoundException exception) {
-            System.out.println("File Not Found");
-        } //
+        } catch (IOException e) {
+            // Afhandeling voor IOException
+            System.err.println("IOException error: " + e.getMessage());
+        } catch (Exception e) {
+            // Algemene afhandeling voor overige exceptions
+            System.err.println("Exception error: " + e.getMessage());
+        }
 
 //        System.out.println("Get all questions from CSV: ");
 //        for (Question q : questionList) {
@@ -56,4 +68,16 @@ public class LauncherVanRonald {
         dbAccess.closeConnection();
 
     } // main
+
+    private static void deleteFromTable(DBAccess dbAccess) {
+        // Eerst de database legen om te kunnen testen / demo
+        try {
+            String sql = "DELETE FROM Question";
+            var ps = dbAccess.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            System.out.println(MSG_TABEL_USER_GELEEGD);
+        } catch (Exception e) {
+            System.err.println(MSG_FOUT_LEEGMAKEN_TABEL + e.getMessage());
+        }
+    }
 } // LauncherVanRonald
