@@ -41,7 +41,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
 
     @Override
     public void storeOne(Course course) {
-        String sql = "INSERT INTO Course(courseName,courseLevel,userName) VALUES (?,?,?) ;";
+        String sql = "INSERT INTO Course(courseName,courseLevel,coordinator) VALUES (?,?,?) ;";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setString(1, course.getCourseName());
@@ -81,7 +81,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
     }
 
     public void updateCourse(Course course) {
-        String sql = "UPDATE Course SET courseLevel = ?, userName = ? WHERE courseName = ?";
+        String sql = "UPDATE Course SET courseLevel = ?, coordinator = ? WHERE courseName = ?";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setString(1, course.getCourseLevel());
@@ -103,7 +103,5 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
             System.err.println("Fout bij verwijderen van cursus: " + e.getMessage());
         }
     }
-
-
 }
 
