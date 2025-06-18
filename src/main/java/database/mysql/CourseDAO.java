@@ -103,7 +103,5 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
             System.err.println("Fout bij verwijderen van cursus: " + e.getMessage());
         }
     }
-
-
 }
 
