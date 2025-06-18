@@ -53,6 +53,7 @@ public class WelcomeController {
             MenuItem item1 = new MenuItem("Beheer lessen");
             item1.setOnAction(e -> {Main.getSceneManager().showStudentFeedback(quiz);});
             taskMenuButton.getItems().addAll(item1);
+
         }
     }
 
