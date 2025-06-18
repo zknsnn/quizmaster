@@ -31,7 +31,7 @@ public class WelcomeController {
             MenuItem item2 = new MenuItem("Maak een quiz");
             item2.setOnAction(e -> {Main.getSceneManager().showSelectQuizForStudent();});
             taskMenuButton.getItems().addAll(item1, item2);
-        } else if (role == UserRole.COORDINATOR) {
+        } else if (role == UserRole.COÖRDINATOR) {
             MenuItem item1 = new MenuItem("Beheer quizzen");
             item1.setOnAction(e -> {Main.getSceneManager().showManageQuizScene();});
             MenuItem item2 = new MenuItem("Beheer vragen");
@@ -49,10 +49,11 @@ public class WelcomeController {
             MenuItem item1 = new MenuItem("Beheer gebruikers");
             item1.setOnAction(e -> {Main.getSceneManager().showManageUserScene();});
             taskMenuButton.getItems().addAll(item1);
-        } else if (role == UserRole.DOCENT_BEHEERDER) {
+        } else if (role == UserRole.DOCENT) {
             MenuItem item1 = new MenuItem("Beheer lessen");
             item1.setOnAction(e -> {Main.getSceneManager().showStudentFeedback(quiz);});
             taskMenuButton.getItems().addAll(item1);
+
         }
     }
 
