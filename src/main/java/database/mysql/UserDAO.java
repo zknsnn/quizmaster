@@ -109,7 +109,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     public List<User> getAll() {
         List<User> userList = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM user";
+            String sql = "SELECT * FROM User";
             setupPreparedStatement(sql);
             ResultSet rs = executeSelectStatement();
 
@@ -134,7 +134,8 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     @Override
     public void storeOne(User user) {
         try {
-            String sql = "INSERT INTO user (userName, password, firstName, prefix, lastName, userRol) VALUES (?, ?, ?, ?, ?, ?)";
+            System.out.println(user);
+            String sql = "INSERT INTO User (userName, password, firstName, prefix, lastName, userRol) VALUES (?, ?, ?, ?, ?, ?)";
             setupPreparedStatementWithKey(sql);
             preparedStatement.setString(1, user.getUserName());
             preparedStatement.setString(2, user.getPassword());
@@ -179,7 +180,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
   // READ (int id)
     @Override
     public User getOneById(int id) {
-        String sql = "SELECT * FROM user WHERE id = ?";
+        String sql = "SELECT * FROM User WHERE id = ?";
         User user = null;
 
         try {
@@ -207,7 +208,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     //UPDATE
     // Update de gegevens van een bestaande gebruiker op basis van userId
     public void updateUser(User user) {
-        String sql = "UPDATE user SET userName = ?, password = ?, firstName = ?, prefix = ?, lastName = ?, userRol = ? WHERE userId = ?";
+        String sql = "UPDATE User SET userName = ?, password = ?, firstName = ?, prefix = ?, lastName = ?, userRol = ? WHERE userId = ?";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setString(1, user.getUserName());
@@ -225,7 +226,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     // DELETE
     // Verwijder een gebruiker uit de database op basis van userId
     public void deleteUser(int id) {
-        String sql = "DELETE FROM user WHERE userId = ?";
+        String sql = "DELETE FROM User WHERE userId = ?";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setInt(1, id);

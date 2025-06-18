@@ -1,6 +1,6 @@
 /*
 Etienne
-love ENUM.
+ENUM.
 
 ENUM in aparte class,
 makkelijker aan te passen / toe te voegen
@@ -12,10 +12,10 @@ package model;
 
 public enum UserRole {
     STUDENT("Student"),
-    COORDINATOR("Coördinator"),
+    COÖRDINATOR("Coördinator"),
     FUNCTIONEEL_BEHEERDER("Functioneel beheerder"),
     ADMINISTRATOR("Administrator"),
-    DOCENT_BEHEERDER("Docent beheerder");
+    DOCENT("Docent");
 
     // displayName = weergavenaam
     private final String displayName;
