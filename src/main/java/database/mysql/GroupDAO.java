@@ -23,7 +23,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     public List<Group> getAll() {
         UserDAO userDAO = new UserDAO(dbAccess);
         CourseDAO courseDAO = new CourseDAO(dbAccess);
-        String sql = "SELECT * FROM Group";
+        String sql = "SELECT * FROM `Group`";
         List<Group> groupList = new ArrayList<>();
         Group group;
         try {
@@ -34,8 +34,8 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
                 Course course = courseDAO.getOneByName(courseName);
                 String groupName = resultSet.getString("groupName");
                 int amount = resultSet.getInt("amount");
-                String docent = resultSet.getString("docent");
-                User user = userDAO.getOneByName(docent);
+                String teacher = resultSet.getString("docent");
+                User user = userDAO.getOneByName(teacher);
                 group = new Group(course,groupName,amount,user);
                 groupList.add(group);
             }
@@ -57,7 +57,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
 //    niet volledig aan de oorspronkelijke bedoeling van de methode.
 
     public Group getOneByName(String group_name) {
-        String sql = "SELECT * FROM Group WHERE groupName = ? limit 1;";
+        String sql = "SELECT * FROM `Group` WHERE groupName = ? limit 1;";
         Group group = null;
         UserDAO userDAO = new UserDAO(dbAccess);
         CourseDAO courseDAO = new CourseDAO(dbAccess);
@@ -82,7 +82,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     }
 
     public Group getOneByNameAndCourseName(String group_name, String course_name){
-        String sql = "SELECT * FROM Group WHERE groupName = ? AND courseName = ?";
+        String sql = "SELECT * FROM `Group` WHERE groupName = ? AND courseName = ?";
         Group group = null;
         UserDAO userDAO = new UserDAO(dbAccess);
         CourseDAO courseDAO = new CourseDAO(dbAccess);
@@ -111,8 +111,8 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         String sql = "INSERT INTO `Group` (courseName,groupName,amount,docent) VALUES (?,?,?,?);";
         try {
             setupPreparedStatement(sql);
-            preparedStatement.setString(1, group.getGroupName());
-            preparedStatement.setString(2, group.getCourse().getCourseName());
+            preparedStatement.setString(1, group.getCourse().getCourseName());
+            preparedStatement.setString(2, group.getGroupName());
             preparedStatement.setInt(3, group.getAmount());
             preparedStatement.setString(4, group.getDocent().getUserName());
             executeManipulateStatement();
@@ -122,4 +122,29 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
 
     }
 
+    public void deleteGroup(String groupName, String courseName) {
+        String sql = "DELETE FROM `Group` WHERE groupName = ? AND courseName = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, groupName);
+            preparedStatement.setString(2, courseName);
+            executeManipulateStatement();
+        } catch (SQLException e) {
+            System.err.println("Fout bij verwijderen van group: " + e.getMessage());
+        }
+    }
+
+    public void updateGroup(Group group) {
+        String sql = "UPDATE `Group` SET amount = ?, docent = ? WHERE courseName = ? AND groupName = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setInt(1, group.getAmount());
+            preparedStatement.setString(2, group.getDocent().getUserName());
+            preparedStatement.setString(3, group.getCourse().getCourseName());
+            preparedStatement.setString(4, group.getGroupName());
+            executeManipulateStatement();
+        } catch (SQLException e) {
+            System.err.println("Fout bij updaten van group: " + e.getMessage());
+        }
+    }
 }

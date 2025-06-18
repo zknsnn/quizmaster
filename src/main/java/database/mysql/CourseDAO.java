@@ -28,7 +28,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
             while (resultSet.next()) {
                 String courseName = resultSet.getString("courseName");
                 String courseLevel = resultSet.getString("courseLevel");
-                String coordinator = resultSet.getString("userName");
+                String coordinator = resultSet.getString("coordinator");
                 User user = userDAO.getOneByName(coordinator);
                 course = new Course(courseName, courseLevel, user);
                 courseList.add(course);
@@ -41,7 +41,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
 
     @Override
     public void storeOne(Course course) {
-        String sql = "INSERT INTO Course(courseName,courseLevel,userName) VALUES (?,?,?) ;";
+        String sql = "INSERT INTO Course(courseName,courseLevel,coordinator) VALUES (?,?,?) ;";
         try {
             setupPreparedStatement(sql);
             preparedStatement.setString(1, course.getCourseName());
@@ -64,7 +64,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
             while (resultSet.next()) {
                 String courseName = resultSet.getString("courseName");
                 String courseLevel = resultSet.getString("courseLevel");
-                String coordinator = resultSet.getString("userName");
+                String coordinator = resultSet.getString("coordinator");
                 // ik wil usernaam gebruiken, dus heb ik andere class nodig.
                 User user = userDAO.getOneByName(coordinator);
                 course = new Course(courseName, courseLevel, user);
@@ -103,7 +103,5 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
             System.err.println("Fout bij verwijderen van cursus: " + e.getMessage());
         }
     }
-
-
 }
 

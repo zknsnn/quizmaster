@@ -15,7 +15,7 @@ public enum UserRole {
     COORDINATOR("Coördinator"),
     FUNCTIONEEL_BEHEERDER("Functioneel beheerder"),
     ADMINISTRATOR("Administrator"),
-    DOCENT_BEHEERDER("Docent beheerder");
+    DOCENT("Docent");
 
     // displayName = weergavenaam
     private final String displayName;
