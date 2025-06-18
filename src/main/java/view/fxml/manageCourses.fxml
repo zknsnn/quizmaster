@@ -15,7 +15,7 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <ListView fx:id="courseList" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="281.0" />
+    <ListView fx:id="courseList" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="550.0" />
     <Button fx:id="newCourseButton" layoutX="13.0" layoutY="285.0" mnemonicParsing="false" onAction="#doCreateCourse" text="Nieuw">
         <font>
             <Font size="14.0" />
