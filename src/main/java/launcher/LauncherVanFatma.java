@@ -31,7 +31,7 @@ public class LauncherVanFatma {
         GroupDAO groupDAO = new GroupDAO(dbAccess);
 
 //        User user1 = new User("talmama","U#Df;h]$em","Mariella",null,"Talman", UserRole.STUDENT);
-        User user2 = new User("knobbse","Xt$G?'Rp%u","Selvi",null,"Knobben", UserRole.COORDINATOR);
+        User user2 = new User("knobbse","Xt$G?'Rp%u","Selvi",null,"Knobben", UserRole.COÖRDINATOR);
 //        User user3 = new User("lambrge","Mkr<#uG97_","Gertjan",null,"Lambrechts", UserRole.COORDINATOR);
 //        User user4 = new User("bruijes","`';q%*Aaua","Esmeralda",null,"Bruijns", UserRole.STUDENT);
         User user5 = new User("stegefa","V<v\"&mBa!w","Fady",null,"Stegehuis", UserRole.DOCENT);
