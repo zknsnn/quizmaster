@@ -15,13 +15,14 @@ public class QuizDAO extends AbstractDAO {
     }
 
     public void saveQuiz(Quiz quiz) {
-        String sql = "INSERT INTO Quiz (quizName, quizLevel, succesDefinition, courseName) VALUES(?, ?, ?, ?);";
+        String sql = "INSERT INTO Quiz(quizName, quizLevel, succesDefinition, courseName) VALUES(?, ?, ?, ?);";
         try {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setString(1, quiz.getQuizName());
             preparedStatement.setString(2, quiz.getQuizLevel());
             preparedStatement.setDouble(3, quiz.getSuccesDefinition());
             preparedStatement.setString(4, quiz.getCourse().getCourseName());
+            executeManipulateStatement();
         } catch (SQLException sqlError) {
             System.out.println("SQL error " + sqlError.getMessage());
         }
@@ -58,6 +59,7 @@ public class QuizDAO extends AbstractDAO {
         try {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setString(1, quizName);
+            executeManipulateStatement();
         } catch (SQLException sqlError) {
             System.out.println("SQL error " + sqlError.getMessage());
         }

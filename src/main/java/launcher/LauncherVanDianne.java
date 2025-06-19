@@ -15,11 +15,9 @@ import java.util.Scanner;
 
 public class LauncherVanDianne {
     public static void main(String[] args) {
-        File quizzenBestand = new File("resources/CSV bestanden/Quizzen.csv");
+        File quizzenBestand = new File("src/main/resources/CSV bestanden/Quizzen.csv");
         List<Quiz> quizzenLijst = getQuizList(quizzenBestand);
 
-//        DBAccess dbAccess = new DBAccess("zgrootrc2", "blabla", "blabber"); // dit was het
-//        voorstel van Michel
         DBAccess dbAccess = Main.getDBAccess();
         QuizDAO quizDAO = new QuizDAO(dbAccess);
 
@@ -42,7 +40,7 @@ public class LauncherVanDianne {
                 // Sla elk van de elementen op in variabelen.
                 String quizName = regelSplit[0];
                 String quizLevel = regelSplit[1];
-                double succesDefinition = Double.parseDouble(regelSplit[2]);
+                double succesDefinition = Double.parseDouble((regelSplit[2]));
                 String courseName = regelSplit[3];
                 // Haal object course op
                 Course course = courseDAO.getOneByName(courseName);
