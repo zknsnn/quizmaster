@@ -26,24 +26,42 @@ public enum UserRole {
         this.displayName = displayName;
     }
 
-    // "Student" in plaats van STUDENT Toegang tot weergavenaam
+    // "Student" in plaats van STUDENT – toegang tot weergavenaam
     public String getDisplayName() {
         return displayName;
     }
 
-    // voor gebuik in GUI
+    // Voor gebruik in GUI
     @Override
     public String toString() {
         return displayName;
     }
 
-    // inconsequente schrijfwijze opgevangen
+    /**
+     * Maakt van een displayName de bijbehorende enum.
+     * Vangt verschillende schrijfwijzen op zoals hoofdletters, underscores en missende trema's.
+     * Als geen match wordt gevonden, wordt een IllegalArgumentException gegooid.
+     */
     public static UserRole fromDisplayName(String displayName) {
-        for (UserRole role : UserRole.values()) {
-            if (role.getDisplayName().equalsIgnoreCase(displayName.trim())) {
-                return role;
-            }
+        // Normaliseer invoer (verwijder spaties en maak lowercase)
+        String normalized = displayName.trim().toLowerCase();
+
+        switch (normalized) {
+            case "student":
+            case "studenten": // optioneel alias
+                return STUDENT;
+            case "coördinator":
+            case "coordinator": // zonder trema
+                return COÖRDINATOR;
+            case "functioneel beheerder":
+            case "functioneel_beheerder": // underscore-variant
+                return FUNCTIONEEL_BEHEERDER;
+            case "administrator":
+                return ADMINISTRATOR;
+            case "docent":
+                return DOCENT;
+            default:
+                throw new IllegalArgumentException(INVALID_DISPLAY_NAME_MSG + displayName);
         }
-        throw new IllegalArgumentException(INVALID_DISPLAY_NAME_MSG + displayName);
     }
 }

@@ -38,7 +38,7 @@ public class SceneManager {
     public void showWelcomeScene(User user) {
         FXMLLoader loader = getScene("/view/fxml/welcomeScene.fxml");
         WelcomeController controller = loader.getController();
-        controller.setup(user);
+        controller.setup();
     }
 
     public void showManageUserScene(User user) {
