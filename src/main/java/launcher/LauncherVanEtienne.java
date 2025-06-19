@@ -14,6 +14,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LauncherVanEtienne {
 
@@ -32,8 +34,7 @@ public class LauncherVanEtienne {
         dbAccess.openConnection();
 
         // Eerst de database legen om te kunnen testen / demo
-        extracted(dbAccess);
-
+//        extracted(dbAccess);
         // DAO instantie maken
         UserDAO userDAO = new UserDAO(dbAccess);
 
@@ -58,12 +59,11 @@ public class LauncherVanEtienne {
 
                     try {
                         // Enum-waarde ophalen uit tekst (bijv. "student" → UserRole.STUDENT)
-                        UserRole userRole = UserRole.valueOf(roleText.toUpperCase());
+                        UserRole userRole = UserRole.fromDisplayName(roleText);
 
                         // Gebruiker aanmaken en opslaan
                         User user = new User(userName, password, firstName, prefix, lastName, userRole);
                         userDAO.storeOne(user);
-
                         System.out.println(MSG_USER_SAVED + userName);
                     } catch (IllegalArgumentException e) {
                         // Ongeldige rol gevonden in CSV
@@ -81,16 +81,17 @@ public class LauncherVanEtienne {
 
         // Verbreek de databaseverbinding
         dbAccess.closeConnection();
-    }
 
-    private static void extracted(DBAccess dbAccess) {
-        try {
-            String sql = "DELETE FROM User";
-            var ps = dbAccess.getConnection().prepareStatement(sql);
-            ps.executeUpdate();
-            System.out.println(MSG_TABEL_USER_GELEEGD);
-        } catch (Exception e) {
-            System.err.println(MSG_FOUT_LEEGMAKEN_TABEL + e.getMessage());
-        }
     }
+//
+//    private static void extracted(DBAccess dbAccess) {
+//        try {
+//            String sql = "DELETE FROM User";
+//            var ps = dbAccess.getConnection().prepareStatement(sql);
+//            ps.executeUpdate();
+//            System.out.println(MSG_TABEL_USER_GELEEGD);
+//        } catch (Exception e) {
+//            System.err.println(MSG_FOUT_LEEGMAKEN_TABEL + e.getMessage());
+//        }
+//    }
 }

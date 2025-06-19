@@ -47,7 +47,7 @@ public class WelcomeController {
             taskMenuButton.getItems().addAll(item1, item2,item3);
         } else if (role == UserRole.FUNCTIONEEL_BEHEERDER) {
             MenuItem item1 = new MenuItem("Beheer gebruikers");
-            item1.setOnAction(e -> {Main.getSceneManager().showManageUserScene();});
+            item1.setOnAction(e -> {Main.getSceneManager().showManageUserScene(user);});
             taskMenuButton.getItems().addAll(item1);
         } else if (role == UserRole.DOCENT) {
             MenuItem item1 = new MenuItem("Beheer lessen");

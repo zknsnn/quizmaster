@@ -2,9 +2,11 @@ package controller;
 
 import database.mysql.UserDAO;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
+import javafx.util.Callback;
 import model.User;
 import view.Main;
 
@@ -18,8 +20,7 @@ public class ManageUsersController {
     @FXML
     ListView<User> userList;
 
-    @FXML
-    TextField warningField;
+
 
     public ManageUsersController() {
         this.userDAO = new UserDAO(Main.getDBAccess());
@@ -29,8 +30,16 @@ public class ManageUsersController {
     public void setup(User user) {
         this.loggedInUser = user;
         List<User> users = userDAO.getAll();
-        userList.getItems().setAll(users);
-        warningField.setVisible(false); // verberg waarschuwingen bij opstart
+        userList.getItems().addAll(users);
+        userList.setCellFactory(userListView -> new ListCell<>(){
+            @Override
+            protected void updateItem(User user, boolean b) {
+                super.updateItem(user, b);
+                if (user != null) {
+                    setText(user.getFirstName() + " " + user.getPrefix() + " " + user.getLastName() );
+                }
+            }
+        });
     }
 
     // 🔙 Terug naar welkomstscherm van de ingelogde gebruiker
@@ -50,8 +59,8 @@ public class ManageUsersController {
     public void doUpdateUser() {
         User geselecteerdeUser = userList.getSelectionModel().getSelectedItem();
         if (geselecteerdeUser == null) {
-            warningField.setVisible(true);
-            warningField.setText("Je moet eerst een gebruiker selecteren.");
+            //warningField.setVisible(true);
+            //warningField.setText("Je moet eerst een gebruiker selecteren.");
         } else {
             Main.getSceneManager().showCreateUpdateUserScene(geselecteerdeUser);
         }
@@ -62,12 +71,12 @@ public class ManageUsersController {
     public void doDeleteUser() {
         User geselecteerdeUser = userList.getSelectionModel().getSelectedItem();
         if (geselecteerdeUser == null) {
-            warningField.setVisible(true);
-            warningField.setText("Selecteer een gebruiker om te verwijderen.");
+            //warningField.setVisible(true);
+            //warningField.setText("Selecteer een gebruiker om te verwijderen.");
         } else {
             userDAO.deleteUser(geselecteerdeUser.getUserName());
             userList.getItems().remove(geselecteerdeUser);
-            warningField.setVisible(false);
+            //warningField.setVisible(false);
         }
     }
 }
