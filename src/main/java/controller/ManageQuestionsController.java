@@ -22,7 +22,7 @@ public class ManageQuestionsController {
         this.user = user;
         this.questionDAO = new QuestionDAO(Main.getDBAccess());
         questionList.getItems().clear();
-//        Custom rendering van elke vraag in de ListView
+//        Rendering van elke vraag in de ListView
         questionList.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Question question, boolean empty) {
