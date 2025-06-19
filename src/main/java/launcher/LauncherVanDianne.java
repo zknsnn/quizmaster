@@ -15,15 +15,26 @@ import java.util.Scanner;
 
 public class LauncherVanDianne {
     public static void main(String[] args) {
-        File quizzenBestand = new File("src/main/resources/CSV bestanden/Quizzen.csv");
-        List<Quiz> quizzenLijst = getQuizList(quizzenBestand);
-
         DBAccess dbAccess = Main.getDBAccess();
         QuizDAO quizDAO = new QuizDAO(dbAccess);
+//        CourseDAO courseDAO;
+//        File quizzenBestand = new File("src/main/resources/CSV bestanden/Quizzen.csv");
+//        List<Quiz> quizzenLijst = getQuizList(quizzenBestand);
+//
+//        DBAccess dbAccess = Main.getDBAccess();
+//        QuizDAO quizDAO = new QuizDAO(dbAccess);
+//
+//        for (Quiz quiz : quizzenLijst) {
+//            quizDAO.saveQuiz(quiz);
+//        }
+        ArrayList<Quiz> quizzenLijst = new ArrayList<>();
+        quizzenLijst = quizDAO.getAllQuizzes();
 
         for (Quiz quiz : quizzenLijst) {
-            quizDAO.saveQuiz(quiz);
+            System.out.println(quiz);
         }
+
+
     } // einde main
 
     private static List<Quiz> getQuizList(File quizzenBestand) {
