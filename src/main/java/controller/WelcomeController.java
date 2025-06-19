@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.MenuButton;
+import model.Question;
 import model.Quiz;
 import model.User;
 import model.UserRole;
@@ -12,6 +13,7 @@ import view.Main;
 public class WelcomeController {
     private User user;
     private Quiz quiz;
+    private Question question;
 
     @FXML
     private Label welcomeLabel;
@@ -35,7 +37,7 @@ public class WelcomeController {
             MenuItem item1 = new MenuItem("Beheer quizzen");
             item1.setOnAction(e -> {Main.getSceneManager().showManageQuizScene(user);});
             MenuItem item2 = new MenuItem("Beheer vragen");
-            item2.setOnAction(e -> {Main.getSceneManager().showManageQuestionsScene();});
+            item2.setOnAction(e -> {Main.getSceneManager().showManageQuestionsScene(user);});
             taskMenuButton.getItems().addAll(item1, item2);
         } else if (role == UserRole.ADMINISTRATOR) {
             MenuItem item1 = new MenuItem("Beheer cursussen");
