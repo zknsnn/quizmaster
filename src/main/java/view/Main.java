@@ -3,12 +3,16 @@ package view;
 import database.mysql.DBAccess;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import model.User;
 
 public class Main extends Application {
 
     private static DBAccess dbAccess;
     private static SceneManager sceneManager = null;
     private static Stage primaryStage = null;
+    private static User currentUser = null;
+
+
 
     public static void main(String[] args) {
         launch(args);
@@ -36,7 +40,13 @@ public class Main extends Application {
         }
         return sceneManager;
     }
+    public static User currentUser() {
+        return currentUser;
+    }
 
+    public static void setCurrentUser(User currentUser) {
+        Main.currentUser = currentUser;
+    }
     public static Stage getPrimaryStage() {
         return primaryStage;
     }
