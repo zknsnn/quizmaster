@@ -23,11 +23,6 @@ public class LauncherVanRonald {
         QuizDAO quizDAO = new QuizDAO(dbAccess);
         dbAccess.openConnection();
 
-//        System.out.println("Get all questions from DB: ");
-//        List<Question> allQuestionList = questionDAO.getAll();
-//        for (Question q : allQuestionList) {
-//            System.out.println(q);
-//        }
 
         // Eerst de database legen om te kunnen testen / demo
 //        deleteFromTable(dbAccess);
@@ -52,7 +47,6 @@ public class LauncherVanRonald {
                 // add line by line into questionList
 //                questionList.add(new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz));
                 questionDAO.storeOne(new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz));
-
             }
         } catch (IOException e) {
             // Afhandeling voor IOException
@@ -66,8 +60,6 @@ public class LauncherVanRonald {
 //        for (Question q : questionList) {
 //            System.out.println(q);
 //        }
-
-
 
         dbAccess.closeConnection();
 
