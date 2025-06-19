@@ -13,14 +13,14 @@ import java.util.List;
 
 public class ManageQuestionsController {
     private QuestionDAO questionDAO;
-    private User user;
+    private User loggedInUser;
 
     @FXML
     ListView<Question> questionList;
 
     public void setup(User user) {
-        this.user = user;
-        this.questionDAO = new QuestionDAO(Main.getDBAccess());
+        loggedInUser = user;
+        questionDAO = new QuestionDAO(Main.getDBAccess());
         questionList.getItems().clear();
 //        Rendering van elke vraag in de ListView
         questionList.setCellFactory(lv -> new ListCell<>() {
@@ -39,7 +39,7 @@ public class ManageQuestionsController {
     }
 
     public void doMenu(ActionEvent actionEvent) {
-        Main.getSceneManager().showWelcomeScene(user);
+        Main.getSceneManager().showWelcomeScene(loggedInUser);
     }
 
     public void doCreateQuestion(){
