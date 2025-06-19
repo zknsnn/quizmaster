@@ -19,15 +19,14 @@ public class SceneManager {
 
     // Laadt een scene
     public FXMLLoader getScene(String fxml) {
-        Scene scene;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
-            scene = new Scene(root);
+            Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             return loader;
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -42,10 +41,10 @@ public class SceneManager {
         controller.setup(user);
     }
 
-    public void showManageUserScene() {
+    public void showManageUserScene(User user) {
         FXMLLoader loader = getScene("/view/fxml/manageUsers.fxml");
         ManageUsersController controller = loader.getController();
-        controller.setup();
+        controller.setup(user);
     }
 
     public void showCreateUpdateUserScene(User user) {
@@ -134,7 +133,7 @@ public class SceneManager {
 
     public void showAssignStudentsToGroupScene() {
         FXMLLoader loader = getScene("/view/fxml/assignStudentsToGroup.fxml");
-        AssignStudentsToGroupController controller= loader.getController();
+        AssignStudentsToGroupController controller = loader.getController();
         controller.setup();
     }
 }

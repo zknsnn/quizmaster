@@ -30,22 +30,15 @@ public class LauncherVanEtienne {
         // Verbind met de database via Main
         DBAccess dbAccess = Main.getDBAccess();
         dbAccess.openConnection();
-//
-//        // Eerst de database legen om te kunnen testen / demo
-//        try {
-//            String sql = "DELETE FROM User";
-//            var ps = dbAccess.getConnection().prepareStatement(sql);
-//            ps.executeUpdate();
-//            System.out.println(MSG_TABEL_USER_GELEEGD);
-//        } catch (Exception e) {
-//            System.err.println(MSG_FOUT_LEEGMAKEN_TABEL + e.getMessage());
-//        }
+
+        // Eerst de database legen om te kunnen testen / demo
+        extracted(dbAccess);
 
         // DAO instantie maken
         UserDAO userDAO = new UserDAO(dbAccess);
 
         // Pad naar CSV-bestand met gebruikers
-        File userFile = new File("src/main/resources/CSV bestanden/Gebruikers.csv");
+        File userFile = new File("src/main/resources/CSV bestanden/GebruikersFB.csv");
 
         // Lees het bestand regel voor regel in
         try (BufferedReader reader = new BufferedReader(new FileReader(userFile))) {
@@ -88,5 +81,16 @@ public class LauncherVanEtienne {
 
         // Verbreek de databaseverbinding
         dbAccess.closeConnection();
+    }
+
+    private static void extracted(DBAccess dbAccess) {
+        try {
+            String sql = "DELETE FROM User";
+            var ps = dbAccess.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            System.out.println(MSG_TABEL_USER_GELEEGD);
+        } catch (Exception e) {
+            System.err.println(MSG_FOUT_LEEGMAKEN_TABEL + e.getMessage());
+        }
     }
 }
