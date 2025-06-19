@@ -120,7 +120,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
                         rs.getString("firstName"),
                         rs.getString("prefix"),
                         rs.getString("lastName"),
-                        UserRole.valueOf(rs.getString("userRol").toUpperCase())
+                        UserRole.fromDisplayName(rs.getString("userRol").toUpperCase())
                 );
                 userList.add(user);
             }
@@ -134,7 +134,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     @Override
     public void storeOne(User user) {
         try {
-            System.out.println(user);
+            System.out.println(user.getUserName());
             String sql = "INSERT INTO User (userName, password, firstName, prefix, lastName, userRol) VALUES (?, ?, ?, ?, ?, ?)";
             setupPreparedStatementWithKey(sql);
             preparedStatement.setString(1, user.getUserName());
@@ -225,11 +225,11 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     }
     // DELETE
     // Verwijder een gebruiker uit de database op basis van userId
-    public void deleteUser(int id) {
-        String sql = "DELETE FROM User WHERE userId = ?";
+    public void deleteUser(String userName) {
+        String sql = "DELETE FROM User WHERE userName = ?";
         try {
             setupPreparedStatement(sql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, userName);
             executeManipulateStatement();
         } catch (SQLException e) {
             System.err.println("Fout bij verwijderen van gebruiker: " + e.getMessage());

@@ -20,11 +20,11 @@ public class ManageCoursesController {
     ListView<Course> courseList;
 
     private CourseDAO courseDAO;
-    private User user;
+    private User loggedInUser;
 
 
     public void setup(User user) {
-        this.user = user;
+        this.loggedInUser = user;
         this.courseDAO = new CourseDAO(Main.getDBAccess());
         courseList.getItems().clear();
         List<Course> courses = courseDAO.getAll();
@@ -32,7 +32,7 @@ public class ManageCoursesController {
     }
 
     public void doMenu() {
-        Main.getSceneManager().showWelcomeScene(user);
+        Main.getSceneManager().showWelcomeScene(loggedInUser);
     }
 
     public void doCreateCourse() {
@@ -54,7 +54,6 @@ public class ManageCoursesController {
 
     public void doDeleteCourse() {
         Course selectedCourse = courseList.getSelectionModel().getSelectedItem();
-        setup(user);
         if (selectedCourse == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Fout bij verwijderen");

@@ -30,10 +30,11 @@ public class LoginController {
         String password = passwordField.getText();
 
         User user = userDAO.getOneByName(username);
-
+        //Set ingelogde user als current user in Main
         if (user != null && user.getPassword().equals(password)) {
-            System.out.println("Je bent ingelogd als " + username);
-            Main.getSceneManager().showWelcomeScene(user);
+            Main.setCurrentUser(user);
+            System.out.println("Je bent ingelogd als " + Main.currentUser());
+            Main.getSceneManager().showWelcomeScene(Main.currentUser());
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Fout bij inloggen");

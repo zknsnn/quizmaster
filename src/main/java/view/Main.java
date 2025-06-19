@@ -10,15 +10,9 @@ public class Main extends Application {
     private static DBAccess dbAccess;
     private static SceneManager sceneManager = null;
     private static Stage primaryStage = null;
-//    private static User user;
-//
-//    public static User getUser() {
-//        return user;
-//    }
-//
-//    public static void setUser(User user) {
-//        Main.user = user;
-//    }
+    private static User currentUser = null;
+
+
 
     public static void main(String[] args) {
         launch(args);
@@ -46,7 +40,13 @@ public class Main extends Application {
         }
         return sceneManager;
     }
+    public static User currentUser() {
+        return currentUser;
+    }
 
+    public static void setCurrentUser(User currentUser) {
+        Main.currentUser = currentUser;
+    }
     public static Stage getPrimaryStage() {
         return primaryStage;
     }
