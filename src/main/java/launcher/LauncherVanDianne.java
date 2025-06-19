@@ -15,17 +15,26 @@ import java.util.Scanner;
 
 public class LauncherVanDianne {
     public static void main(String[] args) {
-        File quizzenBestand = new File("resources/CSV bestanden/Quizzen.csv");
-        List<Quiz> quizzenLijst = getQuizList(quizzenBestand);
-
-//        DBAccess dbAccess = new DBAccess("zgrootrc2", "blabla", "blabber"); // dit was het
-//        voorstel van Michel
         DBAccess dbAccess = Main.getDBAccess();
         QuizDAO quizDAO = new QuizDAO(dbAccess);
+//        CourseDAO courseDAO;
+//        File quizzenBestand = new File("src/main/resources/CSV bestanden/Quizzen.csv");
+//        List<Quiz> quizzenLijst = getQuizList(quizzenBestand);
+//
+//        DBAccess dbAccess = Main.getDBAccess();
+//        QuizDAO quizDAO = new QuizDAO(dbAccess);
+//
+//        for (Quiz quiz : quizzenLijst) {
+//            quizDAO.saveQuiz(quiz);
+//        }
+        ArrayList<Quiz> quizzenLijst = new ArrayList<>();
+        quizzenLijst = quizDAO.getAllQuizzes();
 
         for (Quiz quiz : quizzenLijst) {
-            quizDAO.saveQuiz(quiz);
+            System.out.println(quiz);
         }
+
+
     } // einde main
 
     private static List<Quiz> getQuizList(File quizzenBestand) {
@@ -42,7 +51,7 @@ public class LauncherVanDianne {
                 // Sla elk van de elementen op in variabelen.
                 String quizName = regelSplit[0];
                 String quizLevel = regelSplit[1];
-                double succesDefinition = Double.parseDouble(regelSplit[2]);
+                double succesDefinition = Double.parseDouble((regelSplit[2]));
                 String courseName = regelSplit[3];
                 // Haal object course op
                 Course course = courseDAO.getOneByName(courseName);

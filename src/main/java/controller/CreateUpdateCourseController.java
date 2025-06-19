@@ -27,6 +27,7 @@ public class CreateUpdateCourseController {
 
     public void setup() {
     }
+
     public void doMenu() {
         Main.getSceneManager().showManageCoursesScene(user);
     }

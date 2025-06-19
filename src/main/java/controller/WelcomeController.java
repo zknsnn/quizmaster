@@ -33,7 +33,7 @@ public class WelcomeController {
             taskMenuButton.getItems().addAll(item1, item2);
         } else if (role == UserRole.COÖRDINATOR) {
             MenuItem item1 = new MenuItem("Beheer quizzen");
-            item1.setOnAction(e -> {Main.getSceneManager().showManageQuizScene();});
+            item1.setOnAction(e -> {Main.getSceneManager().showManageQuizScene(user);});
             MenuItem item2 = new MenuItem("Beheer vragen");
             item2.setOnAction(e -> {Main.getSceneManager().showManageQuestionsScene();});
             taskMenuButton.getItems().addAll(item1, item2);

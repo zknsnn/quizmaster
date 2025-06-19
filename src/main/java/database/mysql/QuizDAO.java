@@ -5,6 +5,7 @@ import model.Quiz;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class QuizDAO extends AbstractDAO {
     private CourseDAO courseDAO;
@@ -15,13 +16,14 @@ public class QuizDAO extends AbstractDAO {
     }
 
     public void saveQuiz(Quiz quiz) {
-        String sql = "INSERT INTO Quiz (quizName, quizLevel, succesDefinition, courseName) VALUES(?, ?, ?, ?);";
+        String sql = "INSERT INTO Quiz(quizName, quizLevel, succesDefinition, courseName) VALUES(?, ?, ?, ?);";
         try {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setString(1, quiz.getQuizName());
             preparedStatement.setString(2, quiz.getQuizLevel());
             preparedStatement.setDouble(3, quiz.getSuccesDefinition());
             preparedStatement.setString(4, quiz.getCourse().getCourseName());
+            executeManipulateStatement();
         } catch (SQLException sqlError) {
             System.out.println("SQL error " + sqlError.getMessage());
         }
@@ -58,8 +60,32 @@ public class QuizDAO extends AbstractDAO {
         try {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setString(1, quizName);
+            executeManipulateStatement();
         } catch (SQLException sqlError) {
             System.out.println("SQL error " + sqlError.getMessage());
         }
     } // einde deleteQuiz
+
+    public ArrayList<Quiz> getAllQuizzes() {
+        String sql = "SELECT * FROM Quiz";
+        ArrayList<Quiz> arrayListQuizzes = new ArrayList<>();
+        try {
+            setupPreparedStatement(sql);
+            ResultSet resultSet = executeSelectStatement();
+            Quiz quiz;
+            Course course;
+            while (resultSet.next()) {
+                String quizName = resultSet.getString("quizName");
+                String quizLevel = resultSet.getString("quizLevel");
+                double succesDefinition = resultSet.getDouble("succesDefinition");
+                String courseNaam = resultSet.getString("courseName");
+                course = courseDAO.getOneByName(courseNaam);
+                quiz = new Quiz(quizName, quizLevel, succesDefinition, course);
+                arrayListQuizzes.add(quiz);
+            }
+        } catch (SQLException sqlException) {
+            System.out.println("SQL error " + sqlException.getMessage());
+        }
+        return arrayListQuizzes;
+    } // einde getAllQuizes
 }
