@@ -102,10 +102,10 @@ public class SceneManager {
         controller.setup(question);
     }
 
-    public void showStudentSignInOutScene() {
+    public void showStudentSignInOutScene(User user) {
         FXMLLoader loader = getScene("/view/fxml/studentSignInOut.fxml");
         StudentSignInOutController controller = loader.getController();
-        controller.setup();
+        controller.setup(user);
     }
 
     public void showSelectQuizForStudent() {

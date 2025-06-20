@@ -28,7 +28,7 @@ public class WelcomeController {
 
         if (role == UserRole.STUDENT) {
             MenuItem item1 = new MenuItem("In- of uitschrijven cursus");
-            item1.setOnAction(e -> {Main.getSceneManager().showStudentSignInOutScene();});
+            item1.setOnAction(e -> {Main.getSceneManager().showStudentSignInOutScene(Main.currentUser());});
             MenuItem item2 = new MenuItem("Maak een quiz");
             item2.setOnAction(e -> {Main.getSceneManager().showSelectQuizForStudent();});
             taskMenuButton.getItems().addAll(item1, item2);
