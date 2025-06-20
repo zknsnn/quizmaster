@@ -1,16 +1,13 @@
 package controller;
 
 import database.mysql.CourseDAO;
-import database.mysql.DBAccess;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import model.Course;
 import model.User;
 import view.Main;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManageCoursesController {
@@ -64,6 +61,10 @@ public class ManageCoursesController {
         }
         courseDAO.deleteCourse(selectedCourse.getCourseName());
         courseList.getItems().remove(selectedCourse);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Bevestiging");
+        alert.setHeaderText(null);
+        alert.setContentText("Course is verwijderd");
+        alert.showAndWait();
     }
-
 }
