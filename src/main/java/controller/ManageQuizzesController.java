@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ManageQuizzesController {
     private QuizDAO quizDAO;
-    private User user;
+    private User loggedInUser;
 
     @FXML
     ListView<Quiz> quizzenLijst;
@@ -23,7 +23,7 @@ public class ManageQuizzesController {
 //    @FXML
 //    TextField waarschuwingTextField;
 
-    // Ik wil eerst alle quizen inladen in mijn quizzenlijst
+    // Ik wil eerst alle quizen inladen in mijn quizzenlijst - done
     // Je moet een quiz kunnen aanklikken.
     // Bij "Nieuw" ga je een quiz aanmaken
     // Bij "Wijzig" ga je een bestaande quiz wijzigen
@@ -31,24 +31,36 @@ public class ManageQuizzesController {
     // Bij "Menu" ga je weer terug naar je vandaan kwam.
 
     public void setup(User user) {
-        this.user = user;
+        this.loggedInUser = user;
         this.quizDAO = new QuizDAO(Main.getDBAccess());
         quizzenLijst.getItems().clear();
         List<Quiz> quizzen = quizDAO.getAllQuizzes();
-        System.out.println(quizzen);
         quizzenLijst.getItems().addAll(quizzen);
+
+        // Quiznaam, Quizlevel, Course
+        // Tabelvorm (als dat lukt) anders fixen met uitlijnen.
+        // Volgorde moet alfabetisch
+        // Anderen vragen welke informatie ze moeten tonen.
     }
 
     public void doMenu(ActionEvent actionEvent){
-        Main.getSceneManager().showWelcomeScene(user);
+        Main.getSceneManager().showWelcomeScene(loggedInUser);
     }
 
     public void doCreateQuiz(){
-        Main.getSceneManager().showCreateUpdateQuizScene(null);
+        Main.getSceneManager().showCreateUpdateQuizScene(null, loggedInUser);
     }
 
     public void doUpdateQuiz(){
-        Main.getSceneManager().showCreateUpdateQuizScene(null);
+        Quiz quiz = quizzenLijst.getSelectionModel().getSelectedItem();
+//        if (quiz == null) {
+//            quizzenLijst.getSelectionModel().selectFirst();
+//        }
+        System.out.println("uit quizzenlijst" +quiz);
+        System.out.println("print user" + loggedInUser);
+        Main.getSceneManager().showCreateUpdateQuizScene(quiz, loggedInUser);
+
+//        Main.getSceneManager().showCreateUpdateQuizScene(null);
     }
 
     public void doDeleteQuiz(){}

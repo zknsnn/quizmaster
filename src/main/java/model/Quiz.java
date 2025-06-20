@@ -12,6 +12,7 @@ public class Quiz {
     private String quizLevel;
     private double succesDefinition;
     private Course course;
+    private List<Question> arrayListQuestions;
 
     // constructor
     public Quiz(String quizName, String quizLevel, double succesDefinition, Course course) {
@@ -19,10 +20,18 @@ public class Quiz {
         setQuizLevel(quizLevel, course);
         this.succesDefinition = succesDefinition;
         this.course = course;
-        List<Question> arrayListQuestions = new ArrayList<>();
+        this.arrayListQuestions = new ArrayList<>();
     }
 
     // getters and setters
+    public List<Question> getArrayListQuestions() {
+        return arrayListQuestions;
+    }
+
+    public void setArrayListQuestions(List<Question> arrayListQuestions) {
+        this.arrayListQuestions = arrayListQuestions;
+    }
+
     public String getQuizLevel() {
         return quizLevel;
     }
@@ -79,7 +88,18 @@ public class Quiz {
     // methoden
     @Override
     public String toString() {
-        return String.format("Quiz quiznaam %s, quizLevel = %s, succesDefinition = %f, coursenaam = %s",
-                quizName, quizLevel, succesDefinition, course.getCourseName());
+        return String.format("%s - %s - %s",
+                quizName, quizLevel, course.getCourseName());
+    }
+
+    public int telAantalVragen(Quiz quiz) {
+        int numberOfQuestions;
+        List<Question> listQuestions = quiz.getArrayListQuestions();
+        if (listQuestions.isEmpty()) {
+            numberOfQuestions = 0;
+        } else {
+            numberOfQuestions = listQuestions.size();
+        }
+        return numberOfQuestions;
     }
 } // end Quiz class
