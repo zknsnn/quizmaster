@@ -5,6 +5,8 @@ import database.mysql.DBAccess;
 import database.mysql.QuizDAO;
 import model.Course;
 import model.Quiz;
+import model.User;
+import model.UserRole;
 import view.Main;
 
 import java.io.File;
@@ -27,14 +29,21 @@ public class LauncherVanDianne {
 //        for (Quiz quiz : quizzenLijst) {
 //            quizDAO.saveQuiz(quiz);
 //        }
+        User user = new User("Dianne", "Wachtwoord", "Dian", null , "Craats", UserRole.COÖRDINATOR);
+        System.out.println(user);
+        Course course = new Course("Cavia's Knippen", "Beginner", user);
+        System.out.println(course);
+        Quiz quiz = new Quiz("Awesomequiz", "Beginner", 70, course);
+        System.out.println(quiz);
+
+        System.out.println(quiz.telAantalVragen(quiz));
+
         ArrayList<Quiz> quizzenLijst = new ArrayList<>();
         quizzenLijst = quizDAO.getAllQuizzes();
 
-        for (Quiz quiz : quizzenLijst) {
-            System.out.println(quiz);
-        }
-
-
+//        for (Quiz quiz : quizzenLijst) {
+//            System.out.println(quiz);
+//        }
     } // einde main
 
     private static List<Quiz> getQuizList(File quizzenBestand) {
