@@ -10,7 +10,7 @@ public class CreateUpdateQuestionController {
     public void setup(Question question) {}
 
     public void doMenu() {
-        Main.getSceneManager().showWelcomeScene(user);
+        Main.getSceneManager().showManageQuestionsScene(user);
     }
 
     public void doCreateUpdateQuestion() {
