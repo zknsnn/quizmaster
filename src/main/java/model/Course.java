@@ -15,7 +15,7 @@ public class Course {
 
     @Override
     public String toString() {
-        return String.format("Course name %s, course level %s,en coordinator is %s %s\n",courseName,courseLevel,coordinator.getFirstName(),coordinator.getLastName());
+        return String.format("%s - %s - %s %s\n",courseName,courseLevel,coordinator.getFirstName(),coordinator.getLastName());
     }
 
     public String getCourseName() {

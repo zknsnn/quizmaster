@@ -36,7 +36,7 @@ public class ManageCoursesController {
     }
 
     public void doCreateCourse() {
-        Main.getSceneManager().showCreateUpdateCourseScene(null);
+        Main.getSceneManager().showCreateUpdateCourseScene(null,loggedInUser);
     }
 
     public void doUpdateCourse() {
@@ -48,7 +48,7 @@ public class ManageCoursesController {
             alert.setContentText("Selecteer een cursus om te updaten.");
             alert.showAndWait();
         }else {
-            Main.getSceneManager().showCreateUpdateCourseScene(selectedCourse);
+            Main.getSceneManager().showCreateUpdateCourseScene(selectedCourse,loggedInUser);
         }
     }
 
