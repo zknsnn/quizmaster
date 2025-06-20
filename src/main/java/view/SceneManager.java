@@ -62,13 +62,13 @@ public class SceneManager {
     public void showCreateUpdateCourseScene(Course course) {
         FXMLLoader loader = getScene("/view/fxml/createUpdateCourse.fxml");
         CreateUpdateCourseController controller = loader.getController();
-        controller .setup(course);
+        controller.setup(course);
     }
 
-    public void showManageGroupsScene() {
+    public void showManageGroupsScene(User currentUser) {
         FXMLLoader loader = getScene("/view/fxml/manageGroups.fxml");
         ManageGroupsController controller = loader.getController();
-        controller.setup();
+        controller.setup(currentUser);
     }
 
     public void showCreateUpdateGroupScene(Group group) {

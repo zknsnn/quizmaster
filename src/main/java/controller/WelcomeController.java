@@ -42,7 +42,7 @@ public class WelcomeController {
             MenuItem item1 = new MenuItem("Beheer cursussen");
             item1.setOnAction(e -> {Main.getSceneManager().showManageCoursesScene(Main.currentUser());});
             MenuItem item2 = new MenuItem("Beheer groepen");
-            item2.setOnAction(e -> {Main.getSceneManager().showManageGroupsScene();});
+            item2.setOnAction(e -> {Main.getSceneManager().showManageGroupsScene(Main.currentUser());});
             MenuItem item3 = new MenuItem("Beheer studenten");//????
             item3.setOnAction(e -> {Main.getSceneManager().showAssignStudentsToGroupScene();});
             taskMenuButton.getItems().addAll(item1, item2,item3);

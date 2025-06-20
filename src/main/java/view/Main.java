@@ -15,7 +15,6 @@ public class Main extends Application {
     private static CouchDBAccess CouchDBAccess;
 
 
-
     public static void main(String[] args) {
         launch(args);
     }
