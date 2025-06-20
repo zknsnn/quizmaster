@@ -13,7 +13,6 @@ public class Main extends Application {
     private static User currentUser = null;
 
 
-
     public static void main(String[] args) {
         launch(args);
     }
