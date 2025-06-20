@@ -1,5 +1,6 @@
 package view;
 
+import controller.CouchDBAccess;
 import database.mysql.DBAccess;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -11,6 +12,7 @@ public class Main extends Application {
     private static SceneManager sceneManager = null;
     private static Stage primaryStage = null;
     private static User currentUser = null;
+    private static CouchDBAccess CouchDBAccess;
 
 
 
@@ -40,6 +42,15 @@ public class Main extends Application {
         }
         return sceneManager;
     }
+
+    // CouchDB access setup for Questions specific
+    public static CouchDBAccess getCouchDBAccess() {
+        if (CouchDBAccess == null) {
+            CouchDBAccess = new CouchDBAccess("questions", "admin", "admin");
+        }
+        return CouchDBAccess;
+    }
+
     public static User currentUser() {
         return currentUser;
     }

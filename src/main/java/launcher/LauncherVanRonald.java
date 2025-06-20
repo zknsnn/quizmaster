@@ -1,6 +1,8 @@
 package launcher;
 
+import controller.CouchDBAccess;
 import database.mysql.DBAccess;
+import database.mysql.QuestionCouchDBDAO;
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
 import model.Question;
@@ -13,6 +15,9 @@ import java.util.Scanner;
 
 public class LauncherVanRonald {
 
+    private static CouchDBAccess couchDBAccess;
+    private static QuestionCouchDBDAO questionCouchDBDAO;
+
     public static final String MSG_FOUT_LEEGMAKEN_TABEL = "Fout bij leegmaken tabel: ";
     public static final String MSG_TABEL_USER_GELEEGD = "Tabel Question geleegd.";
 
@@ -22,6 +27,16 @@ public class LauncherVanRonald {
         QuestionDAO questionDAO = new QuestionDAO(dbAccess);
         QuizDAO quizDAO = new QuizDAO(dbAccess);
         dbAccess.openConnection();
+
+        couchDBAccess = new CouchDBAccess("questions","admin", "admin");
+        questionCouchDBDAO = new QuestionCouchDBDAO(couchDBAccess);
+        // Nu nog een score lijst vullen
+//        questionScoreList(buildQuestionScoreList());
+
+        // Testen of de CouchDB connection open is
+        if (couchDBAccess.getClient() != null) {
+            System.out.println("CouchDB connection open");
+        }
 
 //        System.out.println("Get all questions from DB: ");
 //        List<Question> allQuestionList = questionDAO.getAll();
@@ -52,7 +67,6 @@ public class LauncherVanRonald {
                 // add line by line into questionList
 //                questionList.add(new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz));
                 questionDAO.storeOne(new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz));
-
             }
         } catch (IOException e) {
             // Afhandeling voor IOException
@@ -67,10 +81,7 @@ public class LauncherVanRonald {
 //            System.out.println(q);
 //        }
 
-
-
-        dbAccess.closeConnection();
-
+        dbAccess.closeConnection(); // Netjes weer afsluiten
     } // main
 
     private static void deleteFromTable(DBAccess dbAccess) {
