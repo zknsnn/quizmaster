@@ -1,6 +1,8 @@
 package launcher;
 
+import controller.CouchDBAccess;
 import database.mysql.DBAccess;
+import database.mysql.QuestionCouchDBDAO;
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
 import model.Question;
@@ -13,6 +15,9 @@ import java.util.Scanner;
 
 public class LauncherVanRonald {
 
+    private static CouchDBAccess couchDBAccess;
+    private static QuestionCouchDBDAO questionCouchDBDAO;
+
     public static final String MSG_FOUT_LEEGMAKEN_TABEL = "Fout bij leegmaken tabel: ";
     public static final String MSG_TABEL_USER_GELEEGD = "Tabel Question geleegd.";
 
@@ -23,6 +28,21 @@ public class LauncherVanRonald {
         QuizDAO quizDAO = new QuizDAO(dbAccess);
         dbAccess.openConnection();
 
+        couchDBAccess = new CouchDBAccess("questions","admin", "admin");
+        questionCouchDBDAO = new QuestionCouchDBDAO(couchDBAccess);
+        // Nu nog een score lijst vullen
+//        questionScoreList(buildQuestionScoreList());
+
+        // Testen of de CouchDB connection open is
+        if (couchDBAccess.getClient() != null) {
+            System.out.println("CouchDB connection open");
+        }
+
+//        System.out.println("Get all questions from DB: ");
+//        List<Question> allQuestionList = questionDAO.getAll();
+//        for (Question q : allQuestionList) {
+//            System.out.println(q);
+//        }
 
         // Eerst de database legen om te kunnen testen / demo
 //        deleteFromTable(dbAccess);
@@ -61,8 +81,7 @@ public class LauncherVanRonald {
 //            System.out.println(q);
 //        }
 
-        dbAccess.closeConnection();
-
+        dbAccess.closeConnection(); // Netjes weer afsluiten
     } // main
 
     private static void deleteFromTable(DBAccess dbAccess) {
