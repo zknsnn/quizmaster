@@ -17,7 +17,7 @@ public class Quiz {
     // constructor
     public Quiz(String quizName, String quizLevel, double succesDefinition, Course course) {
         this.quizName = quizName;
-        setQuizLevel(quizLevel, course);
+        this.quizLevel = quizLevel;
         this.succesDefinition = succesDefinition;
         this.course = course;
         this.arrayListQuestions = new ArrayList<>();
@@ -35,31 +35,30 @@ public class Quiz {
     public String getQuizLevel() {
         return quizLevel;
     }
-
     // Het niveau van een quiz mag een niveau lager zijn dan het niveau van de cursus, maar
     // meestal zijn de niveaus van quiz en cursus gelijk
-    public void setQuizLevel(String quizLevel, Course course) {
-        String courseLevel = course.getCourseLevel();
-        // Als het courseLevel "Beginner" is, is dit ook het niveau van de quiz.
-        if (courseLevel.equalsIgnoreCase("Beginner")) {
-            this.quizLevel = "Beginner";
-        }
-        // Als het courseLevel "Medium" is, kan quizLevel nooit "Gevorderd" zijn.
-        else if (courseLevel.equalsIgnoreCase("Medium")) {
-            if (!(quizLevel.equalsIgnoreCase("Gevorderd"))) {
-                this.quizLevel = quizLevel;
-            } else {
-                this.quizLevel = "Medium";
-            }
-            // Als het courseLevel "Gevorderd" is is quizLevel "Beginner" niet toegestaan".
-        } else {
-            if (quizLevel.equalsIgnoreCase("Beginner")) {
-                this.quizLevel = "Medium";
-            } else {
-                this.quizLevel = quizLevel;
-            }
-        }
-    }
+//    public void setQuizLevel(String quizLevel, Course course) {
+//        String courseLevel = course.getCourseLevel();
+//        // Als het courseLevel "Beginner" is, is dit ook het niveau van de quiz.
+//        if (courseLevel.equalsIgnoreCase("Beginner")) {
+//            this.quizLevel = "Beginner";
+//        }
+//        // Als het courseLevel "Medium" is, kan quizLevel nooit "Gevorderd" zijn.
+//        else if (courseLevel.equalsIgnoreCase("Medium")) {
+//            if (!(quizLevel.equalsIgnoreCase("Gevorderd"))) {
+//                this.quizLevel = quizLevel;
+//            } else {
+//                this.quizLevel = "Medium";
+//            }
+//            // Als het courseLevel "Gevorderd" is is quizLevel "Beginner" niet toegestaan".
+//        } else {
+//            if (quizLevel.equalsIgnoreCase("Beginner")) {
+//                this.quizLevel = "Medium";
+//            } else {
+//                this.quizLevel = quizLevel;
+//            }
+//        }
+//    }
 
     public String getQuizName() {
         return quizName;
