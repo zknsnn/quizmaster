@@ -56,7 +56,7 @@ public class QuizDAO extends AbstractDAO {
     } // einde updateQuiz
 
     public void deleteQuiz(String quizName) {
-        String sql = "DELETE FROM Quiz WHERE quizName = '?', VALUES(?);";
+        String sql = "DELETE FROM Quiz WHERE quizName = ?;";
         try {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setString(1, quizName);
