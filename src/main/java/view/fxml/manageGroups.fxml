@@ -17,7 +17,7 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <ListView fx:id="groupList" layoutX="14.0" layoutY="78.0" prefHeight="246.0" prefWidth="691.0" />
+    <ListView fx:id="groupList" layoutX="14.0" layoutY="78.0" onMouseClicked="#handleGroepSelectie" prefHeight="246.0" prefWidth="691.0" />
     <Button layoutX="14.0" layoutY="354.0" mnemonicParsing="false" onAction="#doCreateGroup" text="Nieuw">
         <font>
             <Font size="14.0" />
@@ -38,4 +38,8 @@
             <Font size="14.0" />
         </font>
     </Button>
+   <Label fx:id="courseGroupsCountLabel" layoutX="14.0" layoutY="423.0" prefHeight="44.0" prefWidth="514.0" wrapText="true">
+      <font>
+         <Font size="18.0" />
+      </font></Label>
 </AnchorPane>
