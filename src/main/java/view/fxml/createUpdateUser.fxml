@@ -4,6 +4,56 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateUserController">
+
+    <children>
+
+        <Label layoutX="37.0" layoutY="20.0" text="Gebruiker beheren">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+
+        <!-- Gebruikersnaam -->
+        <Label layoutX="37.0" layoutY="70.0" text="Gebruikersnaam" />
+        <TextField fx:id="userNameField" layoutX="187.0" layoutY="65.0" prefWidth="200" />
+
+        <!-- Wachtwoord -->
+        <Label layoutX="37.0" layoutY="110.0" text="Wachtwoord" />
+        <PasswordField fx:id="passwordField" layoutX="187.0" layoutY="105.0" prefWidth="200" />
+
+        <!-- Voornaam -->
+        <Label layoutX="37.0" layoutY="150.0" text="Voornaam" />
+        <TextField fx:id="firstNameField" layoutX="187.0" layoutY="145.0" prefWidth="200" />
+
+        <!-- Tussenvoegsel -->
+        <Label layoutX="37.0" layoutY="190.0" text="Tussenvoegsel" />
+        <TextField fx:id="prefixField" layoutX="187.0" layoutY="185.0" prefHeight="25.0" prefWidth="87.0" />
+
+        <!-- Achternaam -->
+        <Label layoutX="37.0" layoutY="230.0" text="Achternaam" />
+        <TextField fx:id="lastNameField" layoutX="187.0" layoutY="225.0" prefWidth="200" />
+
+        <!-- Rol -->
+        <Label layoutX="37.0" layoutY="270.0" text="Rol" />
+        <ChoiceBox fx:id="userRoleChoiceBox" layoutX="187.0" layoutY="265.0" prefWidth="200" />
+
+        <!-- WARNING -->
+        <Label fx:id="warningField" layoutX="32.0" layoutY="375.0" textFill="RED" visible="false">
+             <font>
+                 <Font size="25.0" />
+            </font>
+         </Label>
+
+        <!-- Opslaan -->
+        <Button layoutX="190.0" layoutY="318.0" onAction="#doCreateUpdateUser" text="Opslaan" />
+
+        <!-- Annuleer doCancel -->
+        <Button layoutX="332.0" layoutY="318.0" onAction="#doCancel" text="Annuleer" />
+
+
+        <!-- Menu-->
+        <Button layoutX="270.0" layoutY="318.0" onAction="#doMenu" text="Menu" />
+
+    </children>
 </AnchorPane>

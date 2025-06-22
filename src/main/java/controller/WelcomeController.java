@@ -20,9 +20,10 @@ public class WelcomeController {
     @FXML
     private MenuButton taskMenuButton;
 
-    public void setup() {
+    public void setup(User user) {
+        this.user = user;
         taskMenuButton.getItems().clear();
-        welcomeLabel.setText("Welkom, " + Main.currentUser().getFirstName() + "! Maak een keuze uit het menu.");
+        welcomeLabel.setText("Welkom, " + this.user.getFirstName() + "! Maak een keuze uit het menu.");
 
         UserRole role = Main.currentUser().getUserRol();
 
@@ -48,7 +49,7 @@ public class WelcomeController {
             taskMenuButton.getItems().addAll(item1, item2,item3);
         } else if (role == UserRole.FUNCTIONEEL_BEHEERDER) {
             MenuItem item1 = new MenuItem("Beheer gebruikers");
-            item1.setOnAction(e -> {Main.getSceneManager().showManageUserScene(Main.currentUser());});
+            item1.setOnAction(e -> {Main.getSceneManager().showManageUsersScene(Main.currentUser());});
             taskMenuButton.getItems().addAll(item1);
         } else if (role == UserRole.DOCENT) {
             MenuItem item1 = new MenuItem("Beheer lessen");
