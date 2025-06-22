@@ -134,7 +134,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         }
     }
 
-    public void updateGroup(Group group) {
+    public void updateOne(Group group) {
         String sql = "UPDATE `Group` SET amount = ?, docent = ? WHERE courseName = ? AND groupName = ?";
         try {
             setupPreparedStatement(sql);

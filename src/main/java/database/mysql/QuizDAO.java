@@ -50,13 +50,23 @@ public class QuizDAO extends AbstractDAO {
         return quiz;
     } // einde getQuiz
 
-    public void updateQuiz() {
-        // nog te maken.
-        // Als input: "String quizname, String newQuizLevel, int newSuccesDefinition, Course newCourse"?
+    public void updateQuiz(Quiz quiz) {
+        String sql = "UPDATE Quiz SET quizLevel = ?, succesDefinition = ?, courseName = ? WHERE quizName = ?";
+        try {
+            setupPreparedStatement(sql);
+//            preparedStatement.setString(1, quiz.getQuizName());
+            preparedStatement.setString(1, quiz.getQuizLevel());
+            preparedStatement.setString(2, String.valueOf(quiz.getSuccesDefinition()));
+            preparedStatement.setString(3, quiz.getCourse().getCourseName());
+            preparedStatement.setString(4, quiz.getQuizName());
+            executeManipulateStatement();
+        } catch (SQLException e) {
+            System.err.println("Fout bij updaten van cursus: " + e.getMessage());
+        }
     } // einde updateQuiz
 
     public void deleteQuiz(String quizName) {
-        String sql = "DELETE FROM Quiz WHERE quizName = '?', VALUES(?);";
+        String sql = "DELETE FROM Quiz WHERE quizName = ?;";
         try {
             setupPreparedStatementWithKey(sql);
             preparedStatement.setString(1, quizName);

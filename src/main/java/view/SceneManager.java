@@ -71,10 +71,10 @@ public class SceneManager {
         controller.setup(user);
     }
 
-    public void showCreateUpdateGroupScene(Group group) {
+    public void showCreateUpdateGroupScene(Group group, User currentUser) {
         FXMLLoader loader = getScene("/view/fxml/createUpdateGroup.fxml");
         CreateUpdateGroupController controller = loader.getController();
-        controller.setup(group);
+        controller.setup(group, currentUser);
     }
 
     public void showManageQuizScene(User user) {
