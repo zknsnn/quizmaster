@@ -1,16 +1,14 @@
 package controller;
 
-import database.mysql.DBAccess;
 import database.mysql.QuizDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import model.Quiz;
 import model.User;
 import view.Main;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManageQuizzesController {
@@ -20,27 +18,10 @@ public class ManageQuizzesController {
     @FXML
     ListView<Quiz> quizzenLijst;
 
-//    @FXML
-//    TextField waarschuwingTextField;
-
-    // Ik wil eerst alle quizen inladen in mijn quizzenlijst - done
-    // Je moet een quiz kunnen aanklikken.
-    // Bij "Nieuw" ga je een quiz aanmaken
-    // Bij "Wijzig" ga je een bestaande quiz wijzigen
-    // Bij "Verwijder" verwijder je de aangeklikte quiz
-    // Bij "Menu" ga je weer terug naar je vandaan kwam.
-
     public void setup(User user) {
         this.loggedInUser = user;
         this.quizDAO = new QuizDAO(Main.getDBAccess());
-        quizzenLijst.getItems().clear();
-        List<Quiz> quizzen = quizDAO.getAllQuizzes();
-        quizzenLijst.getItems().addAll(quizzen);
-
-        // Quiznaam, Quizlevel, Course
-        // Tabelvorm (als dat lukt) anders fixen met uitlijnen.
-        // Volgorde moet alfabetisch
-        // Anderen vragen welke informatie ze moeten tonen.
+        loadQuizList();
     }
 
     public void doMenu(ActionEvent actionEvent){
@@ -53,15 +34,39 @@ public class ManageQuizzesController {
 
     public void doUpdateQuiz(){
         Quiz quiz = quizzenLijst.getSelectionModel().getSelectedItem();
-//        if (quiz == null) {
-//            quizzenLijst.getSelectionModel().selectFirst();
-//        }
-        System.out.println("uit quizzenlijst" +quiz);
-        System.out.println("print user" + loggedInUser);
-        Main.getSceneManager().showCreateUpdateQuizScene(quiz, loggedInUser);
+        if (quiz == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Wijzigen");
+            alert.setHeaderText("Geen quiz geselecteerd");
+            alert.setContentText("Selecteer een quiz om te wijzigen.");
+            alert.showAndWait();
+        } else {
+            Main.getSceneManager().showCreateUpdateQuizScene(quiz, loggedInUser);
+        }
+    } // einde doUpdateQuiz
 
-//        Main.getSceneManager().showCreateUpdateQuizScene(null);
+    public void doDeleteQuiz(){
+        Quiz selectedItem = quizzenLijst.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Verwijderen");
+            alert.setHeaderText("Verwijderen onsuccesvol");
+            alert.setContentText("Selecteer een quiz om te verwijderen.");
+            alert.showAndWait();
+        } else {
+            quizDAO.deleteQuiz(selectedItem.getQuizName());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Verwijderen");
+            alert.setHeaderText("Quiz verwijderd");
+            alert.setContentText("Quiz " + selectedItem.getQuizName() + " is verwijderd.");
+            alert.showAndWait();
+            loadQuizList();
+        }
+    } // einde doDeleteQuiz
+
+    public void loadQuizList() {
+        quizzenLijst.getItems().clear();
+        List<Quiz> quizzen = quizDAO.getAllQuizzes();
+        quizzenLijst.getItems().addAll(quizzen);
     }
-
-    public void doDeleteQuiz(){}
 }
