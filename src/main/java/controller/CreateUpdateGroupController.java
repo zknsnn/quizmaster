@@ -59,6 +59,7 @@ public class CreateUpdateGroupController {
             groupName.setDisable(true);
             numberOfStudents.setText(String.valueOf(group.getAmount()));
             course.setValue(group.getCourse().getCourseName());
+            course.setDisable(true);
             teacher.setValue(group.getDocent().getUserName());
             titelLabel.setText("Groep Update");
         }else {
