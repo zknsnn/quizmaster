@@ -64,4 +64,5 @@ public enum UserRole {
                 throw new IllegalArgumentException(INVALID_DISPLAY_NAME_MSG + displayName);
         }
     }
+
 }
