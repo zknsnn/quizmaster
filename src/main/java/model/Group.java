@@ -21,7 +21,7 @@ public class Group {
         return course;
     }
 
-    public void setCourseName(Course course) {
+    public void setCourse(Course course) {
         this.course = course;
     }
 
