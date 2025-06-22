@@ -79,12 +79,15 @@ public class CreateUpdateCourseController {
             return;
         }
 
+        if (!isUpdate) {
+            Course existingCourse = courseDAO.getOneByName(name);
+            if (existingCourse != null) {
+                showAlert(Alert.AlertType.ERROR, "Fout", null, "Een cursus met deze naam bestaat al.");
+                return;
+            }
+        }
 
         User user = userDAO.getOneByName(coorDinator);
-        if (user == null) {
-            showAlert(Alert.AlertType.ERROR, "Fout", null, "Coordinator niet gevonden.");
-            return;
-        }
 
         Course course = new Course(name, level, user);
 
