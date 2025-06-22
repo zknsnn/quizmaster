@@ -6,6 +6,7 @@
  */
 package database.mysql;
 
+import model.Course;
 import model.User;
 import model.UserRole;
 
@@ -33,11 +34,11 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         super(dbAccess);
     }
 
-    /**
-     * Inlezen gebruikers uit CSV-bestand.
-     * Houdt rekening met aanhalingstekens rond velden (bijv. wachtwoorden met komma's).
-     * CSV moet aanwezig zijn in de resources-map.
-     */
+
+//     Inlezen gebruikers uit CSV-bestand.
+//     Houdt rekening met aanhalingstekens rond velden (bijv. wachtwoorden met komma's).
+//     CSV moet aanwezig zijn in de resources-map.
+//
     public List<User> loadUsersFromCsv() {
         List<User> users = new ArrayList<>();
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("Gebruikers.csv");
@@ -102,9 +103,8 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return fields;
     }
 
-    /**
-     * Haal alle gebruikers op uit de database.
-     */
+
+    //Haal alle gebruikers op uit de database.
     @Override
     public List<User> getAll() {
         List<User> userList = new ArrayList<>();
@@ -120,7 +120,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
                         rs.getString("firstName"),
                         rs.getString("prefix"),
                         rs.getString("lastName"),
-                        UserRole.fromDisplayName(rs.getString("userRol").toUpperCase())
+                        UserRole.valueOf(rs.getString("userRol").toUpperCase())
                 );
                 userList.add(user);
             }
@@ -208,17 +208,19 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     //UPDATE
     // Update de gegevens van een bestaande gebruiker op basis van userId
     public void updateUser(User user) {
-        String sql = "UPDATE User SET userName = ?, password = ?, firstName = ?, prefix = ?, lastName = ?, userRol = ? WHERE userId = ?";
+        String sql = "UPDATE User SET  password = ?, firstName = ?, prefix = ?, lastName = ?, userRol = ? WHERE userName = ?";
         try {
             setupPreparedStatement(sql);
-            preparedStatement.setString(1, user.getUserName());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getFirstName());
-            preparedStatement.setString(4, user.getPrefix());
-            preparedStatement.setString(5, user.getLastName());
-            preparedStatement.setString(6, user.getUserRol().name());
-            preparedStatement.setInt(7, user.getUserId());
+            preparedStatement.setString(1, user.getPassword());
+            preparedStatement.setString(2, user.getFirstName());
+            preparedStatement.setString(3, user.getPrefix());
+            preparedStatement.setString(4, user.getLastName());
+            preparedStatement.setString(5, user.getUserRol().name());
+            preparedStatement.setString(6, user.getUserName());
+            //preparedStatement.setInt(7, user.getUserId());
             executeManipulateStatement();
+            System.out.println("Gebruiker bijgewerkt: " + user.getUserName());
+
         } catch (SQLException e) {
             System.err.println("Fout bij updaten van gebruiker: " + e.getMessage());
         }
@@ -235,5 +237,54 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             System.err.println("Fout bij verwijderen van gebruiker: " + e.getMessage());
         }
     }
+    //FILTER CORNER
+    // Get user by rol
+    public List<User> getUsersByRole(UserRole role) {
+        List<User> userList = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM User WHERE userRol = ?";
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, role.name());
+
+            ResultSet rs = executeSelectStatement();
+
+            while (rs.next()) {
+                User user = new User(
+                        rs.getString("userName"),
+                        rs.getString("password"),
+                        rs.getString("firstName"),
+                        rs.getString("prefix"),
+                        rs.getString("lastName"),
+                        UserRole.fromDisplayName(rs.getString("userRol"))
+                );
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            System.err.println(LOAD_ERROR_MSG + e.getMessage());
+        }
+
+        return userList;
+    }
+
+    // Tel aantal gebuikers met specifieke rol.
+    public int countUsersByRole(UserRole role) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM User WHERE userRol = ?";
+
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, role.name()); // let op: .name() gebruiken bij enum
+            ResultSet rs = executeSelectStatement();
+            if (rs.next()) {
+                count = rs.getInt(1); // eerste kolom van COUNT(*) query
+            }
+        } catch (SQLException e) {
+            System.err.println("Fout bij tellen van gebruikers met rol '" + role + "': " + e.getMessage());
+        }
+
+        return count;
+    }
+
 
 }
+//userName = ?,

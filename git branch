@@ -1,0 +1,66 @@
+[33ma722089[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;32metienne/user-manageusers[m[33m)[m HEAD@{0}: checkout: moving from etienne/user-manageusers to master
+[33ma722089[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;32metienne/user-manageusers[m[33m)[m HEAD@{1}: merge master: Fast-forward
+[33mf48b9eb[m HEAD@{2}: checkout: moving from etienne/user-manageusers to etienne/user-manageusers
+[33mf48b9eb[m HEAD@{3}: checkout: moving from master to etienne/user-manageusers
+[33ma722089[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;32metienne/user-manageusers[m[33m)[m HEAD@{4}: checkout: moving from etienne/user-manageusers to master
+[33mf48b9eb[m HEAD@{5}: checkout: moving from master to etienne/user-manageusers
+[33ma722089[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;32metienne/user-manageusers[m[33m)[m HEAD@{6}: pull origin master: Fast-forward
+[33mf48b9eb[m HEAD@{7}: checkout: moving from etienne/user-manageusers to master
+[33mf48b9eb[m HEAD@{8}: checkout: moving from master to etienne/user-manageusers
+[33mf48b9eb[m HEAD@{9}: pull origin master: Fast-forward
+[33m7218d91[m HEAD@{10}: pull origin master: Fast-forward
+[33m4ad5877[m[33m ([m[1;31morigin/etienne/loggedin-fix[m[33m, [m[1;32metienne/loggedin-fix[m[33m)[m HEAD@{11}: checkout: moving from etienne/loggedin-fix to master
+[33m4ad5877[m[33m ([m[1;31morigin/etienne/loggedin-fix[m[33m, [m[1;32metienne/loggedin-fix[m[33m)[m HEAD@{12}: checkout: moving from master to etienne/loggedin-fix
+[33m4ad5877[m[33m ([m[1;31morigin/etienne/loggedin-fix[m[33m, [m[1;32metienne/loggedin-fix[m[33m)[m HEAD@{13}: checkout: moving from Bugfix to master
+[33m648f3f3[m[33m ([m[1;32mBugfix[m[33m)[m HEAD@{14}: checkout: moving from master to Bugfix
+[33m4ad5877[m[33m ([m[1;31morigin/etienne/loggedin-fix[m[33m, [m[1;32metienne/loggedin-fix[m[33m)[m HEAD@{15}: commit: Fix problem with forgotten logged-in-user in Main.java
+[33md1107fe[m[33m ([m[1;31morigin/feature/bugfixes[m[33m, [m[1;32mfeature/bugfixes[m[33m)[m HEAD@{16}: checkout: moving from feature/bugfixes to master
+[33md1107fe[m[33m ([m[1;31morigin/feature/bugfixes[m[33m, [m[1;32mfeature/bugfixes[m[33m)[m HEAD@{17}: checkout: moving from master to feature/bugfixes
+[33md1107fe[m[33m ([m[1;31morigin/feature/bugfixes[m[33m, [m[1;32mfeature/bugfixes[m[33m)[m HEAD@{18}: commit: Fixes bug in UserRole, Launcher, ManageUserController
+[33m9c73f83[m HEAD@{19}: pull origin master: Merge made by the 'ort' strategy.
+[33m648f3f3[m[33m ([m[1;32mBugfix[m[33m)[m HEAD@{20}: reset: moving to HEAD
+[33m648f3f3[m[33m ([m[1;32mBugfix[m[33m)[m HEAD@{21}: checkout: moving from Bugfix to master
+[33m648f3f3[m[33m ([m[1;32mBugfix[m[33m)[m HEAD@{22}: checkout: moving from master to Bugfix
+[33m648f3f3[m[33m ([m[1;32mBugfix[m[33m)[m HEAD@{23}: checkout: moving from Bugfix to master
+[33m648f3f3[m[33m ([m[1;32mBugfix[m[33m)[m HEAD@{24}: checkout: moving from bugfix to Bugfix
+[33m648f3f3[m[33m ([m[1;32mBugfix[m[33m)[m HEAD@{25}: checkout: moving from master to bugfix
+[33m648f3f3[m[33m ([m[1;32mBugfix[m[33m)[m HEAD@{26}: checkout: moving from Bugfix to master
+[33m648f3f3[m[33m ([m[1;32mBugfix[m[33m)[m HEAD@{27}: checkout: moving from master to Bugfix
+[33m648f3f3[m[33m ([m[1;32mBugfix[m[33m)[m HEAD@{28}: commit: Commit pre pull to merge branch
+[33m19ef833[m HEAD@{29}: pull: Fast-forward
+[33mfc6152b[m HEAD@{30}: checkout: moving from master to master
+[33mfc6152b[m HEAD@{31}: reset: moving to HEAD
+[33mfc6152b[m HEAD@{32}: pull: Fast-forward
+[33mb955f10[m HEAD@{33}: checkout: moving from etienne/import-users to master
+[33m4880dea[m HEAD@{34}: reset: moving to HEAD
+[33m4880dea[m HEAD@{35}: merge origin/master: Merge made by the 'ort' strategy.
+[33m18aec42[m HEAD@{36}: commit: Create LauncherVanEtienne, inclusief DELETE FROM User,
+[33m9bf6b68[m HEAD@{37}: checkout: moving from master to etienne/import-users
+[33mb955f10[m HEAD@{38}: pull: Fast-forward
+[33m56a4ceb[m HEAD@{39}: pull: Fast-forward
+[33m9bf6b68[m HEAD@{40}: checkout: moving from etienne/import-users to master
+[33m9bf6b68[m HEAD@{41}: checkout: moving from master to etienne/import-users
+[33m9bf6b68[m HEAD@{42}: pull: Fast-forward
+[33m836fe00[m HEAD@{43}: pull origin master: Fast-forward
+[33md6f22b6[m HEAD@{44}: checkout: moving from etienne/user-dao to master
+[33m5f6062b[m HEAD@{45}: merge origin/master: Merge made by the 'ort' strategy.
+[33ma49cd8d[m HEAD@{46}: commit: CRUD aangepast / verbeterd + userId toegevoegd aan User.
+[33m2a52055[m HEAD@{47}: merge origin/master: updating HEAD
+[33m2a52055[m HEAD@{48}: commit: Methode toegevoegd getOneBy
+[33ma7a4d6b[m HEAD@{49}: pull origin master: Merge made by the 'ort' strategy.
+[33m32bce1f[m HEAD@{50}: checkout: moving from master to etienne/user-dao
+[33md6f22b6[m HEAD@{51}: checkout: moving from etienne/user-dao to master
+[33m32bce1f[m HEAD@{52}: commit: Login functie, foutmelding, UserDao fix komma-bug
+[33m1c05b7a[m HEAD@{53}: pull git@gitlab.fdmci.hva.nl:miw-se-cursisten/cohort-apr25/quizmaster/team-1/quizmaster.git master: Fast-forward
+[33m78acca5[m HEAD@{54}: commit: UserDao met CSV import, DataBase communicatie
+[33md6f22b6[m HEAD@{55}: Branch: renamed refs/heads/etienne/user/dao to refs/heads/etienne/user-dao
+[33md6f22b6[m HEAD@{57}: checkout: moving from master to etienne/user/dao
+[33md6f22b6[m HEAD@{58}: reset: moving to origin/master
+[33m6b1f439[m HEAD@{59}: reset: moving to HEAD
+[33m6b1f439[m HEAD@{60}: checkout: moving from master to master
+[33m6b1f439[m HEAD@{61}: commit: User class, UsernameGenerator, ENUM userrol
+[33m7444a9b[m HEAD@{62}: checkout: moving from etienne/user-model to master
+[33m9e615fb[m HEAD@{63}: commit: User class met UserRole enum + validatie
+[33m7444a9b[m HEAD@{64}: checkout: moving from master to etienne/user-model
+[33m7444a9b[m HEAD@{65}: pull: Fast-forward
+[33m1b8310c[m HEAD@{66}: clone: from gitlab.fdmci.hva.nl:miw-se-cursisten/cohort-apr25/quizmaster/team-1/quizmaster.git
