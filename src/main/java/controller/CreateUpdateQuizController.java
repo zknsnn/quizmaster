@@ -2,8 +2,12 @@ package controller;
 
 import database.mysql.CourseDAO;
 import database.mysql.QuizDAO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.Course;
@@ -11,7 +15,10 @@ import model.Quiz;
 import model.User;
 import view.Main;
 
-public class CreateUpdateQuizController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class CreateUpdateQuizController implements Initializable {
     private User loggedInUser;
     private QuizDAO quizDAO;
     private CourseDAO courseDAO;
@@ -24,9 +31,6 @@ public class CreateUpdateQuizController {
     private TextField quizNaamTextfield;
 
     @FXML
-    private TextField quizLevelTextfield;
-
-    @FXML
     private TextField quizSuccesDefinitieTextfield;
 
     @FXML
@@ -34,6 +38,9 @@ public class CreateUpdateQuizController {
 
     @FXML
     private TextField quizAantalVragenTextField;
+
+    @FXML
+    private ComboBox<String> quizLevelComboBox;
 
     //    Quizzen CRUD Als coördinator wil ik de volledige CRUD-functionaliteit voor het beheer van
     //    quizzen hebben behorende bij cursussen waarvoor ik de rol coördinator heb (schermen
@@ -59,7 +66,7 @@ public class CreateUpdateQuizController {
     private void haalInformatieQuizOp(Quiz quiz) {
         titelLabel.setText("Wijzig quiz");
         quizNaamTextfield.setText(quiz.getQuizName());
-        quizLevelTextfield.setText(quiz.getQuizLevel());
+        quizLevelComboBox.getSelectionModel().select(quiz.getQuizLevel());
         quizSuccesDefinitieTextfield.setText(String.valueOf(quiz.getSuccesDefinition()));
         quizCursusTextField.setText(String.valueOf(quiz.getCourse().getCourseName()));
         quizAantalVragenTextField.setText(String.valueOf(quiz.telAantalVragen(quiz)));
@@ -94,7 +101,7 @@ public class CreateUpdateQuizController {
     private Quiz createQuiz() {
         boolean correcteInvoer = true;
         String quizNaam = quizNaamTextfield.getText();
-        String quizLevel = quizLevelTextfield.getText();
+        String quizLevel = quizLevelComboBox.getSelectionModel().getSelectedItem(); // Haal de geselecteerde String op
         double succesDefinitie = Double.parseDouble(quizSuccesDefinitieTextfield.getText());
         String courseNaam = quizCursusTextField.getText();
         Course course = courseDAO.getOneByName(courseNaam);
@@ -107,9 +114,20 @@ public class CreateUpdateQuizController {
             correcteInvoer = false;
             alert.setContentText("Voer een quiznaam in.");
             alert.showAndWait();
-        } else if (succesDefinitie < 0 || succesDefinitie > 100) {
+        }
+        if (succesDefinitie < 0 || succesDefinitie > 100) {
             correcteInvoer = false;
-            alert.setContentText("Voer een succesdefinitie in tussen de 0 en 100 %.");
+            alert.setContentText("Voer een succesdefinitie in tussen de 0 en 100%.");
+            alert.showAndWait();
+        }
+        if (quizLevel == null || quizLevel.isEmpty()) {
+            correcteInvoer = false;
+            alert.setContentText("Selecteer een quizniveau.");
+            alert.showAndWait();
+        }
+        if (courseNaam.isEmpty()) {
+            correcteInvoer = false;
+            alert.setContentText("Voer een course in.");
             alert.showAndWait();
         }
 
@@ -121,11 +139,18 @@ public class CreateUpdateQuizController {
     } // einde createQuiz
 
     // Met deze methode worden alle tekstvelden leeggehaald.
-    private void clearFields(){
+    private void clearFields() {
         quizNaamTextfield.clear();
-        quizLevelTextfield.clear();
+        quizLevelComboBox.getSelectionModel().selectFirst();
         quizSuccesDefinitieTextfield.clear();
         quizCursusTextField.clear();
         quizAantalVragenTextField.clear();
     } // einde clearFields
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        ObservableList<String> levels = FXCollections.observableArrayList("Beginner", "Medium", "Gevorderd");
+        quizLevelComboBox.setItems(levels);
+        quizLevelComboBox.getSelectionModel().selectFirst();
+    }
 }
