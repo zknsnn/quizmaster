@@ -24,14 +24,14 @@
         </rowConstraints>
         <Label text="Quiznaam" />
         <Label text="Quizlevel" GridPane.rowIndex="1" />
-        <Label text="Succesdefinitie" GridPane.rowIndex="2" />
         <Label text="Cursus" GridPane.rowIndex="3" />
+        <Label text="Succesdefinitie" GridPane.rowIndex="2" />
         <Label text="Aantal vragen" GridPane.rowIndex="4" />
         <TextField fx:id="quizNaamTextfield" GridPane.columnIndex="1" />
         <TextField fx:id="quizSuccesDefinitieTextfield" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <TextField fx:id="quizCursusTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
         <TextField fx:id="quizAantalVragenTextField" disable="true" editable="false" text="Aantal vragen" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <ComboBox fx:id="quizLevelComboBox" promptText="Level" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <ComboBox fx:id="quizLevelComboBox" prefWidth="150.0" promptText="Level" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <ComboBox fx:id="quizCursusCombobox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
     </GridPane>
     <Button layoutX="392.0" layoutY="424.0" mnemonicParsing="false" onAction="#doCreateUpdateQuiz" text="Opslaan" />
     <Button layoutX="483.0" layoutY="424.0" mnemonicParsing="false" onAction="#doMenu" text="Menu" />

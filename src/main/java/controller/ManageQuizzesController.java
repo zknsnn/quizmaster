@@ -66,7 +66,7 @@ public class ManageQuizzesController {
 
     public void loadQuizList() {
         quizzenLijst.getItems().clear();
-        List<Quiz> quizzen = quizDAO.getAllQuizzes();
+        List<Quiz> quizzen = quizDAO.getQuizzesPerCoordinator(loggedInUser);
         quizzenLijst.getItems().addAll(quizzen);
     }
 }
