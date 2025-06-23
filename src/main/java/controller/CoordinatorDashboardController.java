@@ -4,6 +4,7 @@ import database.mysql.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import model.Course;
 import model.Question;
@@ -67,7 +68,16 @@ public class CoordinatorDashboardController {
 
     public void doEditQuiz() {
         Quiz selectedQuiz = quizList.getSelectionModel().getSelectedItem();
-        Main.getSceneManager().showCreateUpdateQuizScene(selectedQuiz,ingelogdeuser);
+        if (selectedQuiz == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Fout bij updaten");
+            alert.setHeaderText("Update is mislukt");
+            alert.setContentText("Selecteer een quiz om te updaten.");
+            alert.showAndWait();
+        }else {
+            Main.getSceneManager().showCreateUpdateQuizScene(selectedQuiz,ingelogdeuser);
+        }
+
     }
 
     public void doNewQuestion() {
@@ -77,8 +87,16 @@ public class CoordinatorDashboardController {
     public void doEditQuestion() {
         Integer idQuestion = questionList.getSelectionModel().getSelectedItem();
         Question selectedQuestion = questionDAO.getOneById(idQuestion);
-        Main.getSceneManager().showCreateUpdateQuestionScene(selectedQuestion);
 
+        if (selectedQuestion == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Fout bij updaten");
+            alert.setHeaderText("Update is mislukt");
+            alert.setContentText("Selecteer een question om te updaten.");
+            alert.showAndWait();
+        }else {
+            Main.getSceneManager().showCreateUpdateQuestionScene(selectedQuestion);
+        }
     }
 
     public void doMenu() {
