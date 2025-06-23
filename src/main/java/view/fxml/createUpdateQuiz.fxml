@@ -1,44 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuizController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuizController">
     <Label fx:id="titelLabel" layoutX="410.0" layoutY="121.0" text="Nieuwe Quiz">
         <font>
-          <Font size="18.0"/>
+          <Font size="18.0" />
         </font>
     </Label>
     <GridPane layoutX="350.0" layoutY="249.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-        <Label text="Quiznaam"/>
-        <Label text="Quizlevel" GridPane.rowIndex="1"/>
-        <Label text="Succesdefinitie" GridPane.rowIndex="2"/>
-        <Label text="Cursus" GridPane.rowIndex="3"/>
-        <Label text="Aantal vragen" GridPane.rowIndex="4"/>
-        <TextField fx:id="quizNaamTextfield" GridPane.columnIndex="1"/>
-        <TextField fx:id="quizLevelTextfield" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <TextField fx:id="quizSuccesDefinitieTextfield" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-        <TextField fx:id="quizCursusTextField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-        <TextField fx:id="quizAantalVragenTextField" disable="true" editable="false" text="Aantal vragen" GridPane.columnIndex="1"
-                   GridPane.rowIndex="4"/>
+        <Label text="Quiznaam" />
+        <Label text="Quizlevel" GridPane.rowIndex="1" />
+        <Label text="Succesdefinitie" GridPane.rowIndex="2" />
+        <Label text="Cursus" GridPane.rowIndex="3" />
+        <Label text="Aantal vragen" GridPane.rowIndex="4" />
+        <TextField fx:id="quizNaamTextfield" GridPane.columnIndex="1" />
+        <TextField fx:id="quizSuccesDefinitieTextfield" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <TextField fx:id="quizCursusTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <TextField fx:id="quizAantalVragenTextField" disable="true" editable="false" text="Aantal vragen" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <ComboBox fx:id="quizLevelComboBox" promptText="Level" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     </GridPane>
-    <Button layoutX="392.0" layoutY="424.0" mnemonicParsing="false" onAction="#doCreateUpdateQuiz" text="Opslaan"/>
-    <Button layoutX="483.0" layoutY="424.0" mnemonicParsing="false" onAction="#doMenu" text="Menu"/>
+    <Button layoutX="392.0" layoutY="424.0" mnemonicParsing="false" onAction="#doCreateUpdateQuiz" text="Opslaan" />
+    <Button layoutX="483.0" layoutY="424.0" mnemonicParsing="false" onAction="#doMenu" text="Menu" />
 </AnchorPane>
