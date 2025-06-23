@@ -78,7 +78,7 @@ public class CreateUpdateCourseController {
             showAlert(Alert.AlertType.WARNING, "Fout", null, "Vul alle velden in a.u.b.");
             return;
         }
-
+        // << -- Nieuwe courses -- controllert naam van courses om uniek te maken>>
         if (!isUpdate) {
             Course existingCourse = courseDAO.getOneByName(name);
             if (existingCourse != null) {
@@ -97,7 +97,7 @@ public class CreateUpdateCourseController {
             } else {
                 courseDAO.storeOne(course);
             }
-            showAlert(Alert.AlertType.INFORMATION, "Bevestiging", null, "Course is opgeslagen.");
+            showAlert(Alert.AlertType.INFORMATION, "Bevestiging", null, "Course " + course.getCourseName() +" is opgeslagen.");
             Main.getSceneManager().showManageCoursesScene(loggedInUser);
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Fout", null, "Fout bij opslaan van course: " + e.getMessage());
