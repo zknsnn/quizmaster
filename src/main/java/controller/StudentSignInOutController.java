@@ -34,28 +34,23 @@ public class StudentSignInOutController {
         signedOutCourseList.getItems().clear();
         signedInCourseList.getItems().clear();
 
-        // alle coursessen ophalen
         List<Course> courses = courseDAO.getAll();
-        // als die student ingechreven is, ophalen
         List<Inschrijving> inschrijvingen = inschrijvingDAO.getInschrijvingByStudentname(user.getUserName());
 
-        // welke courses heeft hij ingeschreven
         List<Course> signedInCourses = new ArrayList<>();
-        for (Inschrijving i : inschrijvingen) {
-            signedInCourses.add(i.getCourse());
+        List<Course> notSignedInCourses = new ArrayList<>();
+
+
+        List<String> signedCourseNames = new ArrayList<>();
+        for (Inschrijving inschrijving : inschrijvingen) {
+            signedCourseNames.add(inschrijving.getCourse().getCourseName());
         }
 
-        // welke courses heeft hij niet ingeschreven
-        List<Course> notSignedInCourses = new ArrayList<>();
+
         for (Course course : courses) {
-            boolean isSignedIn = false;
-            for (Course signedIn : signedInCourses) {
-                if (course.getCourseName().equals(signedIn.getCourseName())) {
-                    isSignedIn = true;
-                    break;
-                }
-            }
-            if (!isSignedIn) {
+            if (signedCourseNames.contains(course.getCourseName())) {
+                signedInCourses.add(course);
+            } else {
                 notSignedInCourses.add(course);
             }
         }
