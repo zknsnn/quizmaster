@@ -104,7 +104,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO<Course> {
         }
     }
 
-    public List<Course> getCoursePerUser(User user) {
+    public List<Course> getCoursePerCoordinator(User user) {
             List<Course> coursePerUser = new ArrayList<>();
         String sql = "SELECT * FROM Course WHERE coordinator = ?;";
         Course course;
