@@ -81,6 +81,17 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
         }
     } // storeOne
 
+    public void deleteQuestion(Question question) {
+        String sql = "DELETE FROM Question WHERE questionId = ?;";
+        try {
+            setupPreparedStatementWithKey(sql);
+            preparedStatement.setInt(1, question.getQuestionId());
+            executeManipulateStatement();
+        } catch (SQLException e) {
+            System.err.println("Fout bij het verwijderen van vraag: " + e.getMessage());
+        }
+    } // deleteQuestion
+
     public List<Question> getQuestionsByQuizName(String quizName) {
         List<Question> questionList = new ArrayList<>();
         try {
