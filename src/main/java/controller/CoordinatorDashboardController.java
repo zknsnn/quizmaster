@@ -7,6 +7,7 @@ import javafx.scene.control.ListView;
 import model.Course;
 import model.Question;
 import model.Quiz;
+import model.User;
 
 public class CoordinatorDashboardController {
 
@@ -17,7 +18,10 @@ public class CoordinatorDashboardController {
     @FXML
     private ListView<Question> questionList;
 
-    public void setup() {
+    private User ingelogdeuser;
+
+    public void setup(User user) {
+        this.ingelogdeuser = user;
         courseList.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldCourse, newCourse) ->
                         System.out.println("Geselecteerde cursus: " + observableValue + ", " + oldCourse + ", " + newCourse));

@@ -64,7 +64,7 @@ public class ManageCoursesController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Bevestiging");
         alert.setHeaderText(null);
-        alert.setContentText("Course is verwijderd");
+        alert.setContentText("Course "+ selectedCourse.getCourseName() + " is verwijderd");
         alert.showAndWait();
     }
 }

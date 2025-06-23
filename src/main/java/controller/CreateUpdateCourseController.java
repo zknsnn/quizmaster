@@ -78,7 +78,7 @@ public class CreateUpdateCourseController {
             showAlert(Alert.AlertType.WARNING, "Fout", null, "Vul alle velden in a.u.b.");
             return;
         }
-
+        // << -- Nieuwe courses -- controllert naam van courses om uniek te maken>>
         if (!isUpdate) {
             Course existingCourse = courseDAO.getOneByName(name);
             if (existingCourse != null) {
