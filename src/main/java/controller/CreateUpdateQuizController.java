@@ -11,7 +11,6 @@ import javafx.util.StringConverter;
 import model.Course;
 import model.Quiz;
 import model.User;
-import model.UserRole;
 import view.Main;
 
 import java.net.URL;
@@ -70,7 +69,7 @@ public class CreateUpdateQuizController implements Initializable {
             }
         });
 
-        List<Course> cursussen = courseDAO.getCoursePerUser(loggedInUser);
+        List<Course> cursussen = courseDAO.getCoursePerCoordinator(loggedInUser);
         for (Course course : cursussen) {
             quizCursusCombobox.getItems().add(course);
             }
@@ -80,12 +79,14 @@ public class CreateUpdateQuizController implements Initializable {
             haalInformatieQuizOp(quiz);
         } else {
             this.selectedQuiz = null;
+            quizCursusCombobox.getSelectionModel().selectFirst();
         }
     } // einde setup
 
     private void haalInformatieQuizOp(Quiz quiz) {
         titelLabel.setText("Wijzig quiz");
         quizNaamTextfield.setText(quiz.getQuizName());
+        quizNaamTextfield.setDisable(true);
         quizLevelComboBox.getSelectionModel().select(quiz.getQuizLevel());
         quizSuccesDefinitieTextfield.setText(String.valueOf(quiz.getSuccesDefinition()));
         quizCursusCombobox.setValue(selectedQuiz.getCourse());
@@ -119,10 +120,9 @@ public class CreateUpdateQuizController implements Initializable {
     } // einde doCreateUpdateQuiz
 
     private Quiz createQuiz() {
-        boolean correcteInvoer = true;
         String quizNaam = quizNaamTextfield.getText();
-        String quizLevel = quizLevelComboBox.getSelectionModel().getSelectedItem(); // Haal de geselecteerde String op
-        double succesDefinitie = Double.parseDouble(quizSuccesDefinitieTextfield.getText());
+        String quizLevel = quizLevelComboBox.getSelectionModel().getSelectedItem();
+        double succesDefinitie;
         Course course = quizCursusCombobox.getValue();
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -130,26 +130,35 @@ public class CreateUpdateQuizController implements Initializable {
         alert.setHeaderText("Opslaan onsuccesvol");
 
         if (quizNaam.isEmpty()) {
-            correcteInvoer = false;
             alert.setContentText("Voer een quiznaam in.");
             alert.showAndWait();
-        }
-        if (succesDefinitie < 0 || succesDefinitie > 100) {
-            correcteInvoer = false;
-            alert.setContentText("Voer een succesdefinitie in tussen de 0 en 100%.");
-            alert.showAndWait();
-        }
-        if (quizLevel == null || quizLevel.isEmpty()) {
-            correcteInvoer = false;
-            alert.setContentText("Selecteer een quizniveau.");
-            alert.showAndWait();
-        }
-
-        if (correcteInvoer) {
-            return new Quiz(quizNaam, quizLevel, succesDefinitie, course);
-        } else {
             return null;
         }
+        if (quizNaam.trim().isEmpty()) {
+            alert.setContentText("Alleen spaties als naam is niet toegestaan.");
+            alert.showAndWait();
+            return null;
+        }
+
+        try {
+                succesDefinitie = Double.parseDouble(quizSuccesDefinitieTextfield.getText());
+                if (succesDefinitie < 0 || succesDefinitie > 100) {
+                    alert.setContentText("Voer een succesdefinitie in tussen de 0 en 100%.");
+                    alert.showAndWait();
+                    return null;
+                }
+            } catch (NumberFormatException e) {
+                alert.setContentText("De succesdefinitie moet een numerieke waarde zijn (bijv. 75.5 of 80).");
+                alert.showAndWait();
+                return null;
+            }
+
+        if (quizLevel == null || quizLevel.isEmpty()) {
+            alert.setContentText("Selecteer een quizniveau.");
+            alert.showAndWait();
+            return null;
+        }
+        return new Quiz(quizNaam, quizLevel, succesDefinitie, course);
     } // einde createQuiz
 
     // Met deze methode worden alle tekstvelden leeggehaald.
