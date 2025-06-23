@@ -122,4 +122,27 @@ public class QuizDAO extends AbstractDAO {
         }
         return arrayListQuizzes;
     } // einde getAllQuizes
+
+    public ArrayList<Quiz> getQuizPerCourseName(String courseName) {
+        String sql = "SELECT * FROM Quiz WHERE courseName = ?;";
+        ArrayList<Quiz> quizList = new ArrayList<>();
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, courseName);
+            ResultSet resultSet = executeSelectStatement();
+            Course course = courseDAO.getOneByName(courseName);
+            while (resultSet.next()) {
+                String quizName = resultSet.getString("quizName");
+                String quizLevel = resultSet.getString("quizLevel");
+                double succesDefinition = resultSet.getDouble("succesDefinition");
+                Quiz quiz = new Quiz(quizName, quizLevel, succesDefinition, course);
+                quizList.add(quiz);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL error " + e.getMessage());
+        }
+        return quizList;
+    }
+
+
 }

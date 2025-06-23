@@ -97,7 +97,7 @@ public class CreateUpdateCourseController {
             } else {
                 courseDAO.storeOne(course);
             }
-            showAlert(Alert.AlertType.INFORMATION, "Bevestiging", null, "Course is opgeslagen.");
+            showAlert(Alert.AlertType.INFORMATION, "Bevestiging", null, "Course " + course.getCourseName() +" is opgeslagen.");
             Main.getSceneManager().showManageCoursesScene(loggedInUser);
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Fout", null, "Fout bij opslaan van course: " + e.getMessage());
