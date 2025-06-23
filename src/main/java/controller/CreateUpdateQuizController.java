@@ -6,16 +6,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.util.StringConverter;
 import model.Course;
 import model.Quiz;
 import model.User;
+import model.UserRole;
 import view.Main;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class CreateUpdateQuizController implements Initializable {
@@ -34,13 +34,13 @@ public class CreateUpdateQuizController implements Initializable {
     private TextField quizSuccesDefinitieTextfield;
 
     @FXML
-    private TextField quizCursusTextField;
-
-    @FXML
     private TextField quizAantalVragenTextField;
 
     @FXML
     private ComboBox<String> quizLevelComboBox;
+
+    @FXML
+    private ComboBox<Course> quizCursusCombobox;
 
     //    Quizzen CRUD Als coördinator wil ik de volledige CRUD-functionaliteit voor het beheer van
     //    quizzen hebben behorende bij cursussen waarvoor ik de rol coördinator heb (schermen
@@ -55,6 +55,26 @@ public class CreateUpdateQuizController implements Initializable {
         this.quizDAO = new QuizDAO(Main.getDBAccess());
         this.courseDAO = new CourseDAO(Main.getDBAccess());
 
+        quizCursusCombobox.setConverter(new StringConverter<Course>() {
+            @Override
+            public String toString(Course obj) {
+                if (obj != null) {
+                    return obj.getCourseName();
+                }
+                return "";
+            }
+
+            @Override
+            public Course fromString(String string) {
+                return null;
+            }
+        });
+
+        List<Course> cursussen = courseDAO.getCoursePerUser(loggedInUser);
+        for (Course course : cursussen) {
+            quizCursusCombobox.getItems().add(course);
+            }
+
         if (quiz != null) {
             this.selectedQuiz = quiz;
             haalInformatieQuizOp(quiz);
@@ -68,7 +88,7 @@ public class CreateUpdateQuizController implements Initializable {
         quizNaamTextfield.setText(quiz.getQuizName());
         quizLevelComboBox.getSelectionModel().select(quiz.getQuizLevel());
         quizSuccesDefinitieTextfield.setText(String.valueOf(quiz.getSuccesDefinition()));
-        quizCursusTextField.setText(String.valueOf(quiz.getCourse().getCourseName()));
+        quizCursusCombobox.setValue(selectedQuiz.getCourse());
         quizAantalVragenTextField.setText(String.valueOf(quiz.telAantalVragen(quiz)));
     }
 
@@ -103,8 +123,7 @@ public class CreateUpdateQuizController implements Initializable {
         String quizNaam = quizNaamTextfield.getText();
         String quizLevel = quizLevelComboBox.getSelectionModel().getSelectedItem(); // Haal de geselecteerde String op
         double succesDefinitie = Double.parseDouble(quizSuccesDefinitieTextfield.getText());
-        String courseNaam = quizCursusTextField.getText();
-        Course course = courseDAO.getOneByName(courseNaam);
+        Course course = quizCursusCombobox.getValue();
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Opslaan");
@@ -125,11 +144,6 @@ public class CreateUpdateQuizController implements Initializable {
             alert.setContentText("Selecteer een quizniveau.");
             alert.showAndWait();
         }
-        if (courseNaam.isEmpty()) {
-            correcteInvoer = false;
-            alert.setContentText("Voer een course in.");
-            alert.showAndWait();
-        }
 
         if (correcteInvoer) {
             return new Quiz(quizNaam, quizLevel, succesDefinitie, course);
@@ -143,7 +157,7 @@ public class CreateUpdateQuizController implements Initializable {
         quizNaamTextfield.clear();
         quizLevelComboBox.getSelectionModel().selectFirst();
         quizSuccesDefinitieTextfield.clear();
-        quizCursusTextField.clear();
+        quizCursusCombobox.getSelectionModel().selectFirst();
         quizAantalVragenTextField.clear();
     } // einde clearFields
 

@@ -2,6 +2,7 @@ package database.mysql;
 
 import model.Course;
 import model.Quiz;
+import model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,7 +55,6 @@ public class QuizDAO extends AbstractDAO {
         String sql = "UPDATE Quiz SET quizLevel = ?, succesDefinition = ?, courseName = ? WHERE quizName = ?";
         try {
             setupPreparedStatement(sql);
-//            preparedStatement.setString(1, quiz.getQuizName());
             preparedStatement.setString(1, quiz.getQuizLevel());
             preparedStatement.setString(2, String.valueOf(quiz.getSuccesDefinition()));
             preparedStatement.setString(3, quiz.getCourse().getCourseName());
@@ -75,6 +75,30 @@ public class QuizDAO extends AbstractDAO {
             System.out.println("SQL error " + sqlError.getMessage());
         }
     } // einde deleteQuiz
+
+    public ArrayList<Quiz> getQuizzesPerCoordinator(User user) {
+        ArrayList<Quiz> arrayListQuizzes = new ArrayList<>();
+        String sql = "SELECT * FROM Quiz JOIN Course ON Quiz.courseName = Course.courseName WHERE coordinator = ?";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, user.getUserName());
+            ResultSet resultSet = executeSelectStatement();
+            Quiz quiz;
+            Course course;
+            while (resultSet.next()) {
+                String quizName = resultSet.getString("quizName");
+                String quizLevel = resultSet.getString("quizLevel");
+                double succesDefinition = resultSet.getDouble("succesDefinition");
+                String courseNaam = resultSet.getString("courseName");
+                course = courseDAO.getOneByName(courseNaam);
+                quiz = new Quiz(quizName, quizLevel, succesDefinition, course);
+                arrayListQuizzes.add(quiz);
+            }
+        } catch (SQLException sqlError) {
+            System.out.println("SQL error " + sqlError.getMessage());
+        }
+        return arrayListQuizzes;
+    }
 
     public ArrayList<Quiz> getAllQuizzes() {
         String sql = "SELECT * FROM Quiz";

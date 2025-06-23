@@ -23,7 +23,7 @@ public class WelcomeController {
     public void setup(User user) {
         this.user = user;
         taskMenuButton.getItems().clear();
-        welcomeLabel.setText("Welkom, " + this.user.getFirstName() + "! Maak een keuze uit het menu.");
+        welcomeLabel.setText("Welkom, " + this.user.getFirstName() + " ! Maak een keuze uit het menu.");
 
         UserRole role = Main.currentUser().getUserRol();
 
