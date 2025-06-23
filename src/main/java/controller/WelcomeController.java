@@ -38,7 +38,7 @@ public class WelcomeController {
             item1.setOnAction(e -> {Main.getSceneManager().showManageQuizScene(Main.currentUser());});
             MenuItem item2 = new MenuItem("Beheer vragen");
             item2.setOnAction(e -> {Main.getSceneManager().showManageQuestionsScene(user);});
-            MenuItem item3 = new MenuItem("Coordinator Dasboard");
+            MenuItem item3 = new MenuItem("Coordinator Dashboard");
             item3.setOnAction(e -> {Main.getSceneManager().showCoordinatorDashboard(Main.currentUser());});
             taskMenuButton.getItems().addAll(item1, item2,item3);
         } else if (role == UserRole.ADMINISTRATOR) {
