@@ -40,8 +40,7 @@ public class ManageQuestionsController {
 
     @FXML
     public void doMenu(ActionEvent actionEvent) {
-//        Main.getSceneManager().showWelcomeScene(loggedInUser);
-        Main.getSceneManager().showCreateUpdateQuestionScene(null);
+        Main.getSceneManager().showWelcomeScene(loggedInUser);
     }
 
     @FXML
