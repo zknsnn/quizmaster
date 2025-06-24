@@ -38,13 +38,20 @@
                 <Label text="Fout antwoord 1" GridPane.rowIndex="3" />
                 <Label text="Fout antwoord 2" GridPane.rowIndex="4" />
                 <Label text="Fout antwoord 3" GridPane.rowIndex="5" />
-                <TextField fx:id="quizNaamTextfield" editable="false" style="-fx-control-inner-background: #E0E0E0;" prefHeight="26.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+<!--                <TextField fx:id="quizNaamTextField" disable="true" editable="false" text="Quiznaam" prefHeight="26.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />-->
                 <TextField fx:id="questionNaamTextfield" prefHeight="26.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <TextField fx:id="correctAnswerTextfield" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField fx:id="wrongAnswer1Textfield" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 <TextField fx:id="wrongAnswer2Textfield" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                 <TextField fx:id="wrongAnswer3Textfield" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <ComboBox fx:id="quizComboBox" prefHeight="26.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
         </GridPane>
+        <!-- WARNING -->
+        <Label fx:id="warningField" layoutX="32.0" layoutY="375.0" textFill="RED" visible="false">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
         <Button layoutX="288.0" layoutY="315.0" mnemonicParsing="false" onAction="#doCreateUpdateQuestion" text="Opslaan" />
         <Button layoutX="385.0" layoutY="315.0" mnemonicParsing="false" onAction="#doMenu" text="Menu" />
 </AnchorPane>
