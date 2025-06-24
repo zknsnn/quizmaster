@@ -2,7 +2,8 @@ package launcher;
 
 
 import controller.CouchDBAccess;
-import database.couchdb.CourseCouchDBDAO;
+import database.mysql.CourseCouchDBDAO;
+import database.mysql.CourseCouchDBDAO;
 import database.mysql.UserDAO;
 import model.Course;
 import model.User;
@@ -17,12 +18,12 @@ import java.util.Scanner;
 public class CouchDBCourseDAOLauncher {
 
     private static CouchDBAccess couchDBAccess;
-    private static CourseCouchDBDAO courseCouchDBDAO;
+    private static database.mysql.CourseCouchDBDAO courseCouchDBDAO;
 
     public static void main(String[] args) {
 
         couchDBAccess = new CouchDBAccess("course", "sinan", "123456");
-        courseCouchDBDAO = new CourseCouchDBDAO(couchDBAccess);
+        courseCouchDBDAO = new database.mysql.CourseCouchDBDAO(couchDBAccess);
 
         UserDAO userDAO = new UserDAO(Main.getDBAccess());
         Main.getDBAccess().openConnection();
