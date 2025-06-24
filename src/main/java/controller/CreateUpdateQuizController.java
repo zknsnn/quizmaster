@@ -90,7 +90,7 @@ public class CreateUpdateQuizController implements Initializable {
         quizLevelComboBox.getSelectionModel().select(quiz.getQuizLevel());
         quizSuccesDefinitieTextfield.setText(String.valueOf(quiz.getSuccesDefinition()));
         quizCursusCombobox.setValue(selectedQuiz.getCourse());
-        quizAantalVragenTextField.setText(String.valueOf(quiz.telAantalVragen(quiz)));
+//        quizAantalVragenTextField.setText(quiz);
     }
 
     public void doMenu() {

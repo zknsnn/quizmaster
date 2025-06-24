@@ -19,6 +19,7 @@ public class ManageQuestionsController {
     private QuestionDAO questionDAO;
     private QuizDAO quizDAO;
     private User loggedInUser;
+    private Quiz quiz;
 
     @FXML
     private ListView<Question> questionList;
@@ -29,19 +30,18 @@ public class ManageQuestionsController {
     List<Question> questions;
     List<Quiz> quizzes;
 
-    public void setup(User user) {
+    public void setup(Quiz quiz, User user) {
         this.loggedInUser = user;
         this.questionDAO = new QuestionDAO(Main.getDBAccess());
         this.quizDAO = new QuizDAO(Main.getDBAccess());
-        this.questions = questionDAO.getAll();      // Eenmalig ophalen
-        this.quizzes = quizDAO.getAllQuizzes();     // Eenmalig ophalen
+        this.quiz = quiz;
         loadQuestionList();
     }
 
     @FXML
     public void doMenu(ActionEvent actionEvent) {
         Main.getSceneManager().showWelcomeScene(loggedInUser);
-    } // doMenu
+    }
 
     @FXML
     public void doCreateQuestion(){
@@ -74,15 +74,13 @@ public class ManageQuestionsController {
         }
         questionDAO.deleteQuestion(selectedQuestion);
         loadQuestionList();
-
     }
 
 //    Als ik een vraag selecteer (scherm manageQuestions.fxml) wil ik meteen kunnen zien
 //    hoeveel vragen er in de quiz zitten, waar de geselecteerde vraag toe behoort.
 
     public void handleQuestionInfo() {
-        List<Question> questions = questionDAO.getAll();
-        questionList.getItems().addAll(questions);
+        List<Question> questions = questionDAO.getQuestionsByQuizName(quiz.getQuizName());
         Question selectedQ = questionList.getSelectionModel().getSelectedItem();
         if (selectedQ != null && selectedQ.getQuiz() != null) {
             String selectedQuizName = selectedQ.getQuiz().getQuizName();
@@ -120,6 +118,7 @@ public class ManageQuestionsController {
 // Ook dit werkt nog niet echt.
     private void loadQuestionList() {
         questionList.getItems().clear();
+        List<Question> questions = questionDAO.getQuestionsByQuizName(quiz.getQuizName());
         questionList.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Question question, boolean empty) {

@@ -95,7 +95,7 @@ public class CreateUpdateGroupController {
         }
 
         if(amountStudent < 0 || amountStudent > 25){
-            showAlert(Alert.AlertType.WARNING, "Warning","Aantal studenten moet tussen 1 en 25 zijn.");
+            showAlert(Alert.AlertType.WARNING, "Let op","Aantal studenten moet tussen 1 en 25 zijn.");
             return;
         }
 
@@ -106,12 +106,12 @@ public class CreateUpdateGroupController {
             // Nieuwe groep toevoegen
             Group existingGroup = groupDAO.getOneByNameAndCourseName(name,selectedCourseName);
             if (existingGroup != null){
-                showAlert(Alert.AlertType.ERROR, "Fout", "Deze groep bestaat al voor deze cursus.");
+                showAlert(Alert.AlertType.ERROR, "Fout", name + " bestaat al voor " + selectedCourseName + " cursus.");
                 return;
             }else {
                 Group newGroup = new Group(selectedCourse,name,amountStudent,selectedTeacher);
                 groupDAO.storeOne(newGroup);
-                showAlert(Alert.AlertType.INFORMATION, "Bevestiging", "Nieuwe groep toegevoegd.");
+                showAlert(Alert.AlertType.INFORMATION, "Bevestiging", name + " toegevoegd.");
             }
         }else {
             //Bestaande groep updated
@@ -120,7 +120,7 @@ public class CreateUpdateGroupController {
             editingGroup.setAmount(amountStudent);
             editingGroup.setDocent(selectedTeacher);
             groupDAO.updateOne(editingGroup);
-            showAlert(Alert.AlertType.INFORMATION, "Bevestiging", "Groep is bijgewerkt.");
+            showAlert(Alert.AlertType.INFORMATION, "Bevestiging", name +" is bijgewerkt.");
         }
         Main.getSceneManager().showManageGroupsScene(user);
     }

@@ -50,7 +50,7 @@ public class CreateUpdateQuestionController {
     } // end setup
 
     public void doMenu() {
-        Main.getSceneManager().showManageQuestionsScene(Main.currentUser());
+        Main.getSceneManager().showWelcomeScene(loggedInUser);
     }
 
     public void doCreateUpdateQuestion() {
