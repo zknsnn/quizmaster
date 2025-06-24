@@ -57,7 +57,7 @@ public class Group {
 
     @Override
     public String toString() {
-        return String.format("%s - %s (%d studenten) door %s\n",
+        return String.format("%s - %s - %d studenten - %s\n",
                 course.getCourseName(), groupName, amount, docent.getUserName());
     }
 }
