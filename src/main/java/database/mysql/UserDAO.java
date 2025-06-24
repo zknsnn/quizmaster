@@ -80,10 +80,9 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return users;
     }
 
-    /**
-     * Parser voor één CSV-regel, houdt rekening met komma's binnen aanhalingstekens.
-     */
-    private List<String> parseCsvLine(String line) {
+
+         // Parser voor één CSV-regel, houdt rekening met komma's binnen aanhalingstekens.
+        private List<String> parseCsvLine(String line) {
         List<String> fields = new ArrayList<>();
         StringBuilder current = new StringBuilder();
         boolean insideQuotes = false;
@@ -173,7 +172,6 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         } catch (SQLException e) {
             System.err.println("SQL-fout bij ophalen van gebruiker met naam: " + e.getMessage());
         }
-
         return user;
     }
 
@@ -227,11 +225,11 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     }
     // DELETE
     // Verwijder een gebruiker uit de database op basis van userId
-    public void deleteUser(String userName) {
+    public void delete(User user) {
         String sql = "DELETE FROM User WHERE userName = ?";
         try {
             setupPreparedStatement(sql);
-            preparedStatement.setString(1, userName);
+            preparedStatement.setString(1, user.getUserName());
             executeManipulateStatement();
         } catch (SQLException e) {
             System.err.println("Fout bij verwijderen van gebruiker: " + e.getMessage());

@@ -1,45 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageUsersController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="900.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.ManageUsersController">
+
     <Label layoutX="15.0" layoutY="14.0" text="Gebruikersbeheer">
         <font>
-            <Font size="18.0" />
+            <Font size="18.0"/>
         </font>
     </Label>
+
     <Label layoutX="15.0" layoutY="52.0" text="Selecteer gebruiker">
         <font>
-            <Font size="18.0" />
+            <Font size="18.0"/>
         </font>
     </Label>
-    <ListView fx:id="userList" layoutX="17.0" layoutY="92.0" prefHeight="200.0" prefWidth="245.0" />
-    <Button layoutX="15.0" layoutY="319.0" mnemonicParsing="false" onAction="#doCreateUser" text="Nieuw">
-    <Label fx:id="countLabel" layoutX="17.0" layoutY="300.0" text="Aantal gebruikers:" />
+
+    <TableView fx:id="userTable" layoutX="17.0" layoutY="92.0" prefHeight="200.0" prefWidth="434.0">
+        <columns>
+            <TableColumn fx:id="firstNameColumn" text="Voornaam" prefWidth="120.0"/>
+            <TableColumn fx:id="prefixColumn" text="Tussenvoegsel" prefWidth="100.0"/>
+            <TableColumn fx:id="lastNameColumn" text="Achternaam" prefWidth="120.0"/>
+            <TableColumn fx:id="roleColumn" text="Rol" prefWidth="90.0"/>
+            <TableColumn fx:id="passwordColumn" text="Wachtwoord" prefWidth="120.0"/>
+        </columns>
+    </TableView>
+
+    <Label fx:id="countLabel" layoutX="17.0" layoutY="300.0" text="Aantal gebruikers:"/>
+
+    <Button layoutX="15.0" layoutY="333.0" mnemonicParsing="false" onAction="#doCreateUser" text="Nieuw">
         <font>
-            <Font size="14.0" />
+            <Font size="14.0"/>
         </font>
     </Button>
-    <Button layoutX="101.0" layoutY="319.0" mnemonicParsing="false" onAction="#doUpdateUser" text="Wijzig">
+
+    <Button layoutX="101.0" layoutY="333.0" mnemonicParsing="false" onAction="#doUpdateUser" text="Wijzig">
         <font>
-            <Font size="14.0" />
+            <Font size="14.0"/>
         </font>
     </Button>
-    <Button layoutX="179.0" layoutY="318.0" mnemonicParsing="false" onAction="#doDeleteUser" text="Verwijder">
+
+    <Button layoutX="182.0" layoutY="333.0" mnemonicParsing="false" onAction="#doDeleteUser" text="Verwijder">
         <font>
-            <Font size="14.0" />
+            <Font size="14.0"/>
         </font>
     </Button>
-    <Button layoutX="17.0" layoutY="370.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
+
+    <Button layoutX="17.0" layoutY="384.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
         <font>
-            <Font size="14.0" />
+            <Font size="14.0"/>
         </font>
     </Button>
-    <Label fx:id="warningField" layoutX="16.0" layoutY="420.0" textFill="RED" visible="false" >
-            <font>
-                <Font size="25.0" />
-            </font>
+
+    <Label fx:id="warningField" layoutX="16.0" layoutY="420.0" textFill="RED" visible="false">
+        <font>
+            <Font size="20.0"/>
+        </font>
     </Label>
+
 </AnchorPane>
