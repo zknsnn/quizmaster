@@ -1,9 +1,6 @@
 package launcher;
 
-import database.mysql.CourseDAO;
-import database.mysql.DBAccess;
-import database.mysql.QuizDAO;
-import database.mysql.UserDAO;
+import database.mysql.*;
 import model.Course;
 import model.Quiz;
 import model.User;
@@ -22,6 +19,7 @@ public class LauncherVanDianne {
         QuizDAO quizDAO = new QuizDAO(dbAccess);
         UserDAO userDAO = new UserDAO(dbAccess);
         CourseDAO courseDAO = new CourseDAO(dbAccess);
+
 //        CourseDAO courseDAO;
 //        File quizzenBestand = new File("src/main/resources/CSV bestanden/Quizzen.csv");
 //        List<Quiz> quizzenLijst = getQuizList(quizzenBestand);
@@ -41,7 +39,8 @@ public class LauncherVanDianne {
         Quiz quiz = new Quiz("Awesomequiz4", "Beginner", 70, courseProbeersel);
         System.out.println(quiz);
 
-        quizDAO.saveQuiz(quiz);
+//        quizDAO.saveQuiz(quiz);
+
 
 
         System.out.println(quiz.telAantalVragen(quiz));
