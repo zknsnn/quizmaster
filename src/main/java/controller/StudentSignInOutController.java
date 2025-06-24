@@ -4,9 +4,11 @@ import database.mysql.CourseDAO;
 import database.mysql.DBAccess;
 import database.mysql.InschrijvingDAO;
 import database.mysql.UserDAO;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import model.Course;
 import model.Inschrijving;
 import model.User;
@@ -26,10 +28,17 @@ public class StudentSignInOutController {
     @FXML
     private ListView<Course> signedInCourseList;
 
+//    Initialiseer de controller met de ingelogde gebruiker.
+//    Laadt de lijsten van ingeschreven en niet-ingeschreven cursussen.
+
     public void setup(User user) {
         this.loggedInUser = user;
         this.inschrijvingDAO = new InschrijvingDAO(Main.getDBAccess());
         this.courseDAO = new CourseDAO(Main.getDBAccess());
+
+        // meer courses selecteren
+        signedOutCourseList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        signedInCourseList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         signedOutCourseList.getItems().clear();
         signedInCourseList.getItems().clear();
@@ -40,13 +49,13 @@ public class StudentSignInOutController {
         List<Course> signedInCourses = new ArrayList<>();
         List<Course> notSignedInCourses = new ArrayList<>();
 
-
+        // courses namen halen van Inschrijving
         List<String> signedCourseNames = new ArrayList<>();
         for (Inschrijving inschrijving : inschrijvingen) {
             signedCourseNames.add(inschrijving.getCourse().getCourseName());
         }
 
-
+        // controller of user ingeschreven is.
         for (Course course : courses) {
             if (signedCourseNames.contains(course.getCourseName())) {
                 signedInCourses.add(course);
@@ -65,32 +74,38 @@ public class StudentSignInOutController {
     }
 
     public void doSignIn() {
-        Course selectedCourse = signedOutCourseList.getSelectionModel().getSelectedItem();
-        if (selectedCourse == null) {
+        List<Course> selectedCourses = signedOutCourseList.getSelectionModel().getSelectedItems();
+
+        if (selectedCourses == null || selectedCourses.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Fout bij selecteren");
             alert.setHeaderText("Inschrijven is mislukt");
-            alert.setContentText("Selecteer een cursus om in te schrijven.");
+            alert.setContentText("Selecteer een of meerdere cursussen om in te schrijven.");
             alert.showAndWait();
-        }else {
-            Inschrijving inschrijving = new Inschrijving(loggedInUser,selectedCourse);
-            inschrijvingDAO.storeOne(inschrijving);
-            setup(loggedInUser);
+        } else {
+            for (Course course : selectedCourses) {
+                Inschrijving inschrijving = new Inschrijving(loggedInUser, course);
+                inschrijvingDAO.storeOne(inschrijving);
+            }
+            setup(loggedInUser); // refresh list
         }
     }
 
     public void doSignOut() {
-        Course selectedCourse = signedInCourseList.getSelectionModel().getSelectedItem();
-        if (selectedCourse == null) {
+        List<Course> selectedCourses = signedInCourseList.getSelectionModel().getSelectedItems();
+
+        if (selectedCourses == null || selectedCourses.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Fout bij selecteren");
             alert.setHeaderText("Uitschrijven is mislukt");
-            alert.setContentText("Selecteer een cursus om uit te schrijven.");
+            alert.setContentText("Selecteer een of meerdere cursussen om uit te schrijven.");
             alert.showAndWait();
-        }else {
-
-            inschrijvingDAO.deleteInschrijving(selectedCourse.getCourseName());
+        } else {
+            for (Course course : selectedCourses) {
+                inschrijvingDAO.deleteInschrijving(course.getCourseName());
+            }
             setup(loggedInUser);
         }
     }
+
 }

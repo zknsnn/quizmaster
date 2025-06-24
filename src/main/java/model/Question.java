@@ -69,6 +69,10 @@ public class Question {
         return quiz;
     }
 
+    public int getQuestionId() {
+        return questionId;
+    }
+
     //    public Quiz getOneById(String quizName) {
 //        return null; // aangemaakt voor testen RG
 //    }
