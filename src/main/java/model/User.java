@@ -122,6 +122,9 @@ public class User {
 
     // Eerste letter naar hoofdletter
     private String capitalize(String s) {
+        if (s == null || s.isEmpty()) {
+            return"";//zorgt dat program niet crasht
+        }
         return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
     }
 

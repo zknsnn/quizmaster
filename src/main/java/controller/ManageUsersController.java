@@ -1,15 +1,17 @@
 package controller;
 
 import database.mysql.UserDAO;
+import javafx.animation.PauseTransition;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 import model.User;
 import view.Main;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class ManageUsersController {
@@ -17,8 +19,24 @@ public class ManageUsersController {
     private final UserDAO userDAO;
     private User loggedInUser;
 
+    // FXML koppeling
     @FXML
-    private ListView<User> userList;
+    private TableView<User> userTable;
+
+    @FXML
+    private TableColumn<User, String> firstNameColumn;
+
+    @FXML
+    private TableColumn<User, String> prefixColumn;
+
+    @FXML
+    private TableColumn<User, String> lastNameColumn;
+
+    @FXML
+    private TableColumn<User, String> roleColumn;
+
+    @FXML
+    private TableColumn<User, String> passwordColumn; // toegevoegde kolom voor wachtwoorden
 
     @FXML
     private Label warningField;
@@ -26,57 +44,59 @@ public class ManageUsersController {
     @FXML
     private Label countLabel;
 
-
     public ManageUsersController() {
         this.userDAO = new UserDAO(Main.getDBAccess());
     }
 
-    // Wordt aangeroepen bij openen van het scherm
+    //vullen tabel
     public void setup(User user) {
         this.loggedInUser = user;
-        refreshUserList();
 
-        // Lijst van gebruiker met rol
-        userList.setCellFactory(userListView -> new ListCell<>() {
+        // Kolommen koppelen aan eigenschappen van User-objecten
+        firstNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstName()));
+
+        prefixColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPrefix()));
+
+        lastNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastName()));
+
+        roleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserRol() != null ? cellData.getValue().getUserRol().getDisplayName() : ""));
+
+        // passwordColumn: toont wachtwoord zoals een PasswordField (gemaskeerd)
+        passwordColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPassword())); // haalt het wachtwoord op
+
+        passwordColumn.setCellFactory(column -> new TableCell<>() {
             @Override
-            protected void updateItem(User user, boolean empty) {
-                super.updateItem(user, empty);
-                if (empty || user == null) {
+            protected void updateItem(String password, boolean empty) {
+                super.updateItem(password, empty);
+                if (empty || password == null) {
                     setText(null);
                 } else {
-                    String userName = user.getUserName();
-                    String naam = user.getFirstName() + " " + user.getPrefix() + " " + user.getLastName();
-                    String rol = user.getUserRol().getDisplayName();
-                    setText(userName + naam + " (" + rol + ")");
+                    setText("●".repeat(password.length())); // toont gemaskeerde tekens!!!
                 }
             }
         });
 
-        // Toon aantal gebruikers met dezelfde rol bij selectie
-        userList.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
+        // Gegevens ophalen en in de tabel zetten
+        List<User> users = userDAO.getAll();
+        userTable.setItems(FXCollections.observableArrayList(users));
+        countLabel.setText("Aantal gebruikers: " + users.size());
+        System.out.println("EtienneTest: Aantal gebruikers: " + users.size());
+
+        // Bij selectie: toon aantal gebruikers met zelfde rol
+        userTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
             if (newSel != null) {
-                int aantal = userDAO.countUsersByRole(newSel.getUserRol()); // gebruik newSel hier
+                int aantal = userDAO.countUsersByRole(newSel.getUserRol());
                 countLabel.setText("Aantal gebruikers met deze rol: " + aantal);
                 warningField.setVisible(false);
             }
         });
 
-
-        // Dubbelklik om gebruiker te bewerken
-        userList.setOnMouseClicked((MouseEvent event) -> {
+        // Dubbelklikgedrag om gebruiker te bewerken
+        userTable.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
                 doUpdateUser();
             }
         });
-    }
-
-    private void refreshUserList() {
-        userList.getItems().clear();
-        List<User> users = userDAO.getAll();
-        userList.getItems().addAll(users);
-        users.sort(Comparator.comparing(User::getLastName));
-        countLabel.setText("Aantal gebruikers: " + users.size());
-
     }
 
     @FXML
@@ -84,44 +104,41 @@ public class ManageUsersController {
         Main.getSceneManager().showWelcomeScene(loggedInUser);
     }
 
-    // Create New
     @FXML
     public void doCreateUser() {
         Main.getSceneManager().showCreateUpdateUserScene(null);
-        // ververs scherm
-      //  refreshUserList(); => NIET NODIG OMDAT JE NAAR EEN NIEUW(!) SCHERM GAAT
     }
 
-    //Update
     @FXML
     public void doUpdateUser() {
-        User geselecteerdeUser = userList.getSelectionModel().getSelectedItem();
+        User geselecteerdeUser = userTable.getSelectionModel().getSelectedItem();
         if (geselecteerdeUser == null) {
-            warningField.setText("Je moet eerst een gebruiker selecteren.");
-            warningField.setVisible(true);
+            showWarning("Geen gebruiker geselecteerd.");
         } else {
-            warningField.setVisible(false);
             Main.getSceneManager().showCreateUpdateUserScene(geselecteerdeUser);
-
-            refreshUserList();
         }
     }
 
-    //Delete
     @FXML
     public void doDeleteUser() {
-        User geselecteerdeUser = userList.getSelectionModel().getSelectedItem();
+        User geselecteerdeUser = userTable.getSelectionModel().getSelectedItem();
         if (geselecteerdeUser == null) {
-            warningField.setText("Selecteer een gebruiker om te verwijderen.");
-            warningField.setVisible(true);
-        } else {
-            userDAO.deleteUser(geselecteerdeUser.getUserName());
-            refreshUserList();
-            warningField.setVisible(false);
-            countLabel.setText(""); // reset aantal bij verwijderen
-            warningField.setText("Gebruiker is verwijderd.");
-
+            showWarning("Geen gebruiker geselecteerd.");
+            return;
         }
+
+        userDAO.delete(geselecteerdeUser);
+        userTable.getItems().remove(geselecteerdeUser);
+        countLabel.setText("Aantal gebruikers: " + userTable.getItems().size());
+        warningField.setVisible(false);
     }
 
+    // Toont foutmelding tijdelijk
+    private void showWarning(String message) {
+        warningField.setText(message);
+        warningField.setVisible(true);
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        pause.setOnFinished(event -> warningField.setVisible(false));
+        pause.play();
+    }
 }
