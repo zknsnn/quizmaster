@@ -47,7 +47,7 @@ public class WelcomeController {
             MenuItem item2 = new MenuItem("Beheer groepen");
             item2.setOnAction(e -> {Main.getSceneManager().showManageGroupsScene(Main.currentUser());});
             MenuItem item3 = new MenuItem("Beheer studenten");//????
-            item3.setOnAction(e -> {Main.getSceneManager().showAssignStudentsToGroupScene();});
+            item3.setOnAction(e -> {Main.getSceneManager().showAssignStudentsToGroupScene(Main.currentUser());});
             taskMenuButton.getItems().addAll(item1, item2,item3);
         } else if (role == UserRole.FUNCTIONEEL_BEHEERDER) {
             MenuItem item1 = new MenuItem("Beheer gebruikers");

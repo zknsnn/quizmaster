@@ -132,9 +132,9 @@ public class SceneManager {
         controller.setup(user);
     }
 
-    public void showAssignStudentsToGroupScene() {
+    public void showAssignStudentsToGroupScene(User user) {
         FXMLLoader loader = getScene("/view/fxml/assignStudentsToGroup.fxml");
         AssignStudentsToGroupController controller = loader.getController();
-        controller.setup();
+        controller.setup(user);
     }
 }
