@@ -2,8 +2,6 @@ package launcher;
 
 
 import controller.CouchDBAccess;
-import database.mysql.CourseCouchDBDAO;
-import database.mysql.CourseCouchDBDAO;
 import database.mysql.UserDAO;
 import model.Course;
 import model.User;
