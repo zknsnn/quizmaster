@@ -31,23 +31,21 @@ public class WelcomeController {
             MenuItem item1 = new MenuItem("In- of uitschrijven cursus");
             item1.setOnAction(e -> {Main.getSceneManager().showStudentSignInOutScene(Main.currentUser());});
             MenuItem item2 = new MenuItem("Maak een quiz");
-            item2.setOnAction(e -> {Main.getSceneManager().showSelectQuizForStudent();});
+            item2.setOnAction(e -> {Main.getSceneManager().showSelectQuizForStudent(Main.currentUser());});
             taskMenuButton.getItems().addAll(item1, item2);
         } else if (role == UserRole.COÖRDINATOR) {
             MenuItem item1 = new MenuItem("Beheer quizzen");
             item1.setOnAction(e -> {Main.getSceneManager().showManageQuizScene(Main.currentUser());});
-            MenuItem item2 = new MenuItem("Beheer vragen");
-            item2.setOnAction(e -> {Main.getSceneManager().showManageQuestionsScene(user);});
-            MenuItem item3 = new MenuItem("Coordinator Dashboard");
-            item3.setOnAction(e -> {Main.getSceneManager().showCoordinatorDashboard(Main.currentUser());});
-            taskMenuButton.getItems().addAll(item1, item2,item3);
+            MenuItem item2 = new MenuItem("Coordinator Dashboard");
+            item2.setOnAction(e -> {Main.getSceneManager().showCoordinatorDashboard(Main.currentUser());});
+            taskMenuButton.getItems().addAll(item1, item2);
         } else if (role == UserRole.ADMINISTRATOR) {
             MenuItem item1 = new MenuItem("Beheer cursussen");
             item1.setOnAction(e -> {Main.getSceneManager().showManageCoursesScene(Main.currentUser());});
             MenuItem item2 = new MenuItem("Beheer groepen");
             item2.setOnAction(e -> {Main.getSceneManager().showManageGroupsScene(Main.currentUser());});
             MenuItem item3 = new MenuItem("Beheer studenten");//????
-            item3.setOnAction(e -> {Main.getSceneManager().showAssignStudentsToGroupScene();});
+            item3.setOnAction(e -> {Main.getSceneManager().showAssignStudentsToGroupScene(Main.currentUser());});
             taskMenuButton.getItems().addAll(item1, item2,item3);
         } else if (role == UserRole.FUNCTIONEEL_BEHEERDER) {
             MenuItem item1 = new MenuItem("Beheer gebruikers");

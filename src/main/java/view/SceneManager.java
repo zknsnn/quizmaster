@@ -90,10 +90,10 @@ public class SceneManager {
         controller.setup(quiz, user);
     }
 
-    public void showManageQuestionsScene(User user) {
+    public void showManageQuestionsScene(Quiz quiz, User user) {
         FXMLLoader loader = getScene("/view/fxml/manageQuestions.fxml");
         ManageQuestionsController controller = loader.getController();
-        controller.setup(user);
+        controller.setup(quiz, user);
     }
 
     public void showCreateUpdateQuestionScene(Question question) {
@@ -108,16 +108,16 @@ public class SceneManager {
         controller.setup(user);
     }
 
-    public void showSelectQuizForStudent() {
+    public void showSelectQuizForStudent(User user) {
         FXMLLoader loader = getScene("/view/fxml/selectQuizForStudent.fxml");
         SelectQuizForStudentController controller = loader.getController();
-        controller.setup();
+        controller.setup(user);
     }
 
-    public void showFillOutQuiz(Quiz quiz) {
+    public void showFillOutQuiz(Quiz quiz, User user) {
         FXMLLoader loader = getScene("/view/fxml/fillOutQuiz.fxml");
         FillOutQuizController controller = loader.getController();
-        controller.setup(quiz);
+        controller.setup(user, quiz);
     }
 
     public void showStudentFeedback(Quiz quiz) {
@@ -132,9 +132,9 @@ public class SceneManager {
         controller.setup(user);
     }
 
-    public void showAssignStudentsToGroupScene() {
+    public void showAssignStudentsToGroupScene(User user) {
         FXMLLoader loader = getScene("/view/fxml/assignStudentsToGroup.fxml");
         AssignStudentsToGroupController controller = loader.getController();
-        controller.setup();
+        controller.setup(user);
     }
 }

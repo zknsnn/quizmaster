@@ -70,7 +70,7 @@ public class ManageGroupsController {
             // Vraag om bevestiging voor verwijdering
             Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmAlert.setTitle("Bevestiging");
-            confirmAlert.setHeaderText("Weet je zeker dat je deze groep wilt verwijderen?");
+            confirmAlert.setHeaderText("Weet je zeker dat je " + selectedGroupForDeleten.getGroupName() + " wilt verwijderen?");
             confirmAlert.setContentText("Groep: " + selectedGroupForDeleten.getGroupName());
 
             Optional<ButtonType> result = confirmAlert.showAndWait();
@@ -85,7 +85,7 @@ public class ManageGroupsController {
                 Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
                 infoAlert.setTitle("Succes");
                 infoAlert.setHeaderText(null);
-                infoAlert.setContentText("Groep succesvol verwijderd.");
+                infoAlert.setContentText(selectedGroupForDeleten.getGroupName() + " succesvol verwijderd.");
                 infoAlert.showAndWait();
             }
         }

@@ -2,15 +2,19 @@ package controller;
 
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Question;
 import model.Quiz;
 import model.User;
 import view.Main;
+
 
 public class CreateUpdateQuestionController {
     private final QuestionDAO questionDAO = new QuestionDAO(Main.getDBAccess());
@@ -20,8 +24,8 @@ public class CreateUpdateQuestionController {
 
     @FXML
     private Label titelLabel;
-//    @FXML
-//    private ComboBox<String> quizNaamComboBox;
+    @FXML
+    private TextField quizNaamTextField;
     @FXML
     private TextField questionNaamTextfield;
     @FXML
@@ -46,13 +50,17 @@ public class CreateUpdateQuestionController {
     } // end setup
 
     public void doMenu() {
-        Main.getSceneManager().showManageQuestionsScene(Main.currentUser());
+        Main.getSceneManager().showWelcomeScene(loggedInUser);
     }
 
     public void doCreateUpdateQuestion() {
-        Question question = createQuestion();
-        boolean correcteInvoer = true;
-        String questionNaam = questionNaamTextfield.getText();
+        if (selectedQuestion == null) {
+            createQuestion();
+        } else {
+//            Question question = updateQuestion();
+            boolean correcteInvoer = true;
+            String questionNaam = questionNaamTextfield.getText();
+        }
 //
 //        if(currentquestion != null){
 //            vulalleveldenmetdeinhoud
@@ -60,9 +68,15 @@ public class CreateUpdateQuestionController {
 
     } // end doCreateUpdateQuestion
 
+    public void updateQuestion() {
+//        Question question = new Question();
+        boolean correcteInvoer = true;
+        String questionNaam = questionNaamTextfield.getText();
+    }
+
     private void haalInformatieQuestionOp(Question question) {
         titelLabel.setText("Wijzig question");
-//        quizNaamComboBox.setCellFactory();
+        quizNaamTextField.setText(quizNaamTextField.getSelectedText());
         questionNaamTextfield.setText(selectedQuestion.getQuestionText());
         correctAnswerTextfield.setText(selectedQuestion.getCorrectAnswer());
         wrongAnswer1Textfield.setText(selectedQuestion.getWrongAnswer1());
@@ -71,8 +85,70 @@ public class CreateUpdateQuestionController {
     } // haalInformatieQuestionOp
 
     private Question createQuestion() {
-        return (null);
-    } // end createQuiz
+        String questionText = questionNaamTextfield.getText();
+        String correctAnswer = correctAnswerTextfield.getText();
+        String wrongAnswer1 = wrongAnswer1Textfield.getText();
+        String wrongAnswer2 = wrongAnswer2Textfield.getText();
+        String wrongAnswer3 = wrongAnswer3Textfield.getText();
+        String quizNaam = quizNaamTextField.getText();
+        Quiz quiz = quizDAO.getQuizPerID(quizNaam);
+
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Opslaan");
+        alert.setHeaderText("Opslaan niet gelukt!");
+
+        if (questionText.isEmpty()) {
+            Stage primaryStage = null;
+            showAutoClosingWarning(primaryStage,"Voer een vraag in.");
+            return null;
+        }
+        if (questionText.trim().isEmpty()) {
+            Stage primaryStage = null;
+            showAutoClosingWarning(primaryStage,"Alleen spaties als vraag is niet toegestaan.");
+            return null;
+        }
+        if (correctAnswer.isEmpty()) {
+            Stage primaryStage = null;
+            showAutoClosingWarning(primaryStage,"Voer een correct antwoord in.");
+            return null;
+        }
+        if (correctAnswer.trim().isEmpty()) {
+            Stage primaryStage = null;
+            showAutoClosingWarning(primaryStage,"Alleen spaties als correct antwoord is niet toegestaan.");
+            return null;
+        }
+        if (wrongAnswer1.isEmpty()) {
+            Stage primaryStage = null;
+            showAutoClosingWarning(primaryStage,"Voer een eerste fout antwoord in.");
+            return null;
+        }
+        if (wrongAnswer1.trim().isEmpty()) {
+            Stage primaryStage = null;
+            showAutoClosingWarning(primaryStage,"Alleen spaties als eerste fout antwoord is niet toegestaan.");
+            return null;
+        }
+        if (wrongAnswer2.isEmpty()) {
+            Stage primaryStage = null;
+            showAutoClosingWarning(primaryStage,"Voer een tweede fout antwoord in.");
+            return null;
+        }
+        if (wrongAnswer2.trim().isEmpty()) {
+            Stage primaryStage = null;
+            showAutoClosingWarning(primaryStage,"Alleen spaties als tweede fout antwoord is niet toegestaan.");
+            return null;
+        }
+        if (wrongAnswer3.isEmpty()) {
+            Stage primaryStage = null;
+            showAutoClosingWarning(primaryStage,"Voer een derde fout antwoord in.");
+            return null;
+        }
+        if (wrongAnswer3.trim().isEmpty()) {
+            Stage primaryStage = null;
+            showAutoClosingWarning(primaryStage,"Alleen spaties als derde fout antwoord is niet toegestaan.");
+            return null;
+        }
+        return new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz);
+    } // end createQuestion
 
     private void showAlert(Alert.AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
@@ -81,4 +157,21 @@ public class CreateUpdateQuestionController {
         alert.setContentText(content);
         alert.showAndWait();
     } // end showAlert
+
+    private void showAutoClosingWarning(Stage owner, String message) {
+        Popup popup = new Popup();
+        Label label = new Label(message);
+        label.setStyle("-fx-background-color: yellow; -fx-text-fill: black; -fx-padding: 10; -fx-border-color: black; -fx-border-width: 1px;");
+        popup.getContent().add(label);
+
+        // Toon popup gecentreerd op het hoofdvenster
+        popup.show(owner);
+        popup.setX(owner.getX() + owner.getWidth() / 2 - label.getWidth() / 2);
+        popup.setY(owner.getY() + owner.getHeight() / 2 - label.getHeight() / 2);
+
+        // Verberg na 2 seconden
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        delay.setOnFinished(e -> popup.hide());
+        delay.play();
+    } // showAutoClosingWarning
 } // CreateUpdateQuestionController

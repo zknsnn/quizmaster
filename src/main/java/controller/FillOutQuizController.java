@@ -4,15 +4,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import model.Quiz;
+import model.User;
+import view.Main;
 
 public class FillOutQuizController {
+    User loggedInUser;
 
     @FXML
     private Label titleLabel;
     @FXML
     private TextArea questionArea;
 
-    public void setup(Quiz quiz) {}
+    public void setup(User user, Quiz quiz) {
+        this.loggedInUser = user;
+    }
 
     public void doRegisterA() {}
 
@@ -26,5 +31,7 @@ public class FillOutQuizController {
 
     public void doPreviousQuestion() {}
 
-    public void doMenu() {}
+    public void doMenu() {
+        Main.getSceneManager().showWelcomeScene(loggedInUser);
+    }
 }
