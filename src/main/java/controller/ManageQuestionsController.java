@@ -84,7 +84,6 @@ public class ManageQuestionsController {
         Question selectedQ = questionList.getSelectionModel().getSelectedItem();
         if (selectedQ != null && selectedQ.getQuiz() != null) {
             String selectedQuizName = selectedQ.getQuiz().getQuizName();
-//            long quizCount = quizListView.setCellFactory(ListView<Quiz> )
             long quizCount = questions.stream()
                     .filter(quiz -> selectedQuizName.equals(quiz.getQuiz().getQuizName())).count();
             quizQuestionsCountLabel.setText("Aantal vragen in quiz \"" + selectedQuizName + "\" : " + quizCount);
