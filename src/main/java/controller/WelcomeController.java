@@ -36,11 +36,9 @@ public class WelcomeController {
         } else if (role == UserRole.COÖRDINATOR) {
             MenuItem item1 = new MenuItem("Beheer quizzen");
             item1.setOnAction(e -> {Main.getSceneManager().showManageQuizScene(Main.currentUser());});
-            MenuItem item2 = new MenuItem("Beheer vragen");
-            item2.setOnAction(e -> {Main.getSceneManager().showManageQuestionsScene(user);});
-            MenuItem item3 = new MenuItem("Coordinator Dashboard");
-            item3.setOnAction(e -> {Main.getSceneManager().showCoordinatorDashboard(Main.currentUser());});
-            taskMenuButton.getItems().addAll(item1, item2,item3);
+            MenuItem item2 = new MenuItem("Coordinator Dashboard");
+            item2.setOnAction(e -> {Main.getSceneManager().showCoordinatorDashboard(Main.currentUser());});
+            taskMenuButton.getItems().addAll(item1, item2);
         } else if (role == UserRole.ADMINISTRATOR) {
             MenuItem item1 = new MenuItem("Beheer cursussen");
             item1.setOnAction(e -> {Main.getSceneManager().showManageCoursesScene(Main.currentUser());});
