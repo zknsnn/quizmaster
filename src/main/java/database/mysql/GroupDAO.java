@@ -15,14 +15,17 @@ import java.util.Scanner;
 
 
 public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
+    private UserDAO userDAO;
+    private CourseDAO courseDAO;
+
     public GroupDAO(DBAccess dbAccess) {
         super(dbAccess);
+        userDAO = new UserDAO(dbAccess);
+        courseDAO = new CourseDAO(dbAccess);
     }
 
     @Override
     public List<Group> getAll() {
-        UserDAO userDAO = new UserDAO(dbAccess);
-        CourseDAO courseDAO = new CourseDAO(dbAccess);
         String sql = "SELECT * FROM `Group`";
         List<Group> groupList = new ArrayList<>();
         Group group;
@@ -46,6 +49,31 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
         return groupList;
     }
 
+    public List<Group> getGroupByCourseName(String course_name){
+        String sql = "SELECT * FROM `Group` WHERE courseName = ?";
+        List<Group> groupList = new ArrayList<>();
+        Group group;
+
+        try{
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1,course_name);
+            ResultSet resultSet = executeSelectStatement();
+            while (resultSet.next()){
+                String courseName = resultSet.getString("courseName");
+                Course course = courseDAO.getOneByName(courseName);
+                String groupName = resultSet.getString("groupName");
+                int amount = resultSet.getInt("amount");
+                String teacher = resultSet.getString("docent");
+                User user = userDAO.getOneByName(teacher);
+                group = new Group(course,groupName,amount,user);
+                groupList.add(group);
+            }
+        } catch (SQLException sqlFout){
+            System.out.println("SQL fout " + sqlFout.getMessage());
+        }
+        return groupList;
+    }
+
     @Override
     public Group getOneById(int id) {
         return null;
@@ -59,8 +87,6 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     public Group getOneByName(String group_name) {
         String sql = "SELECT * FROM `Group` WHERE groupName = ? limit 1;";
         Group group = null;
-        UserDAO userDAO = new UserDAO(dbAccess);
-        CourseDAO courseDAO = new CourseDAO(dbAccess);
 
         try {
             setupPreparedStatement(sql);
@@ -84,8 +110,6 @@ public class GroupDAO extends AbstractDAO implements GenericDAO<Group> {
     public Group getOneByNameAndCourseName(String group_name, String course_name){
         String sql = "SELECT * FROM `Group` WHERE groupName = ? AND courseName = ?";
         Group group = null;
-        UserDAO userDAO = new UserDAO(dbAccess);
-        CourseDAO courseDAO = new CourseDAO(dbAccess);
 
         try {
             setupPreparedStatement(sql);

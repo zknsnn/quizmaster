@@ -21,7 +21,7 @@ public class AssignStudentsToGroupController {
     private GroupDAO groupDAO;
     private InschrijvingDAO inschrijvingDAO;
     List<Course> allCourses;
-    List<Group> allGroups;
+    List<Group> allGroupBySelectedCourse;
     List<Inschrijving> selectedCourseEnrolledStudents;
     List<Group> selectedCourseGroups;
     @FXML
@@ -37,6 +37,7 @@ public class AssignStudentsToGroupController {
         this.user = currentUser;
         this.courseDAO = new CourseDAO(Main.getDBAccess());
         this.groupDAO = new GroupDAO(Main.getDBAccess());
+        this.inschrijvingDAO = new InschrijvingDAO(Main.getDBAccess());
         allCourses = courseDAO.getAll();
         for (Course c:allCourses){
             courseComboBox.getItems().add(c.getCourseName());
@@ -56,13 +57,12 @@ public class AssignStudentsToGroupController {
                     groupComboBox.getItems().clear();
                     System.out.println("Geselecteerde cursus: " + observableValue + ", " + oldCourse + ", " + newCourse);
                     if (newCourse != null){
-                        allGroups = groupDAO.getAll();
-                        for (Group g:allGroups){
-                            if (newCourse.equals(g.getCourse().getCourseName())){
-                                groupComboBox.getItems().add(g.getGroupName());
-                            }
+                        allGroupBySelectedCourse = groupDAO.getGroupByCourseName(newCourse);
+                        for (Group g:allGroupBySelectedCourse){
+                            groupComboBox.getItems().add(g.getGroupName());
                         }
                         selectedCourseEnrolledStudents = inschrijvingDAO.getInschrijvingByCoursename(newCourse);
+                        studentList.getItems().clear();
                         for (Inschrijving i:selectedCourseEnrolledStudents){
                             studentList.getItems().add(i.getStudent().getUserName());
                         }
