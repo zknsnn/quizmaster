@@ -1,6 +1,7 @@
 package database.mysql;
 
 import model.Question;
+import model.Quiz;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,21 +43,24 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
 
     @Override
     public Question getOneById(int id) {
+        String sql = "SELECT * FROM Question WHERE questionId = ?";
         Question question = null;
         QuizDAO quizDAO = new QuizDAO(dbAccess);
         try {
-            String sql = "SELECT * FROM Question";
             setupPreparedStatement(sql);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = executeSelectStatement();
             if (resultSet.next()) {
-                int questionId = resultSet.getInt("questionId");
-                String questionText = resultSet.getString("questionText");
-                String correctAnswer = resultSet.getString("correctAnswer");
-                String wrongAnswer1 = resultSet.getString("wrongAnswer1");
-                String wrongAnswer2 = resultSet.getString("wrongAnswer2");
-                String wrongAnswer3 = resultSet.getString("wrongAnswer3");
-                String quizName = resultSet.getString("quizName");
-                question = new Question(questionId, questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quizDAO.getQuizPerID(quizName));
+                Quiz quiz = quizDAO.getQuizPerID(resultSet.getString("quiz_name"));
+
+                question = new Question(
+                        resultSet.getString("questionText"),
+                        resultSet.getString("correctAnswer"),
+                        resultSet.getString("wrongAnswer1"),
+                        resultSet.getString("wrongAnswer2"),
+                        resultSet.getString("wrongAnswer3"),
+                        quiz
+                );
             }
         } catch (SQLException sqlError) {
             System.out.println("SQL error " + sqlError.getMessage());
@@ -80,6 +84,24 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO<Question> {
             System.out.println("SQL error " + sqlError.getMessage());
         }
     } // storeOne
+
+    public void updateQuestion(Question question) {
+        String sql = "UPDATE Question SET questionText = ?, correctAnswer = ?, wrongAnswer1 = ?, wrongAnswer2 = ?, wrongAnswer3 = ?, quizName = ? WHERE questionId = ?;";
+        try {
+            setupPreparedStatementWithKey(sql);
+            preparedStatement.setString(1, question.getQuestionText());
+            preparedStatement.setString(2, question.getCorrectAnswer());
+            preparedStatement.setString(3, question.getWrongAnswer1());
+            preparedStatement.setString(4, question.getWrongAnswer2());
+            preparedStatement.setString(5, question.getWrongAnswer3());
+            preparedStatement.setString(6, question.getQuiz().getQuizName());
+            preparedStatement.setInt(7, question.getQuestionId());
+            executeManipulateStatement();
+            System.out.println("Question updated successfully: " + question.getQuestionText());
+        } catch (SQLException e) {
+            System.out.println("Fout bij het updaten van vraag: " + e.getMessage());
+        }
+    }
 
     public void deleteQuestion(Question question) {
         String sql = "DELETE FROM Question WHERE questionId = ?;";

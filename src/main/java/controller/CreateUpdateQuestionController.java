@@ -20,7 +20,9 @@ public class CreateUpdateQuestionController {
     private final QuestionDAO questionDAO = new QuestionDAO(Main.getDBAccess());
     private User loggedInUser;
     private QuizDAO quizDAO;
+    private Question question;
     private Question selectedQuestion;
+    private Question questionId;
 
     @FXML
     private Label titelLabel;
@@ -57,9 +59,7 @@ public class CreateUpdateQuestionController {
         if (selectedQuestion == null) {
             createQuestion();
         } else {
-//            Question question = updateQuestion();
-            boolean correcteInvoer = true;
-            String questionNaam = questionNaamTextfield.getText();
+            updateQuestion();
         }
 //
 //        if(currentquestion != null){
@@ -68,21 +68,23 @@ public class CreateUpdateQuestionController {
 
     } // end doCreateUpdateQuestion
 
-    public void updateQuestion() {
-//        Question question = new Question();
-        boolean correcteInvoer = true;
-        String questionNaam = questionNaamTextfield.getText();
-    }
-
-    private void haalInformatieQuestionOp(Question question) {
-        titelLabel.setText("Wijzig question");
-        quizNaamTextField.setText(quizNaamTextField.getSelectedText());
-        questionNaamTextfield.setText(selectedQuestion.getQuestionText());
-        correctAnswerTextfield.setText(selectedQuestion.getCorrectAnswer());
-        wrongAnswer1Textfield.setText(selectedQuestion.getWrongAnswer1());
-        wrongAnswer2Textfield.setText(selectedQuestion.getWrongAnswer2());
-        wrongAnswer3Textfield.setText(selectedQuestion.getWrongAnswer3());
-    } // haalInformatieQuestionOp
+    private Question updateQuestion() {
+        haalInformatieQuestionOp(selectedQuestion);
+        // Haal questionId op
+        Stage primaryStage = null;
+        questionId = questionDAO.getOneById(questionId.getQuestionId());
+        String quizNaam = quizNaamTextField.getText();
+        Quiz quiz = quizDAO.getQuizPerID(quizNaam);
+        // Gegevens bijwerken
+        question.setQuestionText(selectedQuestion.getQuestionText());
+        question.setCorrectAnswer(selectedQuestion.getCorrectAnswer());
+        question.setWrongAnswer1(selectedQuestion.getWrongAnswer1());
+        question.setWrongAnswer2(selectedQuestion.getWrongAnswer2());
+        question.setWrongAnswer3(selectedQuestion.getWrongAnswer3());
+        questionDAO.updateQuestion(question);
+        showAutoClosingWarning(primaryStage, "Vraag bijgewerkt.");
+        return question;
+    } // updateQuestion
 
     private Question createQuestion() {
         String questionText = questionNaamTextfield.getText();
@@ -150,6 +152,16 @@ public class CreateUpdateQuestionController {
         return new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz);
     } // end createQuestion
 
+    private void haalInformatieQuestionOp(Question question) {
+        titelLabel.setText("Wijzig question");
+        quizNaamTextField.setText(quizNaamTextField.getSelectedText());
+        questionNaamTextfield.setText(selectedQuestion.getQuestionText());
+        correctAnswerTextfield.setText(selectedQuestion.getCorrectAnswer());
+        wrongAnswer1Textfield.setText(selectedQuestion.getWrongAnswer1());
+        wrongAnswer2Textfield.setText(selectedQuestion.getWrongAnswer2());
+        wrongAnswer3Textfield.setText(selectedQuestion.getWrongAnswer3());
+    } // haalInformatieQuestionOp
+
     private void showAlert(Alert.AlertType type, String title, String header, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -174,4 +186,5 @@ public class CreateUpdateQuestionController {
         delay.setOnFinished(e -> popup.hide());
         delay.play();
     } // showAutoClosingWarning
+
 } // CreateUpdateQuestionController

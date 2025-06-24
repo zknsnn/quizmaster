@@ -38,7 +38,7 @@
                 <Label text="Fout antwoord 1" GridPane.rowIndex="3" />
                 <Label text="Fout antwoord 2" GridPane.rowIndex="4" />
                 <Label text="Fout antwoord 3" GridPane.rowIndex="5" />
-                <TextField fx:id="quizNaamTextfield" editable="false" style="-fx-control-inner-background: #E0E0E0;" prefHeight="26.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <TextField fx:id="quizNaamTextField" disable="true" editable="false" text="Quiznaam" prefHeight="26.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                 <TextField fx:id="questionNaamTextfield" prefHeight="26.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <TextField fx:id="correctAnswerTextfield" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField fx:id="wrongAnswer1Textfield" GridPane.columnIndex="1" GridPane.rowIndex="3" />
