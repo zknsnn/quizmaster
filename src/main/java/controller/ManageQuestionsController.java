@@ -31,6 +31,7 @@ public class ManageQuestionsController {
         this.questionDAO = new QuestionDAO(Main.getDBAccess());
         this.quizDAO = new QuizDAO(Main.getDBAccess());
         this.quiz = quiz;
+        loadQuestionList();
     }
 
     @FXML
@@ -67,6 +68,7 @@ public class ManageQuestionsController {
             return;
         }
         questionDAO.deleteQuestion(selectedQuestion);
+        loadQuestionList();
     }
 
 //    Als ik een vraag selecteer (scherm manageQuestions.fxml) wil ik meteen kunnen zien
@@ -84,5 +86,23 @@ public class ManageQuestionsController {
             quizQuestionsCountLabel.setText("Geen quiz gekoppeld aan deze vraag.");
         }
     } // handleQuestionInfo
+
+// Aanmaken van de lijsten, omdat het soms lang duurt
+    private void loadQuestionList() {
+        questionList.getItems().clear();
+        List<Question> questions = questionDAO.getQuestionsByQuizName(quiz.getQuizName());
+        questionList.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Question question, boolean empty) {
+                super.updateItem(question, empty);
+                if (empty || question == null) {
+                    setText(null);
+                } else {
+                    setText(question.getQuestionText());
+                }
+            }
+        });
+        questionList.getItems().addAll(questions);  // Geen extra DAO-call hier
+    } // loadQuestionList
 
 } // end ManageQuestionsController
