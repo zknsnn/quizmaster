@@ -49,18 +49,15 @@ public class UserCouchDBLauncher {
                         User user = new User(userName, password, firstName, prefix, lastName, role);
                         userDAO.saveSingleUser(user);
                         System.out.println("Opgeslagen: " + user.getUserName());
-
                     } catch (IllegalArgumentException e) {
                         // Ongeldige rol in CSV (bijvoorbeeld tikfout)
                         System.out.println("Ongeldige rol '" + roleStr + "' voor gebruiker: " + userName);
                     }
-
                 } else {
                     // Als het aantal velden niet klopt
                     System.out.println("Ongeldige regel (verwacht 6 velden): " + regel);
                 }
             }
-
         } catch (IOException e) {
             // Fout bij openen of lezen van bestand
             System.err.println("Fout bij verwerken van CSV-bestand: " + e.getMessage());
