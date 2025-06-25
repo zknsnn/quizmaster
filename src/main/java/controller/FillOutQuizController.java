@@ -79,11 +79,11 @@ public class FillOutQuizController {
         Collections.shuffle(lijstMetFouteAntwoorden);
 
         // Genereer een random getal dat de plaats van het goede antwoord bepaalt.
-        int randomgetal = (new Random()).nextInt(4);
+        int randomGetal = (new Random()).nextInt(4);
 
         // Voeg dit getal toe aan de lijst met correcte antwoorden. Zo weet je welk antwoord het juiste is.
-        lijstCorrecteAntwoorden.add(randomgetal);
-        lijstMetFouteAntwoorden.add(randomgetal, question.getCorrectAnswer());
+        lijstCorrecteAntwoorden.add(randomGetal);
+        lijstMetFouteAntwoorden.add(randomGetal, question.getCorrectAnswer());
 
         // Voeg items van de lijstMetFouteAntwoorden toe aan de lijstGeshuffeldeVragen.
         StringBuilder stringBuilder = new StringBuilder();
@@ -102,7 +102,6 @@ public class FillOutQuizController {
     public void doRegisterA() {
         lijstAntwoordenGebruiker.set(tellerAntwoorden, 0);
         gaNaarvolgendeVraag();
-        System.out.println(lijstAntwoordenGebruiker.get(tellerAntwoorden));
     }
 
     public void doRegisterB() {
@@ -164,7 +163,6 @@ public class FillOutQuizController {
             }
         }
         double percentageGehaaldePunten = (double) gehaaldePunten / totaalTeHalenPunten * 100;
-
         return percentageGehaaldePunten >= quiz.getSuccesDefinition();
     }
 
