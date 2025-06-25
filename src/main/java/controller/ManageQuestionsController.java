@@ -45,6 +45,9 @@ public class ManageQuestionsController {
     }
 
     @FXML
+    public void terugManageQuizzes(){Main.getSceneManager().showManageQuizScene(loggedInUser);}
+
+    @FXML
     public void doUpdateQuestion(){
             Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
             if(selectedQuestion == null){
