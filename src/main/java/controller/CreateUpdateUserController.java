@@ -61,7 +61,7 @@ public class CreateUpdateUserController {
 //        Valideer, CREATE, UPDATE feedback.
     @FXML
     public void doCreateUpdateUser() {
-        // === Validatie ===
+        //Validatie
         if (userNameField.getText().isBlank()) {
             showWarning("Gebruikersnaam verplicht.");
             return;
@@ -83,7 +83,7 @@ public class CreateUpdateUserController {
             return;
         }
 
-        // === Gegevens ophalen ===
+        // Gegevens ophalen
         String userName = userNameField.getText();
         String password = passwordField.getText();
         String firstName = firstNameField.getText();
@@ -91,7 +91,7 @@ public class CreateUpdateUserController {
         String lastName = lastNameField.getText();
         UserRole userRole = userRoleChoiceBox.getValue();
 
-        // === CREATE of UPDATE uitvoeren ===
+        // CREATE of UPDATE uitvoeren
         if (user == null) {
             // Nieuwe gebruiker aanmaken
             User newUser = new User(userName, password, firstName, prefix, lastName, userRole);
@@ -121,7 +121,6 @@ public class CreateUpdateUserController {
             showWarning("Selecteer een gebruiker om te verwijderen.");
             return;
         }
-
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Verwijderen");
         alert.setHeaderText("Verwijderen van gebruiker " + user.getUserName() + "?");
