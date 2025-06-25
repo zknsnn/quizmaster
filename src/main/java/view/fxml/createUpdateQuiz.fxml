@@ -33,6 +33,7 @@
       <ComboBox fx:id="quizLevelComboBox" prefWidth="150.0" promptText="Level" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <ComboBox fx:id="quizCursusCombobox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
     </GridPane>
-    <Button layoutX="392.0" layoutY="424.0" mnemonicParsing="false" onAction="#doCreateUpdateQuiz" text="Opslaan" />
-    <Button layoutX="483.0" layoutY="424.0" mnemonicParsing="false" onAction="#doMenu" text="Menu" />
+    <Button layoutX="358.0" layoutY="416.0" mnemonicParsing="false" onAction="#doCreateUpdateQuiz" text="Opslaan" />
+    <Button layoutX="449.0" layoutY="416.0" mnemonicParsing="false" onAction="#doMenu" text="Menu" />
+   <Button layoutX="518.0" layoutY="416.0" mnemonicParsing="false" onAction="#dashboardMenu" text="Dashboard" />
 </AnchorPane>

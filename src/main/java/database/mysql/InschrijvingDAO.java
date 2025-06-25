@@ -3,7 +3,6 @@ package database.mysql;
 import model.Course;
 import model.Inschrijving;
 import model.User;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -123,6 +122,25 @@ public class InschrijvingDAO extends AbstractDAO implements GenericDAO<Inschrijv
         }catch (SQLException e){
             System.out.println("Fout bij verwijderen van inschrijving");
         }
+    }
+
+    public List<User> getUnassignedStudentsForCourse(String courseName){
+        List<User> unassignedStudents = new ArrayList<>();
+        String sql = "SELECT i.student FROM Inschrijving i LEFT JOIN GroepsIndeling g ON i.student = g.userName AND i.courseName = g.courseName WHERE i.courseName = ? AND g.userName IS NULL";
+        try {
+            setupPreparedStatement(sql);
+            preparedStatement.setString(1, courseName);
+            ResultSet resultSet = executeSelectStatement();
+            UserDAO userDAO = new UserDAO(dbAccess);
+            while (resultSet.next()) {
+                String studentName = resultSet.getString("student");
+                User user = userDAO.getOneByName(studentName);
+                unassignedStudents.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL fout (not in group): " + e.getMessage());
+        }
+        return unassignedStudents;
     }
 
 }

@@ -6,7 +6,6 @@ import database.mysql.UserDAO;
 import model.Course;
 import model.User;
 import view.Main;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

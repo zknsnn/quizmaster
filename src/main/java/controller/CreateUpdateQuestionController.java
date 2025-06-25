@@ -52,6 +52,8 @@ public class CreateUpdateQuestionController {
         Main.getSceneManager().showWelcomeScene(Main.currentUser());
     }
 
+    public void dashBoardMenu(){Main.getSceneManager().showCoordinatorDashboard(Main.currentUser());}
+
     public void doCreateUpdateQuestion() {
         if (checkForEmptyFields()){
             return;

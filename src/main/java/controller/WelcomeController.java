@@ -1,6 +1,8 @@
 package controller;
 
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.MenuButton;
@@ -12,8 +14,6 @@ import view.Main;
 
 public class WelcomeController {
     private User user;
-    private Quiz quiz;
-    private Question question;
 
     @FXML
     private Label welcomeLabel;
@@ -51,15 +51,19 @@ public class WelcomeController {
             MenuItem item1 = new MenuItem("Beheer gebruikers");
             item1.setOnAction(e -> {Main.getSceneManager().showManageUsersScene(Main.currentUser());});
             taskMenuButton.getItems().add(item1);
-            item1.getOnAction().handle(null);
+           // item1.getOnAction().handle(null);
         } else if (role == UserRole.DOCENT) {
-            MenuItem item1 = new MenuItem("Beheer lessen");
-            item1.setOnAction(e -> {Main.getSceneManager().showStudentFeedback(quiz);});
-            taskMenuButton.getItems().addAll(item1);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Geen taken");
+            alert.setContentText("Er zijn geen taken voor u");
+            alert.show();
+
+            PauseTransition screen = new PauseTransition(javafx.util.Duration.seconds(2));
+            screen.setOnFinished(e -> Main.getSceneManager().showLoginScene());
+            screen.play();
 
         }
     }
-
     public void doLogout() {
         Main.getSceneManager().showLoginScene();
     }

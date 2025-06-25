@@ -8,7 +8,6 @@ import javafx.scene.control.ListView;
 import model.Course;
 import model.User;
 import view.Main;
-
 import java.util.List;
 import java.util.Optional;
 
