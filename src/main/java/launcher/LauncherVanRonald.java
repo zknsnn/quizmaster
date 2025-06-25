@@ -40,40 +40,6 @@ public class LauncherVanRonald {
             System.out.println("CouchDB connection open");
         }
 
-//  CouchDB uitvoer:
-//  Overzicht vragen Als coördinator wil ik een tekstbestand kunnen maken met een helder
-//  overzicht van alle vragen per quiz, van alle quizzen in mijn cursussen
-
-/*
-        List<Question> questions = questionDAO.getAll();{
-            Gson gson = new Gson();
-            List<Question> question = new ArrayList<>();
-            // Haal alle documenten op, in de vorm van JsonObjecten;
-            // zet om naar Vraag om het mogelijk te maken om op deel van vraag te zoeken
-            for (JsonObject jsonObject : getAllDocuments()) {
-                Question result = gson.fromJson(jsonObject, Question.class);
-                if (result.getQuestion().contains(question)) {
-                    questions.add(result);
-                }
-            }
-            return questions;
-        }
- */
-        // Haal een lijst vragen uit de SQL DB en sla op in Json
-/*        List<Question> questions = questionDAO.getAll();
-        private String saveSingleQuestion(questions) {
-            // Vraag object omzetten naar JsonObject, zodat het opgeslagen kan worden mbv save()
-            Gson gson = new Gson();
-            String jsonString = gson.toJson(question);
-            JsonParser parser = new JsonParser();
-            JsonObject jsonObject = parser.parse(jsonString).getAsJsonObject();
-            return questionCouchDBDAO.saveDocument(jsonObject);
-        } // saveSingleQuestion
-
- */
-
-
-
         // Eerst de database legen om te kunnen testen / demo
 //        deleteFromTable(dbAccess);
 

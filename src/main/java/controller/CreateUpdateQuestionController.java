@@ -21,6 +21,7 @@ public class CreateUpdateQuestionController {
     private final QuestionDAO questionDAO = new QuestionDAO(Main.getDBAccess());
     private QuizDAO quizDAO = new QuizDAO(Main.getDBAccess());
     private Question currentQuestion;
+    private Quiz currentQuiz;
 
     @FXML
     private Label titelLabel;
@@ -39,12 +40,15 @@ public class CreateUpdateQuestionController {
     @FXML
     private Label warningField;
 
-    public void setup(Question question) {
+    public void setup(Question question, Quiz quiz) {
         currentQuestion = question;
+        currentQuiz = quiz;
         fillComboBox();
         convertQuizToString();
         if (question != null) {
             haalInformatieQuestionOp(question);
+        } else {
+            quizComboBox.setValue(currentQuiz);
         }
     } // end setup
 
@@ -65,19 +69,22 @@ public class CreateUpdateQuestionController {
         }
     } // end doCreateUpdateQuestion
 
-    private Question updateQuestion() {
-        haalInformatieQuestionOp(currentQuestion);
-        String quizNaam = quizComboBox.getSelectionModel().getSelectedItem().getQuizName();
-        Quiz quiz = quizDAO.getQuizPerID(quizNaam);
+    private void updateQuestion() {
         // Gegevens bijwerken
-        currentQuestion.setQuestionText(currentQuestion.getQuestionText());
-        currentQuestion.setCorrectAnswer(currentQuestion.getCorrectAnswer());
-        currentQuestion.setWrongAnswer1(currentQuestion.getWrongAnswer1());
-        currentQuestion.setWrongAnswer2(currentQuestion.getWrongAnswer2());
-        currentQuestion.setWrongAnswer3(currentQuestion.getWrongAnswer3());
+        String questionText = questionNaamTextfield.getText();
+        String correctAnswer = correctAnswerTextfield.getText();
+        String wrongAnswer1 = wrongAnswer1Textfield.getText();
+        String wrongAnswer2 = wrongAnswer2Textfield.getText();
+        String wrongAnswer3 = wrongAnswer3Textfield.getText();
+        Quiz quiz = quizComboBox.getSelectionModel().getSelectedItem();
+        currentQuestion.setQuestionText(questionText);
+        currentQuestion.setCorrectAnswer(correctAnswer);
+        currentQuestion.setWrongAnswer1(wrongAnswer1);
+        currentQuestion.setWrongAnswer2(wrongAnswer2);
+        currentQuestion.setWrongAnswer3(wrongAnswer3);
+        currentQuestion.setQuiz(quiz);
         questionDAO.updateQuestion(currentQuestion);
         showWarning("Vraag bijgewerkt.");
-        return currentQuestion;
     } // updateQuestion
 
     private Question createQuestion() {
@@ -87,19 +94,13 @@ public class CreateUpdateQuestionController {
         String wrongAnswer1 = wrongAnswer1Textfield.getText();
         String wrongAnswer2 = wrongAnswer2Textfield.getText();
         String wrongAnswer3 = wrongAnswer3Textfield.getText();
-        String quizNaam = quizComboBox.getSelectionModel().getSelectedItem().getQuizName();
-        Quiz quiz = quizDAO.getQuizPerID(quizNaam);
-
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Opslaan");
-        alert.setHeaderText("Opslaan niet gelukt!");
-
+        Quiz quiz = quizComboBox.getSelectionModel().getSelectedItem();
 
         Question question = new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz);
         questionDAO.storeOne(question);
         showWarning("Nieuwe vraag met antwoorden opgeslagen.");
-
-        return question;
+        clearFields();
+        return null;
     } // end createQuestion
 
     private void haalInformatieQuestionOp(Question question) {
@@ -111,6 +112,15 @@ public class CreateUpdateQuestionController {
         wrongAnswer2Textfield.setText(currentQuestion.getWrongAnswer2());
         wrongAnswer3Textfield.setText(currentQuestion.getWrongAnswer3());
     } // haalInformatieQuestionOp
+
+    // Met deze methode worden alle tekstvelden leeggehaald.
+    private void clearFields() {
+        questionNaamTextfield.clear();
+        correctAnswerTextfield.clear();
+        wrongAnswer1Textfield.clear();
+        wrongAnswer2Textfield.clear();
+        wrongAnswer3Textfield.clear();
+    } // einde clearFields
 
     // Deze alert geeft een popup met OK button. Niet wenselijk bij onze PO
     private void showAlert(Alert.AlertType type, String title, String header, String content) {

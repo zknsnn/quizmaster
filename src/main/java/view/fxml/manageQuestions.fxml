@@ -41,4 +41,9 @@
         <font>
             <Font size="18.0" />
         </font></Label>
+    <Label fx:id="warningField" layoutX="16.0" layoutY="420.0" textFill="RED" visible="false">
+        <font>
+            <Font size="20.0" />
+        </font>
+    </Label>
 </AnchorPane>

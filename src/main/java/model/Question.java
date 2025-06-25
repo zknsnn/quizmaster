@@ -23,6 +23,14 @@ public class Question {
         this(0, questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz);
     }
 
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
+    }
+
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
+
     public String getQuestionText() {
         return questionText;
     }

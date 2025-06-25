@@ -33,65 +33,22 @@ public class CreateUpdateQuizController implements Initializable {
     private TextField quizSuccesDefinitieTextfield;
 
     @FXML
-    private TextField quizAantalVragenTextField;
-
-    @FXML
     private ComboBox<String> quizLevelComboBox;
 
     @FXML
     private ComboBox<Course> quizCursusCombobox;
 
-    //    Quizzen CRUD Als coördinator wil ik de volledige CRUD-functionaliteit voor het beheer van
-    //    quizzen hebben behorende bij cursussen waarvoor ik de rol coördinator heb (schermen
-    //    manageQuizzes.fxml, createUpdateQuiz.fxml). Als ik een quiz selecteer (scherm
-    //    manageQuizzes.fxml) wil ik meteen kunnen zien hoeveel vragen er in de quiz zitten.
-    //    public CreateUpdateQuizController(ComboBox quizLevelComboBox) {
-    //    this.quizLevelComboBox = quizLevelComboBox;
-    //    }
-
     public void setup(Quiz quiz, User user) {
         this.loggedInUser = user;
         this.quizDAO = new QuizDAO(Main.getDBAccess());
         this.courseDAO = new CourseDAO(Main.getDBAccess());
+        this.selectedQuiz = quiz;
 
-        quizCursusCombobox.setConverter(new StringConverter<Course>() {
-            @Override
-            public String toString(Course obj) {
-                if (obj != null) {
-                    return obj.getCourseName();
-                }
-                return "";
-            }
+        haalInformatieQuizOp(quiz);
 
-            @Override
-            public Course fromString(String string) {
-                return null;
-            }
-        });
+        fillComboBosx();
 
-        List<Course> cursussen = courseDAO.getCoursePerCoordinator(loggedInUser);
-        for (Course course : cursussen) {
-            quizCursusCombobox.getItems().add(course);
-            }
-
-        if (quiz != null) {
-            this.selectedQuiz = quiz;
-            haalInformatieQuizOp(quiz);
-        } else {
-            this.selectedQuiz = null;
-            quizCursusCombobox.getSelectionModel().selectFirst();
-        }
     } // einde setup
-
-    private void haalInformatieQuizOp(Quiz quiz) {
-        titelLabel.setText("Wijzig quiz");
-        quizNaamTextfield.setText(quiz.getQuizName());
-        quizNaamTextfield.setDisable(true);
-        quizLevelComboBox.getSelectionModel().select(quiz.getQuizLevel());
-        quizSuccesDefinitieTextfield.setText(String.valueOf(quiz.getSuccesDefinition()));
-        quizCursusCombobox.setValue(selectedQuiz.getCourse());
-//        quizAantalVragenTextField.setText(quiz);
-    }
 
     public void doMenu() {
         Main.getSceneManager().showManageQuizScene(loggedInUser);
@@ -131,16 +88,7 @@ public class CreateUpdateQuizController implements Initializable {
         alert.setTitle("Opslaan");
         alert.setHeaderText("Opslaan onsuccesvol");
 
-        if (quizNaam.isEmpty()) {
-            alert.setContentText("Voer een quiznaam in.");
-            alert.showAndWait();
-            return null;
-        }
-        if (quizNaam.trim().isEmpty()) {
-            alert.setContentText("Alleen spaties als naam is niet toegestaan.");
-            alert.showAndWait();
-            return null;
-        }
+        if (controleerNaamQuiz(quizNaam, alert)) return null;
 
         try {
                 succesDefinitie = Double.parseDouble(quizSuccesDefinitieTextfield.getText());
@@ -155,13 +103,51 @@ public class CreateUpdateQuizController implements Initializable {
                 return null;
             }
 
+        if (controleerQuizNiveau(quizLevel, alert, course)) return null;
+
+        return new Quiz(quizNaam, quizLevel, succesDefinitie, course);
+    } // einde createQuiz
+
+    private static boolean controleerQuizNiveau(String quizLevel, Alert alert, Course course) {
         if (quizLevel == null || quizLevel.isEmpty()) {
             alert.setContentText("Selecteer een quizniveau.");
             alert.showAndWait();
-            return null;
+            return true;
         }
-        return new Quiz(quizNaam, quizLevel, succesDefinitie, course);
-    } // einde createQuiz
+        if ((course.getCourseLevel().equalsIgnoreCase("Beginner") && (quizLevel.equalsIgnoreCase
+                ("Medium") || quizLevel.equalsIgnoreCase("Gevorderd")))) {
+            alert.setContentText("Course niveau is Beginner. Selecteer Beginner als quizniveau.");
+            alert.showAndWait();
+            return true;
+        }
+        if ((course.getCourseLevel().equalsIgnoreCase("Medium") && quizLevel.equalsIgnoreCase
+                ("Gevorderd"))) {
+            alert.setContentText("Course niveau is Medium. Selecteer Beginner of Medium als quizniveau.");
+            alert.showAndWait();
+            return true;
+        }
+        if ((course.getCourseLevel().equalsIgnoreCase("Gevorderd") && quizLevel.equalsIgnoreCase
+                ("Beginner"))) {
+            alert.setContentText("Course niveau is Gevorderd. Selecteer Medium of Gevorderd als quizniveau.");
+            alert.showAndWait();
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean controleerNaamQuiz(String quizNaam, Alert alert) {
+        if (quizNaam.isEmpty()) {
+            alert.setContentText("Voer een quiznaam in.");
+            alert.showAndWait();
+            return true;
+        }
+        if (quizNaam.trim().isEmpty()) {
+            alert.setContentText("Alleen spaties als naam is niet toegestaan.");
+            alert.showAndWait();
+            return true;
+        }
+        return false;
+    }
 
     // Met deze methode worden alle tekstvelden leeggehaald.
     private void clearFields() {
@@ -169,7 +155,6 @@ public class CreateUpdateQuizController implements Initializable {
         quizLevelComboBox.getSelectionModel().selectFirst();
         quizSuccesDefinitieTextfield.clear();
         quizCursusCombobox.getSelectionModel().selectFirst();
-        quizAantalVragenTextField.clear();
     } // einde clearFields
 
     @Override
@@ -177,5 +162,39 @@ public class CreateUpdateQuizController implements Initializable {
         ObservableList<String> levels = FXCollections.observableArrayList("Beginner", "Medium", "Gevorderd");
         quizLevelComboBox.setItems(levels);
         quizLevelComboBox.getSelectionModel().selectFirst();
+    }
+
+    private void fillComboBosx() {
+        List<Course> cursussen = courseDAO.getCoursePerCoordinator(loggedInUser);
+        for (Course course : cursussen) {
+            quizCursusCombobox.getItems().add(course);
+        }
+        quizCursusCombobox.setConverter(new StringConverter<Course>() {
+            @Override
+            public String toString(Course obj) {
+                if (obj != null) {
+                    return obj.getCourseName();
+                }
+                return "";
+            }
+            @Override
+            public Course fromString(String string) {
+                return null;
+            }
+        });
+    }
+
+    private void haalInformatieQuizOp(Quiz quiz) {
+        if (quiz == null) {
+            titelLabel.setText("Nieuwe quiz");
+            quizNaamTextfield.setDisable(false);
+            return;
+        }
+        titelLabel.setText("Wijzig quiz");
+        quizNaamTextfield.setText(quiz.getQuizName());
+        quizNaamTextfield.setDisable(true);
+        quizLevelComboBox.getSelectionModel().select(quiz.getQuizLevel());
+        quizSuccesDefinitieTextfield.setText(String.valueOf(quiz.getSuccesDefinition()));
+        quizCursusCombobox.setValue(selectedQuiz.getCourse());
     }
 }
