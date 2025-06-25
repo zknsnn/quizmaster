@@ -86,6 +86,15 @@ public class CoordinatorDashboardController {
 
     public void doEditQuestion() {
         Integer idQuestion = questionList.getSelectionModel().getSelectedItem();
+        // private ListView<Integer> questionList; ik gebruik deze list als integer,dus moet ik deze ook conroleren
+        if (idQuestion == null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Geen vraag geselecteerd");
+            alert.setHeaderText("Kan vraag niet bewerken");
+            alert.setContentText("Selecteer eerst een vraag om te bewerken.");
+            alert.showAndWait();
+            return;
+        }
         Question selectedQuestion = questionDAO.getOneById(idQuestion);
 
         if (selectedQuestion == null) {
