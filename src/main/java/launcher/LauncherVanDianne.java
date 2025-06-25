@@ -41,10 +41,6 @@ public class LauncherVanDianne {
 
 //        quizDAO.saveQuiz(quiz);
 
-
-
-        System.out.println(quiz.telAantalVragen(quiz));
-
         ArrayList<Quiz> quizzenLijst = new ArrayList<>();
         quizzenLijst = quizDAO.getAllQuizzes();
 
