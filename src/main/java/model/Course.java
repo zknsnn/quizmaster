@@ -22,7 +22,6 @@ public class Course {
         return courseName;
     }
 
-
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
@@ -31,15 +30,8 @@ public class Course {
         return courseLevel;
     }
 
-    public void setCourseLevel(String courseLevel) {
-        this.courseLevel = courseLevel;
-    }
-
     public User getCoordinator() {
         return coordinator;
     }
 
-    public void setCoordinator(User coordinator) {
-        this.coordinator = coordinator;
-    }
 }

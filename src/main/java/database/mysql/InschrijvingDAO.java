@@ -3,7 +3,6 @@ package database.mysql;
 import model.Course;
 import model.Inschrijving;
 import model.User;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

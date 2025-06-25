@@ -1,8 +1,6 @@
 package controller;
 
 import database.mysql.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
@@ -12,7 +10,6 @@ import model.Quiz;
 import model.User;
 import view.Main;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CoordinatorDashboardController {
@@ -28,7 +25,6 @@ public class CoordinatorDashboardController {
     private CourseDAO courseDAO;
     private QuizDAO quizDAO;
     private QuestionDAO questionDAO;
-
 
     public void setup(User user) {
         this.ingelogdeuser = user;

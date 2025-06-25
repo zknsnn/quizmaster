@@ -1,10 +1,8 @@
 package controller;
 
 import database.mysql.CourseDAO;
-import database.mysql.DBAccess;
 import database.mysql.InschrijvingDAO;
 import database.mysql.UserDAO;
-import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
@@ -21,7 +19,6 @@ public class StudentSignInOutController {
 
     private InschrijvingDAO inschrijvingDAO;
     private CourseDAO courseDAO;
-    private UserDAO userDAO;
     private User loggedInUser;
     @FXML
     private ListView<Course> signedOutCourseList;

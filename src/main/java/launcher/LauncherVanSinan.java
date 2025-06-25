@@ -6,7 +6,6 @@ import model.Course;
 import model.User;
 import model.UserRole;
 import view.Main;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ public class LauncherVanSinan {
         for (Course c : courses) {
             courseDAO.storeOne(c);
         }
-
+        // Inlezen van CSV
         /*DBAccess dbAccess = Main.getDBAccess();
 
         File coursesBestand = new File("src/main/resources/CSV bestanden/Cursussen.csv");
