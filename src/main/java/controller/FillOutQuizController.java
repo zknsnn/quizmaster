@@ -16,16 +16,16 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class FillOutQuizController {
-    User loggedInUser;
-    Quiz quiz;
-    QuestionDAO questionDAO = new QuestionDAO(Main.getDBAccess());
-    int tellerTitel = 1;
-    int tellerAntwoorden = 0;
-    List<Question> lijstMetVragen;
-    List<Integer> lijstAntwoordenGebruiker = new ArrayList<>();
-    List<Integer> lijstCorrecteAntwoorden = new ArrayList<>();
-    List<String> lijstGeshuffeldeVragen = new ArrayList<>();
-    QuizResultCouchDBDAO quizResultCouchDBDAO;
+    private User loggedInUser;
+    private Quiz quiz;
+    private QuestionDAO questionDAO = new QuestionDAO(Main.getDBAccess());
+    private int tellerTitel = 1;
+    private int tellerAntwoorden = 0;
+    private List<Question> lijstMetVragen;
+    private List<Integer> lijstAntwoordenGebruiker = new ArrayList<>();
+    private List<Integer> lijstCorrecteAntwoorden = new ArrayList<>();
+    private List<String> lijstGeshuffeldeVragen = new ArrayList<>();
+    private QuizResultCouchDBDAO quizResultCouchDBDAO;
 
     @FXML
     private Label titleLabel;
