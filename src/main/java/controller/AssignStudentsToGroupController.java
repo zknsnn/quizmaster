@@ -117,21 +117,43 @@ public class AssignStudentsToGroupController {
                 groepsIndeling = new GroepsIndeling(selectedGroup,student);
                 groepsIndelingDAO.storeOne(groepsIndeling);
             }
-            unassignedStudentsForCourse = inschrijvingDAO.getUnassignedStudentsForCourse(selectedCourseName);
-            studentList.getItems().clear();
-            for (User u : unassignedStudentsForCourse) {
-                studentList.getItems().add(u.getUserName());
-            }
-
-            selectedGroupStudents = groepsIndelingDAO.getAllByCourseNameAndGroupName(selectedGroupName, selectedCourseName);
-            studentsInGroupList.getItems().clear();
-            for (User u : selectedGroupStudents) {
-                studentsInGroupList.getItems().add(u.getUserName());
-            }
+            refreshListViews();
         }
     }
 
-    public void doRemove() {}
+    public void doRemove() {
+        List<String> selectedStudentsForVerwijderen = studentsInGroupList.getSelectionModel().getSelectedItems();
+        if (selectedStudentsForVerwijderen == null || selectedStudentsForVerwijderen.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Fout bij selecteren");
+            alert.setHeaderText("Toevoegen is mislukt");
+            alert.setContentText("Selecteer een of meerdere studenten om te verwijderen.");
+            alert.showAndWait();
+        }else{
+            Group selectedGroup = groupDAO.getOneByNameAndCourseName(selectedGroupName,selectedCourseName);
+            User student;
+            GroepsIndeling groepsIndeling;
+            for (String s:selectedStudentsForVerwijderen) {
+                student = userDAO.getOneByName(s);
+                groepsIndeling = new GroepsIndeling(selectedGroup,student);
+                groepsIndelingDAO.deleteOne(groepsIndeling);
+            }
+            refreshListViews();
+        }
+    }
+
+    public void refreshListViews(){
+        unassignedStudentsForCourse = inschrijvingDAO.getUnassignedStudentsForCourse(selectedCourseName);
+        studentList.getItems().clear();
+        for (User u : unassignedStudentsForCourse) {
+            studentList.getItems().add(u.getUserName());
+        }
+        selectedGroupStudents = groepsIndelingDAO.getAllByCourseNameAndGroupName(selectedGroupName, selectedCourseName);
+        studentsInGroupList.getItems().clear();
+        for (User u : selectedGroupStudents) {
+            studentsInGroupList.getItems().add(u.getUserName());
+        }
+    }
 
     public void doMenu() {Main.getSceneManager().showWelcomeScene(user);}
 }
