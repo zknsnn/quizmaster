@@ -3,6 +3,7 @@ package controller;
 import database.mysql.QuestionDAO;
 import database.couchDB.QuizResultCouchDBDAO;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -44,6 +45,15 @@ public class FillOutQuizController {
 
         // Haal lijst met vragen op.
         lijstMetVragen = questionDAO.getQuestionsByQuizName(quiz.getQuizName());
+
+        if (lijstMetVragen.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Quiz");
+            alert.setHeaderText("Quiz bevat geen vragen");
+            alert.setContentText("Deze quiz bevat geen vragen. Selecteer een andere quiz.");
+            alert.show();
+            Main.getSceneManager().showSelectQuizForStudent(loggedInUser);
+        }
 
         // Shuffle lijsten met vragen en antwoorden
         for (Question question : lijstMetVragen) {
