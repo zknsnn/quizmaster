@@ -25,17 +25,12 @@ public class ManageQuestionsController {
     private ListView<Question> questionList;
     @FXML
     private Label quizQuestionsCountLabel;
-    @FXML
-    private ListView<Quiz> quizListView;
-    List<Question> questions;
-    List<Quiz> quizzes;
 
     public void setup(Quiz quiz, User user) {
         this.loggedInUser = user;
         this.questionDAO = new QuestionDAO(Main.getDBAccess());
         this.quizDAO = new QuizDAO(Main.getDBAccess());
         this.quiz = quiz;
-        loadQuestionList();
     }
 
     @FXML
@@ -50,7 +45,6 @@ public class ManageQuestionsController {
 
     @FXML
     public void doUpdateQuestion(){
-//            Main.getSceneManager().showCreateUpdateQuestionScene(questionList.getSelectionModel().getSelectedItem());
             Question selectedQuestion = questionList.getSelectionModel().getSelectedItem();
             if(selectedQuestion == null){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -73,7 +67,6 @@ public class ManageQuestionsController {
             return;
         }
         questionDAO.deleteQuestion(selectedQuestion);
-        loadQuestionList();
     }
 
 //    Als ik een vraag selecteer (scherm manageQuestions.fxml) wil ik meteen kunnen zien
@@ -91,45 +84,5 @@ public class ManageQuestionsController {
             quizQuestionsCountLabel.setText("Geen quiz gekoppeld aan deze vraag.");
         }
     } // handleQuestionInfo
-
-// Aamaken van de lijsten duurt te lang in oude code
-/*
-    private void loadQuestionList() {
-        questionList.getItems().clear();
-//        Rendering van elke vraag in de ListView
-        questionList.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(Question question, boolean empty) {
-                super.updateItem(question, empty);
-                if (empty || question == null) {
-                    setText(null);
-                } else {
-                    setText(question.getQuestionText());
-                }
-            }
-        });
-        List<Question> questions = questionDAO.getAll();
-        questionList.getItems().addAll(questions);
-    } // end loadQuestionList
- */
-
-// Omdat het creeren van de lijsten heel traag ging, ChatGPT om vereenvoudiging gevraagd.
-// Ook dit werkt nog niet echt.
-    private void loadQuestionList() {
-        questionList.getItems().clear();
-        List<Question> questions = questionDAO.getQuestionsByQuizName(quiz.getQuizName());
-        questionList.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(Question question, boolean empty) {
-                super.updateItem(question, empty);
-                if (empty || question == null) {
-                    setText(null);
-                } else {
-                    setText(question.getQuestionText());
-                }
-            }
-        });
-        questionList.getItems().addAll(questions);  // Geen extra DAO-call hier
-    } // loadQuestionList
 
 } // end ManageQuestionsController

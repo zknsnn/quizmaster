@@ -94,50 +94,7 @@ public class CreateUpdateQuestionController {
         alert.setTitle("Opslaan");
         alert.setHeaderText("Opslaan niet gelukt!");
 
-//  Deze hele code is obsolete nu ik een andere check op empty fields gebruik in de "doCreateUpdateQuestion" methode
-        /*
-        if (questionText.isEmpty()) {
-            showWarning("Voer een vraag in.");
-            return null;
-        }
-        if (questionText.trim().isEmpty()) {
-            showWarning("Alleen spaties als vraag is niet toegestaan.");
-            return null;
-        }
-        if (correctAnswer.isEmpty()) {
-            showWarning("Voer een correct antwoord in.");
-            return null;
-        }
-        if (correctAnswer.trim().isEmpty()) {
-            showWarning("Alleen spaties als correct antwoord is niet toegestaan.");
-            return null;
-        }
-        if (wrongAnswer1.isEmpty()) {
-            showWarning("Voer een eerste fout antwoord in.");
-            return null;
-        }
-        if (wrongAnswer1.trim().isEmpty()) {
-            showWarning("Alleen spaties als eerste fout antwoord is niet toegestaan.");
-            return null;
-        }
-        if (wrongAnswer2.isEmpty()) {
-            showWarning("Voer een tweede fout antwoord in.");
-            return null;
-        }
-        if (wrongAnswer2.trim().isEmpty()) {
-            showWarning("Alleen spaties als tweede fout antwoord is niet toegestaan.");
-            return null;
-        }
-        if (wrongAnswer3.isEmpty()) {
-            showWarning("Voer een derde fout antwoord in.");
-            return null;
-        }
-        if (wrongAnswer3.trim().isEmpty()) {
-            showWarning("Alleen spaties als derde fout antwoord is niet toegestaan.");
-            return null;
-        }
 
-         */
         Question question = new Question(questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quiz);
         questionDAO.storeOne(question);
         showWarning("Nieuwe vraag met antwoorden opgeslagen.");
@@ -172,7 +129,7 @@ public class CreateUpdateQuestionController {
         PauseTransition pause = new PauseTransition(Duration.seconds(2));
         pause.setOnFinished(event -> warningField.setVisible(false));
         pause.play();
-    }
+    } // showWarning
 
     public void convertQuizToString() {
         quizComboBox.setConverter(new StringConverter<>() {
@@ -205,27 +162,5 @@ public class CreateUpdateQuestionController {
         List<Quiz> quizzes = quizDAO.getAllQuizzes();
         quizComboBox.getItems().addAll(quizzes);
     } // fillComboBox
-
-//    Met deze melding verdwijnt de waarschuwing na 2 seconden, tijd kan aangepast worden
-//    Geleend van ChatGPT, maar nog niet werkend
-//    Gezien de tijd, de oplossing van Etienne geleend
-/*    private void showAutoClosingWarning(Stage owner, String message) {
-        Popup popup = new Popup();
-        Label label = new Label(message);
-        label.setStyle("-fx-background-color: yellow; -fx-text-fill: black; -fx-padding: 10; -fx-border-color: black; -fx-border-width: 1px;");
-        popup.getContent().add(label);
-
-        // Toon popup gecentreerd op het hoofdvenster
-        popup.show(owner);
-        popup.setX(owner.getX() + owner.getWidth() / 2 - label.getWidth() / 2);
-        popup.setY(owner.getY() + owner.getHeight() / 2 - label.getHeight() / 2);
-
-        // Verberg na 2 seconden
-        PauseTransition delay = new PauseTransition(Duration.seconds(2));
-        delay.setOnFinished(e -> popup.hide());
-        delay.play();
-    } // showAutoClosingWarning
-
- */
 
 } // CreateUpdateQuestionController

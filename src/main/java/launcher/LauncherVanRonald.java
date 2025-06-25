@@ -41,8 +41,10 @@ public class LauncherVanRonald {
             System.out.println("CouchDB connection open");
         }
 
-        // Nu nog iets van een score lijst vullen
-        // iets van : questionScoreList(buildQuestionScoreList());
+//  CouchDB uitvoer:
+//  Overzicht vragen Als coördinator wil ik een tekstbestand kunnen maken met een helder
+//  overzicht van alle vragen per quiz, van alle quizzen in mijn cursussen
+
 /*
         List<Question> questions = questionDAO.getAll();{
             Gson gson = new Gson();
