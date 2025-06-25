@@ -16,7 +16,7 @@
     <Button layoutX="194.0" layoutY="366.0" mnemonicParsing="false" onAction="#doRegisterC" text="Antwoord C" />
     <Button layoutX="284.0" layoutY="366.0" mnemonicParsing="false" onAction="#doRegisterD" text="Antwoord D" />
     <Button fx:id="Vorige" layoutX="481.0" layoutY="366.0" mnemonicParsing="false" onAction="#doPreviousQuestion" text="Vorige" />
-    <Button layoutX="546.0" layoutY="366.0" mnemonicParsing="false" onAction="#doNextQuestion" text="Volgende" />
+    <Button fx:id="Volgende" layoutX="546.0" layoutY="366.0" mnemonicParsing="false" onAction="#doNextQuestion" text="Volgende" />
     <Button layoutX="14.0" layoutY="422.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
         <font>
             <Font size="14.0" />
