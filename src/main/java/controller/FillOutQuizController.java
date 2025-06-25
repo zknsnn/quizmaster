@@ -1,7 +1,7 @@
 package controller;
 
 import database.mysql.QuestionDAO;
-import database.mysql.QuizResultCouchDBDAO;
+import database.couchDB.QuizResultCouchDBDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
