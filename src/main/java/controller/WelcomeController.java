@@ -57,7 +57,7 @@ public class WelcomeController {
         } else if (role == UserRole.DOCENT) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Geen taken");
-            alert.setContentText("Er zijin geen taken voor u");
+            alert.setContentText("Er zijn geen taken voor u");
             alert.show();
 
             PauseTransition screen = new PauseTransition(javafx.util.Duration.seconds(2));
