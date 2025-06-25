@@ -2,7 +2,6 @@ package controller;
 
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -33,7 +32,7 @@ public class ManageQuizzesController {
         loadQuizList();
     }
 
-    public void doMenu(ActionEvent actionEvent){
+    public void doMenu(){
         Main.getSceneManager().showWelcomeScene(loggedInUser);
     }
 
