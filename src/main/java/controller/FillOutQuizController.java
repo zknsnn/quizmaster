@@ -10,25 +10,18 @@ import model.Quiz;
 import model.User;
 import view.Main;
 
-import java.util.List;
-
-//Hou rekening met het volgende:
-//Het label (“Vraag 1” in de figuur) moet worden aangepast om het juiste vraagnummer weer te geven.
-//De text area bevat de vraag en de antwoorden. De antwoorden worden daarbij in willekeurige volgorde
-// gepresenteerd.
-//Door op een van de knoppen [Antwoord A] tot en met [Antwoord D] te klikken wordt het betreﬀende antwoord
-// geregistreerd en de volgende vraag getoond.
-//Door op [Volgende] te klikken wordt de volgende vraag getoond maar er wordt geen antwoord geregistreerd.
-//Door op [Vorige] te klikken wordt de vorige vraag getoond zonder een antwoord te registreren.
-//Als een student een vraag twee of meer keer beantwoordt, wordt alleen het laatst gegeven antwoord geregistreerd.
-//Als de laatste vraag is beantwoord, of als de student bij de laatste vraag op Volgende klikt wordt
-// het feedback scherm getoond.
+import java.util.*;
 
 public class FillOutQuizController {
     User loggedInUser;
     Quiz quiz;
     QuestionDAO questionDAO = new QuestionDAO(Main.getDBAccess());
-    int teller = 0;
+    int tellerTitel = 1;
+    int tellerAntwoorden = 0;
+    List<Question> lijstMetVragen;
+    List<Integer> lijstAntwoordenGebruiker = new ArrayList<>();
+    List<Integer> lijstCorrecteAntwoorden = new ArrayList<>();
+    List<String> lijstGeshuffeldeVragen = new ArrayList<>();
 
     @FXML
     private Label titleLabel;
@@ -41,34 +34,99 @@ public class FillOutQuizController {
         this.loggedInUser = user;
         this.quiz = quiz;
 
+        // Je moet niet terug kunnen klikken als je bij de eerste vraag bent.
+        Vorige.setDisable(true);
+
         // Haal lijst met vragen op.
-        List<Question> lijstMetVragen = questionDAO.getQuestionsByQuizName(quiz.getQuizName());
+        lijstMetVragen = questionDAO.getQuestionsByQuizName(quiz.getQuizName());
 
-        // Er moet een teller zijn die bijhoudt bij welk item in de lijstMetVragen je bent.
-        questionArea.setText(lijstMetVragen.get(teller).getQuestionText());
-
-
-        System.out.println(lijstMetVragen);
+        // Shuffle lijsten met vragen en antwoorden
         for (Question question : lijstMetVragen) {
-            System.out.println(question.getQuestionText());
+            shuffleQuestion(question);
         }
 
+        // Toon de eerste vraag in het tekstvak
+        toonVraag();
+
+        // zorg ervoor dat de lijst met antwoorden die de gebruiker gaat invoeren even groot is.
+        for (int i = 0; i < lijstGeshuffeldeVragen.size(); i++) {
+            lijstAntwoordenGebruiker.add(0);
+        }
     }
 
-    public void doRegisterA() {}
+    private void shuffleQuestion (Question question) {
+        // Initialiseer en vul lijst met foute antwoorden.
+        List<String> lijstMetFouteAntwoorden = new ArrayList<>();
+        lijstMetFouteAntwoorden.add(question.getWrongAnswer1());
+        lijstMetFouteAntwoorden.add(question.getWrongAnswer2());
+        lijstMetFouteAntwoorden.add(question.getWrongAnswer3());
+        // Shuffle de lijst met foute antwoorden.
+        Collections.shuffle(lijstMetFouteAntwoorden);
 
-    public void doRegisterB() {}
+        // Genereer een random getal dat de plaats van het goede antwoord bepaalt.
+        int randomgetal = (new Random()).nextInt(4);
 
-    public void doRegisterC() {}
+        // Voeg dit getal toe aan de lijst met correcte antwoorden. Zo weet je welk antwoord het juiste is.
+        lijstCorrecteAntwoorden.add(randomgetal);
+        lijstMetFouteAntwoorden.add(randomgetal, question.getCorrectAnswer());
 
-    public void doRegisterD() {}
+        // Voeg items van de lijstMetFouteAntwoorden toe aan de lijstGeshuffeldeVragen.
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(question.getQuestionText() + "\n");
+        stringBuilder.append("A. " + lijstMetFouteAntwoorden.get(0) + "\n");
+        stringBuilder.append("B. " + lijstMetFouteAntwoorden.get(1) + "\n");
+        stringBuilder.append("C. " + lijstMetFouteAntwoorden.get(2) + "\n");
+        stringBuilder.append("D. " + lijstMetFouteAntwoorden.get(3) + "\n");
+        lijstGeshuffeldeVragen.add(stringBuilder.toString());
+    }
+
+    private void toonVraag () {
+        questionArea.setText(lijstGeshuffeldeVragen.get(tellerAntwoorden));
+    }
+
+    public void doRegisterA() {
+        lijstAntwoordenGebruiker.set(tellerAntwoorden, 0);
+        gaNaarvolgendeVraag();
+        System.out.println(lijstAntwoordenGebruiker.get(tellerAntwoorden));
+    }
+
+    public void doRegisterB() {
+        lijstAntwoordenGebruiker.set(tellerAntwoorden, 1);
+        gaNaarvolgendeVraag();
+    }
+
+    public void doRegisterC() {
+        lijstAntwoordenGebruiker.set(tellerAntwoorden, 2);
+        gaNaarvolgendeVraag();
+    }
+
+    public void doRegisterD() {
+        lijstAntwoordenGebruiker.set(tellerAntwoorden, 3);
+        gaNaarvolgendeVraag();
+    }
 
     public void doNextQuestion() {
+        gaNaarvolgendeVraag();
+    }
+
+    private void gaNaarvolgendeVraag() {
+        if (tellerTitel < lijstMetVragen.size()) {
+            tellerTitel++;
+            tellerAntwoorden++;
+            titleLabel.setText("Vraag " + tellerTitel);
+            Vorige.setDisable(false);
+            toonVraag();
+        } else {
+            Main.getSceneManager().showStudentFeedback(loggedInUser, quiz);
+        }
     }
 
     public void doPreviousQuestion() {
-        // iets bedenken waardoor je niet terug kan klikken als de teller bij 0 is.
-        if (teller < 0) {
+        tellerTitel--;
+        tellerAntwoorden--;
+        titleLabel.setText("Vraag " + tellerTitel);
+        toonVraag();
+        if (tellerTitel <= 1) {
             Vorige.setDisable(true);
         }
     }
