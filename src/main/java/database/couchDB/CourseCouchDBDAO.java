@@ -1,10 +1,8 @@
-package database.mysql;
+package database.couchDB;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import controller.CouchDBAccess;
-import database.mysql.AbstractCouchDBDAO;
 import model.Course;
 
 public class CourseCouchDBDAO extends AbstractCouchDBDAO {

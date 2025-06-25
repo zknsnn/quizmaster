@@ -1,7 +1,6 @@
-package database.mysql;
+package database.couchDB;
 
 import com.google.gson.JsonObject;
-import controller.CouchDBAccess;
 import org.lightcouch.Response;
 
 import java.util.List;

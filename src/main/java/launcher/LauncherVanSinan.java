@@ -1,15 +1,10 @@
 package launcher;
 
-import controller.CouchDBAccess;
 import database.mysql.*;
 import model.Course;
-import model.User;
-import model.UserRole;
 import view.Main;
-import java.io.*;
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Scanner;
 
 import static launcher.CouchDBCourseDAOLauncher.buildCourseList;
 

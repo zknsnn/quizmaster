@@ -2,11 +2,8 @@ package launcher;
 
 
 import com.google.gson.Gson;
-import controller.CouchDBAccess;
-import database.mysql.CourseDAO;
-import database.mysql.DBAccess;
-import database.mysql.QuizCouchDBDAO;
-import database.mysql.QuizDAO;
+import database.couchDB.CouchDBAccess;
+import database.couchDB.QuizCouchDBDAO;
 import model.Course;
 import model.Quiz;
 import model.User;

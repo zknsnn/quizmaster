@@ -1,12 +1,11 @@
-package database.mysql;
+package database.couchDB;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import controller.CouchDBAccess;
 import model.Question;
 
-public class QuestionCouchDBDAO extends AbstractCouchDBDAO{
+public class QuestionCouchDBDAO extends AbstractCouchDBDAO {
     private Gson gson;
 
     public QuestionCouchDBDAO(CouchDBAccess couchDBAccess) {

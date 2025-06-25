@@ -1,9 +1,8 @@
 package launcher;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import controller.CouchDBAccess;
+import database.couchDB.CouchDBAccess;
+import database.couchDB.QuestionCouchDBDAO;
 import database.mysql.*;
 import javafx.scene.control.ListView;
 import model.Question;

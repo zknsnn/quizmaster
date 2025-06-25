@@ -1,7 +1,7 @@
 package launcher;
 
-import controller.CouchDBAccess;
-import database.mysql.UserCouchDbDAO;
+import database.couchDB.CouchDBAccess;
+import database.couchDB.UserCouchDbDAO;
 import model.User;
 import model.UserRole;
 
