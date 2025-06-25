@@ -14,8 +14,6 @@ import view.Main;
 
 public class WelcomeController {
     private User user;
-    private Quiz quiz;
-    private Question question;
 
     @FXML
     private Label welcomeLabel;

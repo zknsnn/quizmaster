@@ -1,13 +1,11 @@
 package controller;
 
-import database.mysql.CourseDAO;
 import database.mysql.DBAccess;
 import database.mysql.UserDAO;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import model.User;
@@ -22,8 +20,6 @@ public class LoginController {
 
     DBAccess dbAccess = Main.getDBAccess();
     UserDAO userDAO = new UserDAO(dbAccess);
-    private CourseDAO courseDAO = new CourseDAO(dbAccess);
-
 
     public void doLogin() {
         String username = nameTextField.getText();

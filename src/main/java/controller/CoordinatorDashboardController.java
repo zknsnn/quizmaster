@@ -1,8 +1,6 @@
 package controller;
 
 import database.mysql.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
@@ -28,7 +26,6 @@ public class CoordinatorDashboardController {
     private CourseDAO courseDAO;
     private QuizDAO quizDAO;
     private QuestionDAO questionDAO;
-
 
     public void setup(User user) {
         this.ingelogdeuser = user;
@@ -57,8 +54,26 @@ public class CoordinatorDashboardController {
         });
 
 
-        List<Course> courses = courseDAO.getAll();
-        courseList.getItems().addAll(courses);
+        List<Course> allCourses = courseDAO.getAll();
+        List<Course> coursesVanIngelogdeUser = new ArrayList<>();
+        for (Course c : allCourses) {
+            if (c.getCoordinator().getUserName().equals(ingelogdeuser.getUserName())) {
+                coursesVanIngelogdeUser.add(c);
+            }
+        }
+
+        if (coursesVanIngelogdeUser.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Geen toegang");
+            alert.setHeaderText(null);
+            alert.setContentText("U bent geen coördinator van een van de beschikbare cursussen.");
+            alert.show();
+            Main.getSceneManager().showWelcomeScene(user);
+        } else {
+            courseList.getItems().addAll(coursesVanIngelogdeUser);
+        }
+
+
     }
 
 
