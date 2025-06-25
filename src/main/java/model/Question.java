@@ -1,8 +1,6 @@
 package model;
 
-//
 public class Question {
-    // questionId, questionText, correctAnswer, wrongAnswer1, wrongAnswer2, wrongAnswer3, quizName
     private int questionId;
     private String questionText;
     private String correctAnswer;
@@ -73,9 +71,6 @@ public class Question {
         return questionId;
     }
 
-    //    public Quiz getOneById(String quizName) {
-//        return null; // aangemaakt voor testen RG
-//    }
 }
 
 
