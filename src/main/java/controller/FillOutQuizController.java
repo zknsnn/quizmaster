@@ -7,9 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import model.Question;
 import model.Quiz;
+import model.QuizResult;
 import model.User;
 import view.Main;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class FillOutQuizController {
@@ -117,6 +119,9 @@ public class FillOutQuizController {
             Vorige.setDisable(false);
             toonVraag();
         } else {
+            // hier moet ook berekend worden of de test gehaald is. Vervolgens moet een object aangemaakt worden
+            // en worden weggeschreven in de couchDB database
+            slaResultaatOp();
             Main.getSceneManager().showStudentFeedback(loggedInUser, quiz);
         }
     }
@@ -134,4 +139,26 @@ public class FillOutQuizController {
     public void doMenu() {
         Main.getSceneManager().showWelcomeScene(loggedInUser);
     }
+
+    public boolean berekenVoldoende(List<Integer> lijstAntwoordenGebruiker, List<Integer>
+            lijstCorrecteAntwoorden) {
+        int totaalTeHalenPunten = lijstCorrecteAntwoorden.size();
+        int gehaaldePunten = 0;
+
+        for (int i = 0; i < lijstCorrecteAntwoorden.size(); i++) {
+            if ((lijstCorrecteAntwoorden.get(i).equals(lijstAntwoordenGebruiker.get(i)))) {
+                gehaaldePunten++;
+            }
+        }
+        double percentageGehaaldePunten = (double) gehaaldePunten / totaalTeHalenPunten * 100;
+
+        return percentageGehaaldePunten >= quiz.getSuccesDefinition();
+    }
+
+    public void slaResultaatOp() {
+        boolean quizResultaat = berekenVoldoende(lijstAntwoordenGebruiker, lijstCorrecteAntwoorden);
+        LocalDateTime tijdstip = LocalDateTime.now();
+        QuizResult quizResult = new QuizResult(loggedInUser, quiz, quizResultaat, tijdstip);
+    }
 }
+
