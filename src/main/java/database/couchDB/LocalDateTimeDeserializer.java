@@ -1,4 +1,4 @@
-package database.mysql;
+package database.couchDB;
 
 import com.google.gson.*;
 
