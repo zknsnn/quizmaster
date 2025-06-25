@@ -30,7 +30,7 @@ public class CoordinatorDashboardController {
     public void setup(User user) {
         this.ingelogdeuser = user;
         this.courseDAO = new CourseDAO(Main.getDBAccess());
-        this.quizDAO = new QuizDAO(Main.getDBAccess());   // burayı eklemeyi unutma
+        this.quizDAO = new QuizDAO(Main.getDBAccess());
         this.questionDAO = new QuestionDAO(Main.getDBAccess());
 
         // Wanneer een cursus wordt gekozen, laad de quizzen van die cursus

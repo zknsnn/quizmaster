@@ -1,11 +1,12 @@
 package controller;
 
 import database.mysql.CourseDAO;
+import database.mysql.InschrijvingDAO;
+import database.mysql.QuizDAO;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import model.Course;
-import model.User;
+import model.*;
 import view.Main;
 
 import java.util.List;
@@ -25,23 +26,24 @@ public class ManageCoursesController {
     @FXML
     private TableColumn<Course, String> coordinatorColumn;
 
+    @FXML
+    private Label courseInschrijvenLabel;
+
     private CourseDAO courseDAO;
     private User loggedInUser;
+    private QuizDAO quizDAO;
+    private InschrijvingDAO inschrijvingDAO;
 
     public void setup(User user) {
         this.loggedInUser = user;
         this.courseDAO = new CourseDAO(Main.getDBAccess());
+        this.quizDAO = new QuizDAO(Main.getDBAccess());
+        this.inschrijvingDAO = new InschrijvingDAO(Main.getDBAccess());
 
         List<Course> courses = courseDAO.getAll();
-
-        courseNameColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getCourseName())
-        );
-
-        courseLevelColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getCourseLevel())
-        );
-
+        // Table colum
+        courseNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCourseName()));
+        courseLevelColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCourseLevel()));
         coordinatorColumn.setCellValueFactory(cellData -> {
             User coordinator = cellData.getValue().getCoordinator();
             String name;
@@ -52,8 +54,10 @@ public class ManageCoursesController {
             }
             return new SimpleStringProperty(name);
         });
-
         courseTable.getItems().setAll(courses);
+        // listener voor coursehandle
+        courseTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> handleCourseSelectie());
     }
 
     @FXML
@@ -81,6 +85,12 @@ public class ManageCoursesController {
         Course selectedCourse = courseTable.getSelectionModel().getSelectedItem();
         if (selectedCourse == null) {
             showAlert(Alert.AlertType.ERROR, "Fout bij verwijderen", "Verwijderen mislukt", "Selecteer een cursus om te verwijderen.");
+            return;
+        }
+        // Check curses met quiz
+        List<Quiz> quizList = quizDAO.getQuizPerCourseName(selectedCourse.getCourseName());
+        if (!quizList.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Verwijderen", "Verwijderen onsuccesvol", "Het is niet mogelijk een course met quiz te verwijderen.");
         } else {
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
             confirm.setTitle("Bevestiging");
@@ -101,5 +111,18 @@ public class ManageCoursesController {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.show();
+    }
+
+    @FXML
+    public void handleCourseSelectie() {
+        Course selectedCourse = courseTable.getSelectionModel().getSelectedItem();
+        if (selectedCourse != null) {
+            List<Inschrijving> inschrijvingList = inschrijvingDAO.getInschrijvingByCoursename(selectedCourse.getCourseName());
+            int aantalInschrijvenStudent = inschrijvingList.size(); // count student in een course
+            courseInschrijvenLabel.setText(aantalInschrijvenStudent + " studenten hebben zich ingeschreven voor course " + selectedCourse.getCourseName());
+        } else {
+
+            courseInschrijvenLabel.setText("");
+        }
     }
 }
