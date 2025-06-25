@@ -185,6 +185,11 @@ public class CreateUpdateQuizController implements Initializable {
     }
 
     private void haalInformatieQuizOp(Quiz quiz) {
+        if (quiz == null) {
+            titelLabel.setText("Nieuwe quiz");
+            quizNaamTextfield.setDisable(false);
+            return;
+        }
         titelLabel.setText("Wijzig quiz");
         quizNaamTextfield.setText(quiz.getQuizName());
         quizNaamTextfield.setDisable(true);
