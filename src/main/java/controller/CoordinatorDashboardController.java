@@ -96,7 +96,7 @@ public class CoordinatorDashboardController {
     }
 
     public void doNewQuestion() {
-        Main.getSceneManager().showCreateUpdateQuestionScene(null);
+        Main.getSceneManager().showCreateUpdateQuestionScene(null, quizList.getSelectionModel().getSelectedItem());
     }
 
     public void doEditQuestion() {
@@ -119,7 +119,7 @@ public class CoordinatorDashboardController {
             alert.setContentText("Selecteer een question om te updaten.");
             alert.showAndWait();
         }else {
-            Main.getSceneManager().showCreateUpdateQuestionScene(selectedQuestion);
+            Main.getSceneManager().showCreateUpdateQuestionScene(selectedQuestion, null);
         }
     }
 
