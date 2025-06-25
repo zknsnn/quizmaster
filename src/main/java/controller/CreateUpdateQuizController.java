@@ -97,6 +97,8 @@ public class CreateUpdateQuizController implements Initializable {
         Main.getSceneManager().showManageQuizScene(loggedInUser);
     }
 
+    public void dashboardMenu(){ Main.getSceneManager().showCoordinatorDashboard(loggedInUser);}
+
     public void doCreateUpdateQuiz() {
         Quiz quiz = createQuiz();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
