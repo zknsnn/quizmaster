@@ -7,7 +7,6 @@ import javafx.scene.control.ListView;
 import model.Quiz;
 import model.User;
 import view.Main;
-
 import java.util.List;
 
 // Quiz selecteren Als student wil ik een quiz kunnen selecteren zodat ik die vervolgens kan gaan invullen.
@@ -34,6 +33,10 @@ public class SelectQuizForStudentController {
         List<Quiz> quizzen = quizDAO.getQuizPerStudent(user);
         quizList.getItems().addAll(quizzen);
 
+        stuurGebruikerTerug(quizzen);
+    }
+
+    private void stuurGebruikerTerug(List<Quiz> quizzen) {
         if (quizzen.isEmpty()) {
             alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Quiz");

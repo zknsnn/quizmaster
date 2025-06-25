@@ -27,10 +27,6 @@ public class StudentFeedbackController {
     @FXML
     private ListView<QuizResult> feedbackList;
 
-//    Quiz afsluiten en feedback Als student wil ik na de beantwoording van de laatste vraag een
-//    scherm zien met daarop een overzicht van alle keren dat ik deze quiz heb gedaan met
-
-
     public void setup(User user, Quiz quiz) {
         this.user = user;
         this.quiz = quiz;
