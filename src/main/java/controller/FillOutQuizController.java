@@ -1,6 +1,7 @@
 package controller;
 
 import database.mysql.QuestionDAO;
+import database.mysql.QuizResultCouchDBDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,6 +25,7 @@ public class FillOutQuizController {
     List<Integer> lijstAntwoordenGebruiker = new ArrayList<>();
     List<Integer> lijstCorrecteAntwoorden = new ArrayList<>();
     List<String> lijstGeshuffeldeVragen = new ArrayList<>();
+    QuizResultCouchDBDAO quizResultCouchDBDAO;
 
     @FXML
     private Label titleLabel;
@@ -35,6 +37,7 @@ public class FillOutQuizController {
     public void setup(User user, Quiz quiz) {
         this.loggedInUser = user;
         this.quiz = quiz;
+        quizResultCouchDBDAO = new QuizResultCouchDBDAO(Main.getCouchDBAccess());
 
         // Je moet niet terug kunnen klikken als je bij de eerste vraag bent.
         Vorige.setDisable(true);
@@ -159,6 +162,7 @@ public class FillOutQuizController {
         boolean quizResultaat = berekenVoldoende(lijstAntwoordenGebruiker, lijstCorrecteAntwoorden);
         LocalDateTime tijdstip = LocalDateTime.now();
         QuizResult quizResult = new QuizResult(loggedInUser, quiz, quizResultaat, tijdstip);
+        quizResultCouchDBDAO.saveSingleQuizResult(quizResult);
     }
 }
 
