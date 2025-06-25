@@ -2,7 +2,6 @@ package controller;
 
 import database.mysql.CourseDAO;
 import database.mysql.InschrijvingDAO;
-import database.mysql.UserDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;

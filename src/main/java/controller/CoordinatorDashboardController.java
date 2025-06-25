@@ -10,6 +10,7 @@ import model.Quiz;
 import model.User;
 import view.Main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoordinatorDashboardController {
@@ -53,8 +54,26 @@ public class CoordinatorDashboardController {
         });
 
 
-        List<Course> courses = courseDAO.getAll();
-        courseList.getItems().addAll(courses);
+        List<Course> allCourses = courseDAO.getAll();
+        List<Course> coursesVanIngelogdeUser = new ArrayList<>();
+        for (Course c : allCourses) {
+            if (c.getCoordinator().getUserName().equals(ingelogdeuser.getUserName())) {
+                coursesVanIngelogdeUser.add(c);
+            }
+        }
+
+        if (coursesVanIngelogdeUser.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Geen toegang");
+            alert.setHeaderText(null);
+            alert.setContentText("U bent geen coördinator van een van de beschikbare cursussen.");
+            alert.show();
+            Main.getSceneManager().showWelcomeScene(user);
+        } else {
+            courseList.getItems().addAll(coursesVanIngelogdeUser);
+        }
+
+
     }
 
 

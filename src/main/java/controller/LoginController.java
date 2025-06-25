@@ -1,6 +1,5 @@
 package controller;
 
-import database.mysql.CourseDAO;
 import database.mysql.DBAccess;
 import database.mysql.UserDAO;
 import javafx.application.Platform;
