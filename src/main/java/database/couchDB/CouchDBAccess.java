@@ -1,4 +1,4 @@
-package controller;
+package database.couchDB;
 
 import org.lightcouch.CouchDbClient;
 import org.lightcouch.CouchDbException;

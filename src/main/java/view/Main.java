@@ -1,6 +1,6 @@
 package view;
 
-import controller.CouchDBAccess;
+import database.couchDB.CouchDBAccess;
 import database.mysql.DBAccess;
 import javafx.application.Application;
 import javafx.stage.Stage;
