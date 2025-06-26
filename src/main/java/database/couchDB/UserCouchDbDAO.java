@@ -9,7 +9,7 @@ import model.User;
 // Let op: zit gewoon in de mysql-map. Niet moeilijk over doen.
 public class UserCouchDbDAO extends AbstractCouchDBDAO {
 
-    private Gson gson;
+    private final Gson gson;
 
     // Constructor / CouchDB-access meegeven en Gson klaarzetten.
     public UserCouchDbDAO(CouchDBAccess couchDBAccess) {

@@ -11,11 +11,7 @@ rollen bepalen functionaliteit en permissie per gebruiker
 package model;
 
 public enum UserRole {
-    STUDENT("Student"),
-    COÖRDINATOR("Coördinator"),
-    FUNCTIONEEL_BEHEERDER("Functioneel beheerder"),
-    ADMINISTRATOR("Administrator"),
-    DOCENT("Docent");
+    STUDENT("Student"), COÖRDINATOR("Coördinator"), FUNCTIONEEL_BEHEERDER("Functioneel beheerder"), ADMINISTRATOR("Administrator"), DOCENT("Docent");
 
     public static final String INVALID_DISPLAY_NAME_MSG = "Invalid display name: ";
 
@@ -24,17 +20,6 @@ public enum UserRole {
 
     UserRole(String displayName) {
         this.displayName = displayName;
-    }
-
-    // "Student" in plaats van STUDENT – toegang tot weergavenaam
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    // Voor gebruik in GUI
-    @Override
-    public String toString() {
-        return displayName;
     }
 
     /**
@@ -63,6 +48,17 @@ public enum UserRole {
             default:
                 throw new IllegalArgumentException(INVALID_DISPLAY_NAME_MSG + displayName);
         }
+    }
+
+    // "Student" in plaats van STUDENT – toegang tot weergavenaam
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    // Voor gebruik in GUI
+    @Override
+    public String toString() {
+        return displayName;
     }
 
 }

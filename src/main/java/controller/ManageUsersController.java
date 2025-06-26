@@ -56,9 +56,7 @@ public class ManageUsersController {
         firstNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstName()));
         prefixColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPrefix()));
         lastNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastName()));
-        roleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getUserRol() != null ? cellData.getValue().getUserRol().getDisplayName() : ""
-        ));
+        roleColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserRol() != null ? cellData.getValue().getUserRol().getDisplayName() : ""));
 
         // Wachtwoord maskeren met ●●●●
         passwordColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPassword()));
@@ -124,8 +122,7 @@ public class ManageUsersController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Bevestig verwijderen");
         alert.setHeaderText("Weet je zeker dat je deze gebruiker wilt verwijderen?");
-        alert.setContentText("Gebruiker: " +
-                geselecteerdeUser.getFirstName() + " " + geselecteerdeUser.getLastName());
+        alert.setContentText("Gebruiker: " + geselecteerdeUser.getFirstName() + " " + geselecteerdeUser.getLastName());
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {

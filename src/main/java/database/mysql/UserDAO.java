@@ -6,7 +6,6 @@
  */
 package database.mysql;
 
-import model.Course;
 import model.User;
 import model.UserRole;
 
@@ -35,7 +34,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
     }
 
 
-//     Inlezen gebruikers uit CSV-bestand.
+    //     Inlezen gebruikers uit CSV-bestand.
 //     Houdt rekening met aanhalingstekens rond velden (bijv. wachtwoorden met komma's).
 //     CSV moet aanwezig zijn in de resources-map.
 //
@@ -80,9 +79,8 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return users;
     }
 
-
-         // Parser voor één CSV-regel, houdt rekening met komma's binnen aanhalingstekens.
-        private List<String> parseCsvLine(String line) {
+    // Parser voor één CSV-regel, houdt rekening met komma's binnen aanhalingstekens.
+    private List<String> parseCsvLine(String line) {
         List<String> fields = new ArrayList<>();
         StringBuilder current = new StringBuilder();
         boolean insideQuotes = false;
@@ -102,7 +100,6 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return fields;
     }
 
-
     //Haal alle gebruikers op uit de database.
     @Override
     public List<User> getAll() {
@@ -113,14 +110,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             ResultSet rs = executeSelectStatement();
 
             while (rs.next()) {
-                User user = new User(
-                        rs.getString("userName"),
-                        rs.getString("password"),
-                        rs.getString("firstName"),
-                        rs.getString("prefix"),
-                        rs.getString("lastName"),
-                        UserRole.valueOf(rs.getString("userRol").toUpperCase())
-                );
+                User user = new User(rs.getString("userName"), rs.getString("password"), rs.getString("firstName"), rs.getString("prefix"), rs.getString("lastName"), UserRole.valueOf(rs.getString("userRol").toUpperCase()));
                 userList.add(user);
             }
         } catch (SQLException e) {
@@ -129,7 +119,8 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
 
         return userList;
     }
-// CREATE
+
+    // CREATE
     @Override
     public void storeOne(User user) {
         try {
@@ -148,7 +139,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         }
     }
 
-   // READ (By Name)
+    // READ (By Name)
     public User getOneByName(String name) {
         String sql = "SELECT * FROM User WHERE userName = ?";
         User user = null;
@@ -160,14 +151,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
 
             if (resultSet.next()) {
                 UserRole role = UserRole.valueOf(resultSet.getString("userRol").toUpperCase());
-                user = new User(
-                        resultSet.getString("userName"),
-                        resultSet.getString("password"),
-                        resultSet.getString("firstName"),
-                        resultSet.getString("prefix"),
-                        resultSet.getString("lastName"),
-                        role
-                );
+                user = new User(resultSet.getString("userName"), resultSet.getString("password"), resultSet.getString("firstName"), resultSet.getString("prefix"), resultSet.getString("lastName"), role);
             }
         } catch (SQLException e) {
             System.err.println("SQL-fout bij ophalen van gebruiker met naam: " + e.getMessage());
@@ -175,7 +159,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
         return user;
     }
 
-  // READ (int id)
+    // READ (int id)
     @Override
     public User getOneById(int id) {
         String sql = "SELECT * FROM User WHERE id = ?";
@@ -188,14 +172,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
 
             if (resultSet.next()) {
                 UserRole role = UserRole.valueOf(resultSet.getString("userRol").toUpperCase());
-                user = new User(
-                        resultSet.getString("userName"),
-                        resultSet.getString("password"),
-                        resultSet.getString("firstName"),
-                        resultSet.getString("prefix"),
-                        resultSet.getString("lastName"),
-                        role
-                );
+                user = new User(resultSet.getString("userName"), resultSet.getString("password"), resultSet.getString("firstName"), resultSet.getString("prefix"), resultSet.getString("lastName"), role);
             }
         } catch (SQLException e) {
             System.err.println("SQL-fout bij ophalen van gebruiker met ID: " + e.getMessage());
@@ -223,6 +200,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             System.err.println("Fout bij updaten van gebruiker: " + e.getMessage());
         }
     }
+
     // DELETE
     // Verwijder een gebruiker uit de database op basis van userId
     public void delete(User user) {
@@ -235,6 +213,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             System.err.println("Fout bij verwijderen van gebruiker: " + e.getMessage());
         }
     }
+
     //FILTER CORNER
     // Get user by rol
     public List<User> getUsersByRole(UserRole role) {
@@ -247,14 +226,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
             ResultSet rs = executeSelectStatement();
 
             while (rs.next()) {
-                User user = new User(
-                        rs.getString("userName"),
-                        rs.getString("password"),
-                        rs.getString("firstName"),
-                        rs.getString("prefix"),
-                        rs.getString("lastName"),
-                        UserRole.fromDisplayName(rs.getString("userRol"))
-                );
+                User user = new User(rs.getString("userName"), rs.getString("password"), rs.getString("firstName"), rs.getString("prefix"), rs.getString("lastName"), UserRole.fromDisplayName(rs.getString("userRol")));
                 userList.add(user);
             }
         } catch (SQLException e) {
@@ -282,7 +254,6 @@ public class UserDAO extends AbstractDAO implements GenericDAO<User> {
 
         return count;
     }
-
 
 }
 //userName = ?,

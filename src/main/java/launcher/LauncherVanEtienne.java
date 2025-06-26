@@ -60,7 +60,6 @@ public class LauncherVanEtienne {
                     try {
                         // Enum-waarde ophalen uit tekst (bijv. "student" → UserRole.STUDENT)
                         UserRole userRole = UserRole.fromDisplayName(roleText);
-
                         // Gebruiker aanmaken en opslaan
                         User user = new User(userName, password, firstName, prefix, lastName, userRole);
                         userDAO.storeOne(user);
@@ -74,7 +73,6 @@ public class LauncherVanEtienne {
                     System.err.println(MSG_INVALID_LINE + line);
                 }
             }
-
         } catch (IOException e) {
             System.err.println(MSG_FILE_ERROR + e.getMessage());
         }
@@ -83,15 +81,5 @@ public class LauncherVanEtienne {
         dbAccess.closeConnection();
 
     }
-//
-//    private static void extracted(DBAccess dbAccess) {
-//        try {
-//            String sql = "DELETE FROM User";
-//            var ps = dbAccess.getConnection().prepareStatement(sql);
-//            ps.executeUpdate();
-//            System.out.println(MSG_TABEL_USER_GELEEGD);
-//        } catch (Exception e) {
-//            System.err.println(MSG_FOUT_LEEGMAKEN_TABEL + e.getMessage());
-//        }
-//    }
+
 }
