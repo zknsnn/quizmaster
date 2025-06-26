@@ -4,7 +4,11 @@ import database.mysql.*;
 import model.Course;
 import view.Main;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import static launcher.CouchDBCourseDAOLauncher.buildCourseList;
 
@@ -12,17 +16,9 @@ public class LauncherVanSinan {
 
 
     public static void main(String[] args) {
-        DBAccess dbAccess = Main.getDBAccess();
-        UserDAO userDAO = new UserDAO(dbAccess);
-        CourseDAO courseDAO = new CourseDAO(dbAccess);
 
-        String csvPath = "src/main/resources/CSV bestanden/Cursussen.csv";
-        List<Course> courses = buildCourseList(csvPath, userDAO);
-        for (Course c : courses) {
-            courseDAO.storeOne(c);
-        }
         // Inlezen van CSV
-        /*DBAccess dbAccess = Main.getDBAccess();
+        DBAccess dbAccess = Main.getDBAccess();
 
         File coursesBestand = new File("src/main/resources/CSV bestanden/Cursussen.csv");
         List<Course> courses = new ArrayList<>();
@@ -41,7 +37,7 @@ public class LauncherVanSinan {
             }
         } catch (FileNotFoundException fileError) {
             System.out.println("File not found ");
-        }*/
+        }
 
 
     }
