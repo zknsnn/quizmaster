@@ -3,6 +3,7 @@ package controller;
 import database.mysql.QuestionDAO;
 import database.couchDB.QuizResultCouchDBDAO;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -16,16 +17,16 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class FillOutQuizController {
-    User loggedInUser;
-    Quiz quiz;
-    QuestionDAO questionDAO = new QuestionDAO(Main.getDBAccess());
-    int tellerTitel = 1;
-    int tellerAntwoorden = 0;
-    List<Question> lijstMetVragen;
-    List<Integer> lijstAntwoordenGebruiker = new ArrayList<>();
-    List<Integer> lijstCorrecteAntwoorden = new ArrayList<>();
-    List<String> lijstGeshuffeldeVragen = new ArrayList<>();
-    QuizResultCouchDBDAO quizResultCouchDBDAO;
+    private User loggedInUser;
+    private Quiz quiz;
+    private QuestionDAO questionDAO = new QuestionDAO(Main.getDBAccess());
+    private int tellerTitel = 1;
+    private int tellerAntwoorden = 0;
+    private List<Question> lijstMetVragen;
+    private List<Integer> lijstAntwoordenGebruiker = new ArrayList<>();
+    private List<Integer> lijstCorrecteAntwoorden = new ArrayList<>();
+    private List<String> lijstGeshuffeldeVragen = new ArrayList<>();
+    private QuizResultCouchDBDAO quizResultCouchDBDAO;
 
     @FXML
     private Label titleLabel;
@@ -44,6 +45,15 @@ public class FillOutQuizController {
 
         // Haal lijst met vragen op.
         lijstMetVragen = questionDAO.getQuestionsByQuizName(quiz.getQuizName());
+
+        if (lijstMetVragen.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Quiz");
+            alert.setHeaderText("Quiz bevat geen vragen");
+            alert.setContentText("Deze quiz bevat geen vragen. Selecteer een andere quiz.");
+            alert.show();
+            Main.getSceneManager().showSelectQuizForStudent(loggedInUser);
+        }
 
         // Shuffle lijsten met vragen en antwoorden
         for (Question question : lijstMetVragen) {
@@ -69,11 +79,11 @@ public class FillOutQuizController {
         Collections.shuffle(lijstMetFouteAntwoorden);
 
         // Genereer een random getal dat de plaats van het goede antwoord bepaalt.
-        int randomgetal = (new Random()).nextInt(4);
+        int randomGetal = (new Random()).nextInt(4);
 
         // Voeg dit getal toe aan de lijst met correcte antwoorden. Zo weet je welk antwoord het juiste is.
-        lijstCorrecteAntwoorden.add(randomgetal);
-        lijstMetFouteAntwoorden.add(randomgetal, question.getCorrectAnswer());
+        lijstCorrecteAntwoorden.add(randomGetal);
+        lijstMetFouteAntwoorden.add(randomGetal, question.getCorrectAnswer());
 
         // Voeg items van de lijstMetFouteAntwoorden toe aan de lijstGeshuffeldeVragen.
         StringBuilder stringBuilder = new StringBuilder();
@@ -92,7 +102,6 @@ public class FillOutQuizController {
     public void doRegisterA() {
         lijstAntwoordenGebruiker.set(tellerAntwoorden, 0);
         gaNaarvolgendeVraag();
-        System.out.println(lijstAntwoordenGebruiker.get(tellerAntwoorden));
     }
 
     public void doRegisterB() {
@@ -154,7 +163,6 @@ public class FillOutQuizController {
             }
         }
         double percentageGehaaldePunten = (double) gehaaldePunten / totaalTeHalenPunten * 100;
-
         return percentageGehaaldePunten >= quiz.getSuccesDefinition();
     }
 

@@ -96,10 +96,10 @@ public class SceneManager {
         controller.setup(quiz, user);
     }
 
-    public void showCreateUpdateQuestionScene(Question question) {
+    public void showCreateUpdateQuestionScene(Question question, Quiz quiz) {
         FXMLLoader loader = getScene("/view/fxml/createUpdateQuestion.fxml");
         CreateUpdateQuestionController controller = loader.getController();
-        controller.setup(question);
+        controller.setup(question, quiz);
     }
 
     public void showStudentSignInOutScene(User user) {

@@ -18,13 +18,13 @@
         </font>
     </Label>
 
-    <TableView fx:id="userTable" layoutX="17.0" layoutY="92.0" prefHeight="200.0" prefWidth="609.0">
+    <TableView fx:id="userTable" layoutX="17.0" layoutY="92.0" prefHeight="200.0" prefWidth="617.0">
         <columns>
             <TableColumn fx:id="firstNameColumn" prefWidth="138.0" text="Voornaam" />
             <TableColumn fx:id="prefixColumn" prefWidth="81.99996948242188" text="Tussenvoegsel" />
             <TableColumn fx:id="lastNameColumn" prefWidth="169.0" text="Achternaam" />
-            <TableColumn fx:id="roleColumn" prefWidth="95.0" text="Rol" />
-            <TableColumn fx:id="passwordColumn" prefWidth="66.0" text="Wachtwoord" />
+            <TableColumn fx:id="roleColumn" prefWidth="126.33340454101562" text="Rol" />
+            <TableColumn fx:id="passwordColumn" prefWidth="100.00002034505212" text="Wachtwoord" />
         </columns>
     </TableView>
 

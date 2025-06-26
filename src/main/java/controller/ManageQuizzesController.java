@@ -2,9 +2,9 @@ package controller;
 
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import model.Question;
@@ -13,6 +13,7 @@ import model.User;
 import view.Main;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ManageQuizzesController {
     private QuizDAO quizDAO;
@@ -33,7 +34,7 @@ public class ManageQuizzesController {
         loadQuizList();
     }
 
-    public void doMenu(ActionEvent actionEvent){
+    public void doMenu(){
         Main.getSceneManager().showWelcomeScene(loggedInUser);
     }
 
@@ -53,21 +54,38 @@ public class ManageQuizzesController {
         }
     } // einde doUpdateQuiz
 
-    public void doDeleteQuiz(){
+    public void doDeleteQuiz() {
         Quiz selectedItem = quizzenLijst.getSelectionModel().getSelectedItem();
+
         if (selectedItem == null) {
             alert.setTitle("Verwijderen");
             alert.setHeaderText("Verwijderen onsuccesvol");
             alert.setContentText("Selecteer een quiz om te verwijderen.");
-            alert.showAndWait();
-        } else {
-            quizDAO.deleteQuiz(selectedItem.getQuizName());
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.show();
+            return;
+        }
+
+        List<Question> vragenLijst = questionDAO.getQuestionsByQuizName(selectedItem.getQuizName());
+        if (!vragenLijst.isEmpty()) {
             alert.setTitle("Verwijderen");
-            alert.setHeaderText("Quiz verwijderd");
-            alert.setContentText("Quiz " + selectedItem.getQuizName() + " is verwijderd.");
-            alert.showAndWait();
-            loadQuizList();
+            alert.setHeaderText("Verwijderen onsuccesvol");
+            alert.setContentText("Het is niet mogelijk een quiz met vragen te verwijderen.");
+            alert.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Bevestiging");
+            alert.setHeaderText("Wil je de quiz '" + selectedItem.getQuizName() + "' verwijderen?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+
+                quizDAO.deleteQuiz(selectedItem.getQuizName());
+                this.alert = new Alert(Alert.AlertType.INFORMATION);
+                this.alert.setTitle("Bevestiging");
+                this.alert.setHeaderText(null);
+                this.alert.setContentText("Quiz " + selectedItem.getQuizName() + " is verwijderd.");
+                this.alert.show();
+                loadQuizList();
+            }
         }
     } // einde doDeleteQuiz
 
@@ -83,10 +101,19 @@ public class ManageQuizzesController {
         }
     }
 
-        public void loadQuizList() {
+    public void loadQuizList() {
         quizzenLijst.getItems().clear();
         List<Quiz> quizzen = quizDAO.getQuizzesPerCoordinator(loggedInUser);
         quizzenLijst.getItems().addAll(quizzen);
+
+        if (quizzen.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Geen toegang");
+            alert.setHeaderText(null);
+            alert.setContentText("U bent geen coördinator van een van de beschikbare cursussen.");
+            alert.show();
+            Main.getSceneManager().showWelcomeScene(loggedInUser);
+        }
     }
 
     public void handleQuestionInfo() {

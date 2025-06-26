@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import model.User;
@@ -17,6 +18,9 @@ public class LoginController {
     private TextField nameTextField;
     @FXML
     private PasswordField passwordField;
+    @FXML
+    private Label warningField;
+
 
     DBAccess dbAccess = Main.getDBAccess();
     UserDAO userDAO = new UserDAO(dbAccess);
@@ -25,6 +29,10 @@ public class LoginController {
         String username = nameTextField.getText();
         String password = passwordField.getText();
 
+        if (username.isBlank() || password.isBlank()) {
+            showWarning("Gebruikersnaam en wachtwoord zijn verplicht!");
+            return;
+        }
         User user = userDAO.getOneByName(username);
         //Set ingelogde user als current user in Main
         if (user != null && user.getPassword().equals(password)) {
@@ -32,13 +40,22 @@ public class LoginController {
             System.out.println("Je bent ingelogd als " + Main.currentUser());
             Main.getSceneManager().showWelcomeScene(Main.currentUser());
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Fout bij inloggen");
-            alert.setHeaderText("Inloggen mislukt");
-            alert.setContentText("De combinatie van gebruikersnaam en wachtwoord is onjuist.");
-            alert.showAndWait();  // Toon de foutmelding
+           showWarning("De combinatie gebruikersnaam en wachtwoord is onjuist.");  // Toon de foutmelding
 
         }
+    }
+
+        private void showWarning(String message) {
+            warningField.setText(message);
+            warningField.setVisible(true);
+            javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(2));
+            pause.setOnFinished(event -> warningField.setVisible(false));
+            pause.play();
+        }
+
+    @FXML
+    public void initialize() {
+        passwordField.setOnAction(event -> doLogin());
     }
 
     public void doQuit(ActionEvent event) {

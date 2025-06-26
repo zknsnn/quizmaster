@@ -4,15 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import model.Quiz;
 import model.QuizResult;
+import model.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuizResultCouchDBDAO extends AbstractCouchDBDAO {
 
     private Gson gson;
-
-
 
     public QuizResultCouchDBDAO(CouchDBAccess couchDBAccess) {
         super(couchDBAccess);
@@ -80,5 +82,17 @@ public class QuizResultCouchDBDAO extends AbstractCouchDBDAO {
         jsonObject.addProperty("_id" , idAndRev[0]);
         jsonObject.addProperty("_rev" , idAndRev[1]);
         return updateDocument(jsonObject);
+    }
+
+    public List<QuizResult> getAllQuizResults(Quiz quiz, User user) {
+        List<QuizResult> quizResultList = new ArrayList<>();
+        for (JsonObject jsonObject : getAllDocuments()) {
+            QuizResult quizResult = gson.fromJson(jsonObject, QuizResult.class);
+            if (quizResult.getQuiz().getQuizName().equals(quiz.getQuizName()) && (quizResult.getUser().getUserName()
+                    .equalsIgnoreCase(user.getUserName()))) {
+                quizResultList.add(quizResult);
+            }
+        }
+        return quizResultList;
     }
 }

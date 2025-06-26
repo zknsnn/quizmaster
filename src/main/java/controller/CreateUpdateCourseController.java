@@ -42,16 +42,16 @@ public class CreateUpdateCourseController {
                 coordinator.getItems().add(u.getUserName());
             }
         }
-
-        if (selectedCourse != null) {
+        // Ik controleer hier nieuw curses met update curses
+        if (selectedCourse != null) { // update
             isUpdate = true;
             courseName.setText(selectedCourse.getCourseName());
-            courseName.setDisable(true);
+            courseName.setDisable(true); // kan hij niet veranderen
             courseLevel.setValue(selectedCourse.getCourseLevel());
             coordinator.setValue(selectedCourse.getCoordinator().getUserName());
             titelLabel.setText("Update Course");
         } else {
-            isUpdate = false;
+            isUpdate = false; // nieuwe
             courseName.clear();
             courseName.setDisable(false);
             courseName.setPromptText("Voer de cursusnaam in");
@@ -73,7 +73,7 @@ public class CreateUpdateCourseController {
         String level = courseLevel.getValue();
         String coorDinator = coordinator.getValue();
 
-        // Hij moet overal invullen
+        // Controleer of alle gegevens ingevuld zijn
         if (name == null || name.isBlank() || level == null || coorDinator == null) {
             showAlert(Alert.AlertType.WARNING, "Fout", null, "Vul alle velden in a.u.b.");
             return;
