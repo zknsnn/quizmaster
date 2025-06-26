@@ -46,7 +46,7 @@ public class CreateUpdateQuizController implements Initializable {
 
         haalInformatieQuizOp(quiz);
 
-        fillComboBosx();
+        fillComboBox();
 
     } // einde setup
 
@@ -164,7 +164,7 @@ public class CreateUpdateQuizController implements Initializable {
         quizLevelComboBox.getSelectionModel().selectFirst();
     }
 
-    private void fillComboBosx() {
+    private void fillComboBox() {
         List<Course> cursussen = courseDAO.getCoursePerCoordinator(loggedInUser);
         for (Course course : cursussen) {
             quizCursusCombobox.getItems().add(course);

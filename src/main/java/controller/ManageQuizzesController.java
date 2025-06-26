@@ -7,11 +7,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import model.Question;
-import model.Quiz;
-import model.User;
+import javafx.util.StringConverter;
+import model.*;
 import view.Main;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,7 +104,6 @@ public class ManageQuizzesController {
     public void loadQuizList() {
         quizzenLijst.getItems().clear();
         List<Quiz> quizzen = quizDAO.getQuizzesPerCoordinator(loggedInUser);
-        quizzenLijst.getItems().addAll(quizzen);
 
         if (quizzen.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -114,6 +113,14 @@ public class ManageQuizzesController {
             alert.show();
             Main.getSceneManager().showWelcomeScene(loggedInUser);
         }
+
+        quizzen.sort(new Comparator<Quiz>() {
+            @Override
+            public int compare(Quiz o1, Quiz o2) {
+                return o1.getQuizName().compareToIgnoreCase(o2.getQuizName());
+            }
+        });
+        quizzenLijst.getItems().addAll(quizzen);
     }
 
     public void handleQuestionInfo() {
